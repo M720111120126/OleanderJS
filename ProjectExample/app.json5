@@ -1,0 +1,9 @@
+{
+  "page": [// 页面表
+    {
+      "name": "init",// 页面名称
+      "srcPath": "./entry",// 页面位置（相对路径）
+      "dependencies": []// 依赖库表
+    }
+  ]
+}

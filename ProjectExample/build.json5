@@ -1,0 +1,7 @@
+{
+  "Minimum-required-API-version": "0.1.0",// 最低兼容的API版本，必须
+  "Target-API-version": "1.0.0",// 目标的API版本，必须
+  "name": "demo",// 项目名及模块 root 包名，必需
+  "version": "1.0.0",// 模块版本信息，必需
+  "compile-option": ""// 额外编译命令选项，非必需
+}
