@@ -1,6 +1,13 @@
-import os, json5, re, zipfile, json
-from io import BytesIO
+import os, json5, re, sys
 
+# 读取文件
+project = os.getcwd()
+with open('app.json5', 'r', encoding='utf-8') as file:
+    app_json5 = json5.loads(file.read())
+with open('build.json5', 'r', encoding='utf-8') as file:
+    build_json5 = json5.loads(file.read())
+
+# 依赖函数
 def replace_outside_quotes(text, signDic):
     quoted = []
     def save_quoted(match):
@@ -27,23 +34,55 @@ def loading_page(page, name):
             include.append([f'#include "{i}"', loading_page(page["srcPath"], i)])
         for i in find_lines_with_text_outside_quotes(file.read(), "#define "):
             include.append([i.split(" ")[1], i.split(" ")[2]])
+        for i in find_lines_with_text_outside_quotes(file.read(), "#include "):
+            include.append([i, f"import {i.split(" ")[1]}"])
         return replace_outside_quotes(file.read(), include)
 
-project = os.getcwd()
-with open('app.txt', 'r', encoding='utf-8') as file:
-    app_json5 = json5.loads(file.read())
-with open('build.txt', 'r', encoding='utf-8') as file:
-    build_json5 = json5.loads(file.read())
-pages = []
+# 编译
+dependencies_code = """
+const_list = []
+var_list = []
+def const(key, data):
+    if key in const_list or key in var_list:
+        sys.exit("Error！已定义")
+    else:
+        const_list.append(key)
+        exec(f"{key} = {data}")
+def var(key, data):
+    if key in const_list or key in var_list:
+        sys.exit("Error！已定义")
+    else:
+        var_list.append(key)
+        exec(f"{key} = {data}")
+def modify(key, data):
+    if key in const_list:
+        sys.exit("Error！无法修改常量")
+    elif key in var_list:
+        exec(f"{key} = {data}")
+    else:
+        sys.exit("Error！未定义")
+"""
+def compilation(text):
+    key = {
+        "&\\": "\\",
+        "\\": "#",
+        ";": "\n",
+        "/*": "'''",
+        "*/": "'''"
+    }
+    for i in find_lines_with_text_outside_quotes(text, "var"):
+        text = text.replace(i, i.replace("=", ",").replace("var ", "var(")+")")
+        for i in find_lines_with_text_outside_quotes(text, "const"):
+            text = text.replace(i, i.replace("=", ",").replace("const ", "const(") + ")")
+    for i in find_lines_with_text_outside_quotes(text, "="):
+        text = text.replace(i, "modify("+i.replace("=", ",")+")")
+    return replace_outside_quotes(text, key)
+page_init = ""
+pages = {}
 for page in app_json5["page"]:
-    pages.append({"name": page["name"], "code": loading_page(page, "init.yh")})
-with zipfile.ZipFile('init.app', 'w') as zip_ref:
-    for i in pages:
-        file_data = BytesIO(i["code"].encode('utf-8'))
-        zip_ref.writestr(f'{i["name"]}.ojs', file_data.getvalue())
-        file_data = BytesIO(json.dumps(app_json5).encode('utf-8'))
-        zip_ref.writestr('app.json', file_data.getvalue())
-        file_data = BytesIO(json.dumps(build_json5).encode('utf-8'))
-        zip_ref.writestr('build.json', file_data.getvalue())
-        zip_ref.write('resources.zip', arcname='resources.zip')
-# sc嵌入，未开发完毕
+    if page["name"] == "init":
+        page_init = compilation(loading_page(page, "init.yh"))
+    else:
+        pages.update({page["name"], compilation(loading_page(page, "init.yh"))})
+with open("app.py", "w", encoding="utf-8") as file:
+    file.write(dependencies_code+page_init)
