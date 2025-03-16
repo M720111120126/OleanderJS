@@ -39,51 +39,138 @@ def loading_page(page, name):
         return replace_outside_quotes(file.read(), include)
 
 # 编译
-dependencies_code = """
-import sys
-const_list = []
-var_list = []
-def const(key, data):
-    if key in const_list or key in var_list:
-        sys.exit("Error！已定义")
-    else:
-        const_list.append(key)
-        exec(f"{key} = {data}")
-def var(key, data):
-    if key in const_list or key in var_list:
-        sys.exit("Error！已定义")
-    else:
-        var_list.append(key)
-        exec(f"{key} = {data}")
-def modify(key, data):
-    if key in const_list:
-        sys.exit("Error！无法修改常量")
-    elif key in var_list:
-        exec(f"{key} = {data}")
-    else:
-        sys.exit("Error！未定义")
-"""
 def compilation(text):
-    key = {
-        "&\\": "\\",
-        "\\": "#",
-        ";": "\n",
-        "/*": "'''",
-        "*/": "'''"
-    }
-    for i in find_lines_with_text_outside_quotes(text, "var"):
-        text = text.replace(i, i.replace("=", ",").replace("var ", "var(")+")")
-    for i in find_lines_with_text_outside_quotes(text, "const"):
-        text = text.replace(i, i.replace("=", ",").replace("const ", "const(") + ")")
-    for i in find_lines_with_text_outside_quotes(text, "="):
-        text = text.replace(i, "modify("+i.replace("=", ",")+")")
-    return replace_outside_quotes(text, key)
+    class UIComponent:
+        def __init__(self):
+            self.styles = {}
+            self.children = []
+
+        def set_style(self, **kwargs):
+            self.styles.update(kwargs)
+            return self
+
+        def add_child(self, child):
+            self.children.append(child)
+            return self
+
+        def render(self):
+            raise NotImplementedError("render method must be implemented by subclasses")
+    class Button(UIComponent):
+        def __init__(self, text):
+            super().__init__()
+            self.text = text
+            self.on_click = None
+
+        def set_on_click(self, callback):
+            self.on_click = callback
+            return self
+
+        def render(self):
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            return f'<button style="{style_str}" onclick="{self.on_click}">{self.text}</button>'
+    class Radio(UIComponent):
+        def __init__(self, name, value):
+            super().__init__()
+            self.name = name
+            self.value = value
+            self.checked = False
+
+        def set_checked(self, checked):
+            self.checked = checked
+            return self
+
+        def render(self):
+            checked_attr = 'checked' if self.checked else ''
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            return f'<input type="radio" name="{self.name}" value="{self.value}" {checked_attr} style="{style_str}"/>'
+    class Toggle(UIComponent):
+        def __init__(self, label_on, label_off):
+            super().__init__()
+            self.label_on = label_on
+            self.label_off = label_off
+            self.checked = False
+
+        def set_checked(self, checked):
+            self.checked = checked
+            return self
+
+        def render(self):
+            label = self.label_on if self.checked else self.label_off
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            return f'<button style="{style_str}">{label}</button>'
+    class Progress(UIComponent):
+        def __init__(self, value=0):
+            super().__init__()
+            self.value = value
+
+        def set_value(self, value):
+            self.value = value
+            return self
+
+        def render(self):
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            return f'<progress value="{self.value}" max="100" style="{style_str}"></progress>'
+    class Image(UIComponent):
+        def __init__(self, src):
+            super().__init__()
+            self.src = src
+
+        def render(self):
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            return f'<img src="{self.src}" style="{style_str}"/>'
+    class Row(UIComponent):
+        def render(self):
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            children_str = "".join([child.render() for child in self.children])
+            return f'<div style="display: flex; {style_str}">{children_str}</div>'
+    class Column(UIComponent):
+        def render(self):
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            children_str = "".join([child.render() for child in self.children])
+            return f'<div style="display: block; {style_str}">{children_str}</div>'
+    class Dialog(UIComponent):
+        def __init__(self, title, content):
+            super().__init__()
+            self.title = title
+            self.content = content
+
+        def render(self):
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            return f'<div class="dialog" style="{style_str}"><h1>{self.title}</h1><p>{self.content}</p></div>'
+    class Menu(UIComponent):
+        def __init__(self):
+            super().__init__()
+            self.items = []
+
+        def add_item(self, item):
+            self.items.append(item)
+            return self
+
+        def render(self):
+            style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+            items_str = "".join([f'<li>{item}</li>' for item in self.items])
+            return f'<ul style="{style_str}">{items_str}</ul>'
+    class Iframe:
+        def __init__(self, src, width="600", height="400"):
+            self.src = src
+            self.width = width
+            self.height = height
+            self.style = ""
+
+        def set_style(self, **kwargs):
+            self.style = "; ".join([f"{key}: {value}" for key, value in kwargs.items()])
+
+        def render(self):
+            for page in app_json5["page"]:
+                if page["name"] == self.src:
+                    # 返回一个iframe标签，包含src和其他属性
+                    return f'<iframe width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
+    html = ""
+    exec(text.split("# UI_start")[1])
+    return f"<script>{text.split("# UI_start")[0]}</script>"+html
 page_init = ""
-pages = {}
 for page in app_json5["page"]:
     if page["name"] == "init":
         page_init = compilation(loading_page(page, "init.yh"))
-    else:
-        pages.update({page["name"], compilation(loading_page(page, "init.yh"))})
-with open("app.py", "w", encoding="utf-8") as file:
-    file.write(dependencies_code+page_init)
+with open("app.html", "w", encoding="utf-8") as file:
+    file.write(page_init)
