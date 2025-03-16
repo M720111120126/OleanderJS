@@ -371,4 +371,12 @@ html = column.render()
 }
 ```
 
+### 编译方式
+
+先 cd 至OleanderTS项目文件夹
+
+直接执行 main.py
+
+将编译为 app.html
+
 注意：本教程适用于 OleanderTS-API V0.0.1 alpha 版
