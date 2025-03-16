@@ -1,4 +1,4 @@
-import os, json5, re, sys
+import os, json5, re
 
 # 读取文件
 project = os.getcwd()
@@ -40,6 +40,7 @@ def loading_page(page, name):
 
 # 编译
 dependencies_code = """
+import sys
 const_list = []
 var_list = []
 def const(key, data):
@@ -72,8 +73,8 @@ def compilation(text):
     }
     for i in find_lines_with_text_outside_quotes(text, "var"):
         text = text.replace(i, i.replace("=", ",").replace("var ", "var(")+")")
-        for i in find_lines_with_text_outside_quotes(text, "const"):
-            text = text.replace(i, i.replace("=", ",").replace("const ", "const(") + ")")
+    for i in find_lines_with_text_outside_quotes(text, "const"):
+        text = text.replace(i, i.replace("=", ",").replace("const ", "const(") + ")")
     for i in find_lines_with_text_outside_quotes(text, "="):
         text = text.replace(i, "modify("+i.replace("=", ",")+")")
     return replace_outside_quotes(text, key)
