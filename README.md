@@ -2,6 +2,8 @@
 
 其实本语言是Oleander+JS+OleanderUI，但是作者本来想用Oleander+TS+OleanderUI。所以叫“Oleander TS”
 
+[English](https://github.xiaohei.me/M720111120126/OleanderTS/blob/master/README-English.md)
+
 ---
 
 ## 语法
