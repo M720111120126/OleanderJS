@@ -12,15 +12,12 @@ class UIComponent:
     def __init__(self):
         self.styles = {}
         self.children = []
-
     def set_style(self, **kwargs):
         self.styles.update(kwargs)
         return self
-
     def add_child(self, child):
         self.children.append(child)
         return self
-
     def render(self):
         raise NotImplementedError("render method must be implemented by subclasses")
 class Button(UIComponent):
@@ -28,11 +25,9 @@ class Button(UIComponent):
         super().__init__()
         self.text = text
         self.on_click = None
-
     def set_on_click(self, callback):
         self.on_click = callback
         return self
-
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         return f'<button style="{style_str}" onclick="{self.on_click}">{self.text}</button>'
@@ -42,11 +37,9 @@ class Radio(UIComponent):
         self.name = name
         self.value = value
         self.checked = False
-
     def set_checked(self, checked):
         self.checked = checked
         return self
-
     def render(self):
         checked_attr = 'checked' if self.checked else ''
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
@@ -57,11 +50,9 @@ class Toggle(UIComponent):
         self.label_on = label_on
         self.label_off = label_off
         self.checked = False
-
     def set_checked(self, checked):
         self.checked = checked
         return self
-
     def render(self):
         label = self.label_on if self.checked else self.label_off
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
@@ -70,11 +61,9 @@ class Progress(UIComponent):
     def __init__(self, value=0):
         super().__init__()
         self.value = value
-
     def set_value(self, value):
         self.value = value
         return self
-
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         return f'<progress value="{self.value}" max="100" style="{style_str}"></progress>'
@@ -82,7 +71,6 @@ class Image(UIComponent):
     def __init__(self, src):
         super().__init__()
         self.src = src
-
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         return f'<img src="{self.src}" style="{style_str}"/>'
@@ -90,18 +78,17 @@ class Row(UIComponent):
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         children_str = "".join([child.render() for child in self.children])
-        return f'<div style="display: flex; {style_str}">{children_str}</div>'
+        return f'<div style="{style_str}">{children_str}</div>'
 class Column(UIComponent):
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         children_str = "".join([child.render() for child in self.children])
-        return f'<div style="display: block; {style_str}">{children_str}</div>'
+        return f'<div style="{style_str}">{children_str}</div>'
 class Dialog(UIComponent):
     def __init__(self, title, content):
         super().__init__()
         self.title = title
         self.content = content
-
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         return f'<div class="dialog" style="{style_str}"><h1>{self.title}</h1><p>{self.content}</p></div>'
@@ -109,11 +96,9 @@ class Menu(UIComponent):
     def __init__(self):
         super().__init__()
         self.items = []
-
     def add_item(self, item):
         self.items.append(item)
         return self
-
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         items_str = "".join([f'<li>{item}</li>' for item in self.items])
@@ -124,10 +109,8 @@ class Iframe:
         self.width = width
         self.height = height
         self.style = ""
-
     def set_style(self, **kwargs):
         self.style = "; ".join([f"{key}: {value}" for key, value in kwargs.items()])
-
     def render(self):
         for page in app_json5["page"]:
             if page["name"] == self.src:
