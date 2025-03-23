@@ -1,45 +1,45 @@
 ## This tutorial uses machine translation, which may be somewhat inaccurate.
 
-# The English version of the tutorial is no longer maintained. Please switch to the Chinese version if needed.
+# Oleander TS Documentation
 
-# Oleander TS document
+The language is Oleander+JS+OleanderUI, but the author wanted to use Oleander+TS+OleanderUI, so it's called "Oleander TS".
 
-Actually, this language is Oleander+JS+OleanderUI, but the author originally intended to use Oleander+TS+OleanderUI. So it's called 'Oleander TS'
+[简体中文](https://github.com/M720111120126/OleanderTS/blob/master/README.md) [繁體中文](https://github.com/M720111120126/OleanderTS/blob/master/README-TraditionalChinese.md)
 
 ---
 
-## Grammar
+## grammatical
 
 ### Oleander section
 
-The Oleander section only brings pre-processing features to the Oleander TS
+The Oleander section only brings preprocessing and JS call features to Oleander TS
 
-#### Preprocessing
+#### 
 
-Preprocessing instructions start with '#' and will be expanded during compilation.
+The preprocessing instructions begin with`#`header, which will be expanded at compile time.
 
 ##### `#include "file"`
 
 ```scl
 #include preprocess_test.yh
-//→ Copy the file content directly here
+// → 直接将文件内容复制到此处
 ```
-be careful:
+Attention:
 
-1. The file here is the relative directory of the page code, such as/ The entry/init.rh is filled with # include preprocess_test.rh/ entry/preprocess_test.yh
+1. The file here is the relative directory of the page code, such as ./entry/init.yh using #include preprocess_test.yh filled with ./entry/preprocess_test.yh
 
-Everything included must be named in the dependencies section of the page corresponding to app.json5, such as:
+2. All things included must be written in the dependencies of the page corresponding to the app.json5 page, such as:
 ```json5
 {
-"page":  [//Page Table
-{
-"name": "init",//  page name
-"srcPath": "./entry",//  Page position (relative path)
-"dependencies": [
-Preprocess_test. yh "//Fill in the name
-]//Dependency library table
-}
-]
+  "page": [// 页面表
+    {
+      "name": "init",// 页面名称
+      "srcPath": "./entry",// 页面位置（相对路径）
+      "dependencies": [
+        "preprocess_test.yh"// 填入名称
+      ]// 依赖库表
+    }
+  ]
 }
 ```
 
@@ -48,7 +48,7 @@ Preprocess_test. yh "//Fill in the name
 A replacement
 
 ```Oleander TS
-#For example, the code here works normally
+# 例如这里的代码正常工作
 #define + left
 
 1 left 1
@@ -56,62 +56,66 @@ A replacement
 
 ##### `# UI_start`
 
-Open flag for Oleander UI section
+Oleander UI part of the on sign
 
 ```Oleander TS
 #include ……
 #define ……
-Some JS code
+一些JS代码
 
 # UI_start
 
-I should write Oleander UI code here
+这里应该写Oleander UI代码了
 ```
+
+#### JS calls
+
+See the # UI_start example above, the js is written directly in the Oleander section and is ready to be executed
 
 ### Oleander UI section
 
-This document explains how to use the provided UI components to help you quickly create and render interfaces. The document will help you understand how to build interactive and responsive UI through detailed examples.
+This document describes how to use the provided UI components to help you quickly create and render interfaces.The document will help you understand how to build interactive and responsive UI with detailed examples.
 
-### 1.  Basic components
+### 1. Basic components
 
-These basic components are the core of UI construction, and you can build your interface by combining and customizing these components.
+These basic components are the core of UI construction and can be combined and customized to build your interface.
 
-#### 1.1 'UIComponent' Class
-All UI components inherit from the 'UIComponent' class. This class includes common styles and sub component management functions.
+#### 1.1 `UIComponent`resemble
+All UI components inherit from the`UIComponent`class, which contains common style and subcomponent management features.
 
-##### Method:
--Set_style (* * kwargs): Set the style and support passing multiple CSS properties and values.
--` add_child (child) `: Add the child component to the current component.
--Render(): renders the component and returns HTML.
+##### Methods:
+- `set_style(**kwargs)`: Sets styles and supports passing in multiple CSS properties and values.
+- `add_child(child)`: Adds the child component to the current component.
+- `render()`: Renders the component and returns the HTML.
 
-#### 1.2 Button Class
+#### 1.2 `Button`resemble
 
 Button component that allows users to create clickable buttons.
 
-##### Method:
--Set_on_click (callback): Set the click event for the button, which can be passed in JavaScript code or callback functions.
+##### Methods:
+- `set_on_click(callback)`: Set the button's click event, either by passing in JavaScript code or a callback function.
 
 ##### Example:
 ```Oleander TS
-Button=Button (click on me)
-Button.set_on_click ("alert")
+button = Button("点击我")
+button.set_on_click("alert('按钮被点击')")
 button.set_style(color="white", background="blue", padding="10px")
 html = button.render()
 ```
 
 Output:
 ```html
-<button style="color: white; background: blue; padding: 10px;" onclick="alert">Click on me</button>
+<button style="color: white; background: blue; padding: 10px;" onclick="alert('按钮被点击')">点击我</button>
 ```
 
-#### 1.3 'Radio' Class
+#### 1.3 `Radio`resemble
 
-A radio button component that allows users to choose from multiple options.
+A radio box component that allows the user to select one of several options.
 
 ##### Example:
 ```Oleander TS
-Radio1=Radio ("group1", "option 1"). setchecked (True)
-Radio2=Radio ("group1", "option 2")
+radio1 = Radio("group1", "选项1").set_checked(True)
+radio2 = Radio("group1", "选项2")
 radio1.set_style(margin="10px")
 radio2.set_style(margin="10px")
 html = radio1.render() + radio2.render()
@@ -119,17 +123,17 @@ html = radio1.render() + radio2.render()
 
 Output:
 ```html
-<input type="radio" name="group1" value="option 1" checked style="margin: 10px"/>
-<input type="radio" name="group1" value="option 2" style="margin: 10px"/>
+<input type="radio" name="group1" value="选项1" checked style="margin: 10px"/>
+<input type="radio" name="group1" value="选项2" style="margin: 10px"/>
 ```
 
-#### 1.4 'Toggle' Class
+#### 1.4 `Toggle`resemble
 
-The toggle button component can switch between two states (such as on/off).
 
-##### Example:
+
+##### 
 ```Oleander TS
-Toggle=toggle ("on", "off")
+toggle = Toggle("开启", "关闭")
 toggle.set_checked(True)
 toggle.set_style(background="lightgreen", padding="10px")
 html = toggle.render()
@@ -137,12 +141,12 @@ html = toggle.render()
 
 Output:
 ```html
-<button style="background: lightgreen; padding: 10px;">Enable</button>
+<button style="background: lightgreen; padding: 10px;">开启</button>
 ```
 
-#### 1.5 'Progress' Class
+#### 1.5 `Progress`resemble
 
-Progress bar component, used to display the completion progress of tasks.
+Progress bar component that displays the progress of the task completion.
 
 ##### Example:
 ```Oleander TS
@@ -156,31 +160,31 @@ Output:
 <progress value="50" max="100" style="width: 100%; height: 20px; background: lightgray;"></progress>
 ```
 
-#### 1.6 'Image' Class
+#### 1.6 `Image`resemble
 
-Image component, used to embed images in the interface.
+Image component for embedding images in the interface.
 
 ##### Example:
 ```Oleander TS
-image = Image(" https://example.com/image.jpg ")
+image = Image("https://example.com/image.jpg")
 image.set_style(width="200px", height="auto")
 html = image.render()
 ```
 
 Output:
 ```html
-<img src=" https://example.com/image.jpg " style="width: 200px;  height: auto"/>
+<img src="https://example.com/image.jpg" style="width: 200px; height: auto"/>
 ```
 
 
 
-### 2.  Layout
+### 2. Layout components
 
-The layout component is used to control the layout of multiple sub components. You can use the 'Row' or 'Column' classes to organize components.
+The layout component is used to control the layout of multiple subcomponents. you can use the`Row`maybe`Column`class to organize components.
 
-#### 2.1 Row Class
+#### 2.1 `Row`resemble
 
-Row layout, with sub components arranged horizontally.
+Row layout with subcomponents arranged horizontally.
 
 ##### Example:
 ```Oleander TS
@@ -193,15 +197,15 @@ html = row.render()
 Output:
 ```html
 <div style="display: flex; background: lightblue; padding: 20px;">
-<button style="color: white; background: blue; padding: 10px;" onclick="alert">Click on me</button>
-<progress value="50" max="100" style="width: 100%; height: 20px; background: lightgray;"></progress>
-<img src=" https://example.com/image.jpg " style="width: 200px;  height: auto"/>
+    <button style="color: white; background: blue; padding: 10px;" onclick="alert('按钮被点击')">点击我</button>
+    <progress value="50" max="100" style="width: 100%; height: 20px; background: lightgray;"></progress>
+    <img src="https://example.com/image.jpg" style="width: 200px; height: auto"/>
 </div>
 ```
 
-#### 2.2 Column Class
+#### 2.2 `Column`resemble
 
-Arrange the sub components vertically in the layout.
+Column layout with subcomponents arranged vertically.
 
 ##### Example:
 ```Oleander TS
@@ -214,29 +218,31 @@ html = column.render()
 Output:
 ```html
 <div style="display: block; margin: 20px; padding: 10px;">
-<div class="dialog" style="border: 1px solid #ccc; padding: 10px; background: #f9f9f9;">
-<h1>Welcome</h1>
-<p>This is a simple dialog box</p>
-</div>
-<ul style="list-style-type: none; padding: 0; margin: 0;">
-<li>Menu item 1</li>
-<li>Menu item 2</li>
-<li>Menu item 3</li>
-</ul>
+    <div class="dialog" style="border: 1px solid #ccc; padding: 10px; background: #f9f9f9;">
+        <h1>欢迎</h1>
+        <p>这是一个简单的对话框</p>
+    </div>
+    <ul style="list-style-type: none; padding: 0; margin: 0;">
+        <li>菜单项1</li>
+        <li>菜单项2</li>
+        <li>菜单项3</li>
+    </ul>
 </div>
 ```
 
-### 3.  Interactive components
 
-Interactive components such as Dialogue and Menu can help you create pop ups and navigation menus that contain interactive content.
 
-#### 3.1 'Dialogue' Class
+### 3. Interactive components
 
-A dialog box component used to display messages or content.
+interactive component such as`Dialog`cap (a poem)`Menu`Can help you create popups and navigation menus that contain interactive content.
+
+#### 3.1 `Dialog`resemble
+
+
 
 ##### Example:
 ```Oleander TS
-Dialog=Dialogue ("Welcome", "This is a simple dialog box")
+dialog = Dialog("欢迎", "这是一个简单的对话框")
 dialog.set_style(border="1px solid #ccc", padding="10px", background="#f9f9f9")
 html = dialog.render()
 ```
@@ -244,19 +250,19 @@ html = dialog.render()
 Output:
 ```html
 <div class="dialog" style="border: 1px solid #ccc; padding: 10px; background: #f9f9f9;">
-<h1>Welcome</h1>
-<p>This is a simple dialog box</p>
+    <h1>欢迎</h1>
+    <p>这是一个简单的对话框</p>
 </div>
 ```
 
-#### 3.2 'Menu' Class
+#### 3.2 `Menu`resemble
 
-Menu component, used to create clickable list items.
+Menu component for creating clickable list items.
 
 ##### Example:
 ```Oleander TS
 menu = Menu()
-Menu.add_item ("Menu Item 1"). add_item ("Menu Item 2"). add_item ("Menu Item 3")
+menu.add_item("菜单项1").add_item("菜单项2").add_item("菜单项3")
 menu.set_style(list_style_type="none", padding="0", margin="0")
 html = menu.render()
 ```
@@ -264,17 +270,34 @@ html = menu.render()
 Output:
 ```html
 <ul style="list-style-type: none; padding: 0; margin: 0;">
-<li>Menu item 1</li>
-<li>Menu item 2</li>
-<li>Menu item 3</li>
+    <li>菜单项1</li>
+    <li>菜单项2</li>
+    <li>菜单项3</li>
 </ul>
 ```
 
-### 4.  Advanced Usage
+### 4. Advanced usage
 
-#### 4.1 Page Call
+#### 4.1 Conditional Rendering
 
-You can call other pages by setting the properties of the component
+Can judge conditions and decide whether to render
+
+##### typical example
+```Oleander TS
+button = Button("3")
+button.set_on_click("alert('按钮3被点击')")
+button.set_style(color="white", background="blue", padding="10px")
+button.if_render("isDaytime")
+html = button.render() + iframe.render()
+```
+
+
+
+You can see the button during the day, but not when you open it at night.
+
+#### 4.2 Page Call
+
+You can call other pages by setting the component's properties.
 
 ##### Example:
 ```Oleander TS
@@ -285,14 +308,14 @@ html = button.render() + iframe.render() + auto_js_code
 
 Output:
 ```html
-<iframe width="800" height="600" style="border: 2px solid black;">The compilation result of your page named pay</iframe>
+<iframe width="800" height="600" style="border: 2px solid black;">您名称为pay的页面的编译结果</iframe>
 ```
 
-#### 4.1 Dynamic updates
+#### 4.3 Dynamic updating
 
-You can dynamically update the status of a component by setting its properties, such as updating the value of the progress bar, the status of the toggle button, etc. You just need to call the corresponding 'set_ *' method and re render the component.
+You can dynamically update the state of a component by setting its properties, such as updating the value of a progress bar, the state of a toggle button, etc. You just need to call the corresponding`set_*`method and re-renders the component.
 
-#####Example:
+##### 
 ```Oleander TS
 progress.set_value(75)
 html = progress.render()
@@ -303,9 +326,9 @@ Output:
 <progress value="75" max="100" style="width: 100%; height: 20px; background: lightgray;"></progress>
 ```
 
-#### 4.2 Composite Complex Layout
+#### 
 
-You can create complex layouts by nesting multiple layout components such as Row and Column together.
+`Row`cap (a poem)`Column`) nested together to create complex layouts.
 
 ##### Example:
 ```Oleander TS
@@ -321,20 +344,20 @@ html = column.render()
 Output:
 ```html
 <div style="display: block; margin: 20px; padding: 10px;">
-<div style="display: flex; background: lightblue; padding: 20px;">
-<button style="color: white; background: blue; padding: 10px;" onclick="alert">Click on me</button>
-<progress value="50" max="100" style="width: 100%; height: 20px; background: lightgray;"></progress>
-</div>
-<div class="dialog" style="border: 1px solid #ccc; padding: 10px; background: #f9f9f9;">
-<h1>Welcome</h1>
-<p>This is a simple dialog box</p>
-</div>
+    <div style="display: flex; background: lightblue; padding: 20px;">
+        <button style="color: white; background: blue; padding: 10px;" onclick="alert('按钮被点击')">点击我</button>
+        <progress value="50" max="100" style="width: 100%; height: 20px; background: lightgray;"></progress>
+    </div>
+    <div class="dialog" style="border: 1px solid #ccc; padding: 10px; background: #f9f9f9;">
+        <h1>欢迎</h1>
+        <p>这是一个简单的对话框</p>
+    </div>
 </div>
 ```
 
 ---
 
-## Compile
+## compiling
 
 ```file
 └─ init
@@ -347,11 +370,11 @@ Output:
 
 ```json5
 {
-  "page":  [//Page Table
+  "page": [// 页面表
     {
-      "name": "init",//  page name
-      "srcPath": "./entry",//  Page position (relative path)
-      "dependencies":  []//Dependency library table
+      "name": "init",// 页面名称
+      "srcPath": "./entry",// 页面位置（相对路径）
+      "dependencies": []// 依赖库表
     }
   ]
 }
@@ -361,14 +384,22 @@ Output:
 
 ```json5
 {
-"Minimum-required-API-version":  "0.1.0",//Minimum compatible API version, must be
-"Target-API-version":  "0.1.0",//The API version of the target must be
-"name": "demo",//  Project name and module root package name, required
-"version":  "1.0.0",//module version information, required
-"compile-option": "" //Additional compilation command options, not required
+  "Minimum-required-API-version": "0.1.0",// 最低兼容的API版本，必须
+  "Target-API-version": "0.1.0",// 目标的API版本，必须
+  "name": "demo",// 项目名及模块 root 包名，必需
+  "version": "1.0.0",// 模块版本信息，必需
+  "compile-option": ""// 额外编译命令选项，非必需
 }
 ```
 
-Note: 
-* This tutorial is applicable to OleanderTS-API V0.0.1 alpha version
-* The HTML compiled output in this tutorial is for reference only and is sometimes modified without being synced to the tutorial
+### Compilation method
+
+First cd to the OleanderTS project folder
+
+Execute main.py directly
+
+will compile to app.html
+
+Attention:
+* This tutorial applies to OleanderTS-API V0.2.4 alpha version
+* The HTML compiled output in this tutorial is for reference only and is sometimes modified and not synchronized to the tutorial.
