@@ -1,5 +1,7 @@
 ## This tutorial uses machine translation, which may be somewhat inaccurate.
 
+# The English version of the tutorial is no longer maintained. Please switch to the Chinese version if needed.
+
 # Oleander TS document
 
 Actually, this language is Oleander+JS+OleanderUI, but the author originally intended to use Oleander+TS+OleanderUI. So it's called 'Oleander TS'
@@ -345,13 +347,13 @@ Output:
 
 ```json5
 {
-"page":  [//Page Table
-{
-"name": "init",//  page name
-"srcPath": "./entry",//  Page position (relative path)
-"dependencies":  []//Dependency library table
-}
-]
+  "page":  [//Page Table
+    {
+      "name": "init",//  page name
+      "srcPath": "./entry",//  Page position (relative path)
+      "dependencies":  []//Dependency library table
+    }
+  ]
 }
 ```
 
@@ -359,12 +361,14 @@ Output:
 
 ```json5
 {
-"Minimum-required-API-version":  0.1.0 ",//Minimum compatible API version, must be
-"Target-API-version":  0.1.0 ",//The API version of the target must be
+"Minimum-required-API-version":  "0.1.0",//Minimum compatible API version, must be
+"Target-API-version":  "0.1.0",//The API version of the target must be
 "name": "demo",//  Project name and module root package name, required
-"version":  1.0.0 ",//module version information, required
-"compile-option":  //Additional compilation command options, not required
+"version":  "1.0.0",//module version information, required
+"compile-option": "" //Additional compilation command options, not required
 }
 ```
 
-Note: This tutorial is applicable to OleanderTS-API V0.0.1 alpha version
+Note: 
+* This tutorial is applicable to OleanderTS-API V0.0.1 alpha version
+* The HTML compiled output in this tutorial is for reference only and is sometimes modified without being synced to the tutorial

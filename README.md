@@ -10,7 +10,7 @@
 
 ### Oleander部分
 
-Oleander部分只为Oleander TS带来了预处理特性
+Oleander部分只为Oleander TS带来了预处理和JS调用特性
 
 #### 预处理
 
@@ -65,6 +65,10 @@ Oleander UI部分的开启标志
 
 这里应该写Oleander UI代码了
 ```
+
+#### JS调用
+
+见上面的 # UI_start 的示例，js直接写在 Oleander部分 就可以执行了
 
 ### Oleander UI部分
 
@@ -270,11 +274,26 @@ html = menu.render()
 </ul>
 ```
 
-
-
 ### 4. 高级用法
 
-#### 4.1 页面调用
+#### 4.1 条件渲染
+
+可以判断条件并决定是否渲染
+
+##### 示例
+```Oleander TS
+button = Button("3")
+button.set_on_click("alert('按钮3被点击')")
+button.set_style(color="white", background="blue", padding="10px")
+button.if_render("isDaytime")
+html = button.render() + iframe.render()
+```
+
+注意：isDaytime函数已经在 Oleander 部分使用JS定义过了，白天返回true，晚上返回false
+
+白天能看见button，晚上再打开就看不见了
+
+#### 4.2 页面调用
 
 可以通过设置组件的属性来调用其他的页面
 
@@ -290,7 +309,7 @@ html = button.render() + iframe.render() + auto_js_code
 <iframe width="800" height="600" style="border: 2px solid black;">您名称为pay的页面的编译结果</iframe>
 ```
 
-#### 4.1 动态更新
+#### 4.3 动态更新
 
 可以通过设置组件的属性来动态更新组件的状态，例如更新进度条的值、切换按钮的状态等。你只需要调用相应的 `set_*` 方法，并重新渲染该组件。
 
@@ -305,7 +324,7 @@ html = progress.render()
 <progress value="75" max="100" style="width: 100%; height: 20px; background: lightgray;"></progress>
 ```
 
-#### 4.2 组合复杂布局
+#### 4.4 组合复杂布局
 
 你可以通过将多个布局组件（如 `Row` 和 `Column`）嵌套在一起，创建复杂的布局。
 
@@ -379,4 +398,6 @@ html = column.render()
 
 将编译为 app.html
 
-注意：本教程适用于 OleanderTS-API V0.0.1 alpha 版
+注意：
+* 本教程适用于 OleanderTS-API V0.2.4 alpha 版
+* 本教程中的 HTML 编译输出仅供参考，有时加以修改未同步至教程
