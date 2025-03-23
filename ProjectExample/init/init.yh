@@ -1,6 +1,12 @@
 alert('义核引擎测试')
 #include dependencies.yh
 
+function isDaytime() {
+    let currentTime = new Date();
+    let currentHour = currentTime.getHours();
+    return currentHour >= 6 && currentHour < 18;
+}
+
 
 # UI_start
 
@@ -15,11 +21,17 @@ column = Column()
 column.add_child(button1).add_child(button2)
 column.set_style(margin="20px", padding="10px")
 
-button3 = Button("3")
+button3 = Button("3-白天才能看见的按钮")
 button3.set_on_click("alert('按钮3被点击')")
 button3.set_style(color="white", background="blue", padding="10px")
+button3.if_render("isDaytime")
+
+button4 = Button("3-晚上才能看见的按钮")
+button4.set_on_click("alert('按钮3被点击')")
+button4.set_style(color="white", background="blue", padding="10px")
+button4.if_render("!isDaytime")
 
 row = Row()
-row.add_child(column).add_child(button3)
+row.add_child(column).add_child(button3).add_child(button4)
 row.set_style(background="lightblue", padding="20px")
 html = row.render()

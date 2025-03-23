@@ -18,6 +18,11 @@ class UIComponent:
     def add_child(self, child):
         self.children.append(child)
         return self
+    def if_render(self, condition):
+        self.render2 = self.render
+        def a():
+            return "<script>if ("+condition+") {document.write(\""+self.render2().replace('"', r'\"')+"\");}</script>"
+        self.render = a
     def render(self):
         raise NotImplementedError("render method must be implemented by subclasses")
 class Button(UIComponent):
@@ -30,7 +35,7 @@ class Button(UIComponent):
         return self
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
-        return f'<button style="{style_str}" onclick="{self.on_click}">{self.text}</button>'
+        return f"<button style='{style_str}' onclick='{self.on_click.replace("'", '"')}'>{self.text}</button>"
 class Radio(UIComponent):
     def __init__(self, name, value):
         super().__init__()
