@@ -18,13 +18,14 @@ class UIComponent:
     def add_child(self, child):
         self.children.append(child)
         return self
-    def if_render(self, condition):
+    def condition(self, condition):
         self.render2 = self.render
         def a():
             return "<script>if ("+condition+") {document.write(\""+self.render2().replace('"', r'\"')+"\");}</script>"
         self.render = a
     def render(self):
-        raise NotImplementedError("render method must be implemented by subclasses")
+        raise NotImplementedError("""呈现方法必须由子类实现
+render method must be implemented by subclasses""")
 class Button(UIComponent):
     def __init__(self, text):
         super().__init__()

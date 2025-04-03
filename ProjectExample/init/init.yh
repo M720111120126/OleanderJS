@@ -29,7 +29,7 @@ button3.if_render("isDaytime")
 button4 = Button("3-晚上才能看见的按钮")
 button4.set_on_click("alert('按钮3被点击')")
 button4.set_style(color="white", background="blue", padding="10px")
-button4.if_render("!isDaytime")
+button4.condition("!isDaytime")
 
 row = Row()
 row.add_child(column).add_child(button3).add_child(button4)

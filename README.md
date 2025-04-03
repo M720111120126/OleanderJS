@@ -285,7 +285,7 @@ html = menu.render()
 button = Button("3")
 button.set_on_click("alert('按钮3被点击')")
 button.set_style(color="white", background="blue", padding="10px")
-button.if_render("isDaytime")
+button.condition("isDaytime")
 html = button.render() + iframe.render()
 ```
 
