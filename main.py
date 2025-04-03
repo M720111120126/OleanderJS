@@ -109,8 +109,9 @@ class Menu(UIComponent):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         items_str = "".join([f'<li>{item}</li>' for item in self.items])
         return f'<ul style="{style_str}">{items_str}</ul>'
-class Iframe:
+class Iframe(UIComponent):
     def __init__(self, src, width="600", height="400"):
+        super().__init__()
         self.src = src
         self.width = width
         self.height = height
@@ -156,7 +157,7 @@ def loading_page(page, name):
 # 编译
 def compilation(text):
     exec(text.split("# UI_start")[1], globals())
-    return f"<script>{text.split("# UI_start")[0]}</script>" + html
+    return f"<script>{text.split('# UI_start')[0]}</script>" + html
 page_init = ""
 for page in app_json5["page"]:
     if page["name"] == "init":
