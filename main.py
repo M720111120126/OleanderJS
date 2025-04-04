@@ -1,4 +1,5 @@
-import os, json5, re
+import os, json5, re, json
+import BetaOfAlpha as Beta
 
 # 读取文件
 project = os.getcwd()
@@ -27,10 +28,10 @@ class UIComponent:
         raise NotImplementedError("""呈现方法必须由子类实现
 render method must be implemented by subclasses""")
 class Button(UIComponent):
-    def __init__(self, text):
+    def __init__(self, text=""):
         super().__init__()
         self.text = text
-        self.on_click = None
+        self.on_click = ""
     def set_on_click(self, callback):
         self.on_click = callback
         return self
@@ -38,7 +39,7 @@ class Button(UIComponent):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         return f"<button style='{style_str}' onclick='{self.on_click.replace("'", '"')}'>{self.text}</button>"
 class Radio(UIComponent):
-    def __init__(self, name, value):
+    def __init__(self, name="", value=""):
         super().__init__()
         self.name = name
         self.value = value
@@ -51,7 +52,7 @@ class Radio(UIComponent):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         return f'<input type="radio" name="{self.name}" value="{self.value}" {checked_attr} style="{style_str}"/>'
 class Toggle(UIComponent):
-    def __init__(self, label_on, label_off):
+    def __init__(self, label_on="", label_off=""):
         super().__init__()
         self.label_on = label_on
         self.label_off = label_off
@@ -74,7 +75,7 @@ class Progress(UIComponent):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         return f'<progress value="{self.value}" max="100" style="{style_str}"></progress>'
 class Image(UIComponent):
-    def __init__(self, src):
+    def __init__(self, src=""):
         super().__init__()
         self.src = src
     def render(self):
@@ -82,16 +83,18 @@ class Image(UIComponent):
         return f'<img src="{self.src}" style="{style_str}"/>'
 class Row(UIComponent):
     def render(self):
-        style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+        self.set_style(display='flex', flex_direction='row')
+        style_str = " ".join([f'{k}: {v};' for k, v in json.loads(json.dumps(self.styles).replace("_", "-")).items()])
         children_str = "".join([child.render() for child in self.children])
         return f'<div style="{style_str}">{children_str}</div>'
 class Column(UIComponent):
     def render(self):
-        style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+        self.set_style(display='flex', flex_direction='column')
+        style_str = " ".join([f'{k}: {v};' for k, v in json.loads(json.dumps(self.styles).replace("_", "-")).items()])
         children_str = "".join([child.render() for child in self.children])
         return f'<div style="{style_str}">{children_str}</div>'
 class Dialog(UIComponent):
-    def __init__(self, title, content):
+    def __init__(self, title="", content=""):
         super().__init__()
         self.title = title
         self.content = content
@@ -110,7 +113,7 @@ class Menu(UIComponent):
         items_str = "".join([f'<li>{item}</li>' for item in self.items])
         return f'<ul style="{style_str}">{items_str}</ul>'
 class Iframe(UIComponent):
-    def __init__(self, src, width="600", height="400"):
+    def __init__(self, src="", width="600", height="400"):
         super().__init__()
         self.src = src
         self.width = width
@@ -123,19 +126,19 @@ class Iframe(UIComponent):
             if page["name"] == self.src:
                 # 返回一个iframe标签，包含src和其他属性
                 return f'<iframe width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
-def replace_outside_quotes(text, signDic):
+def replace_outside_quotes(text: str, signDic: list, rule: str = r'(["\']).*?\1', count: int = -1) -> str:
     quoted = []
     def save_quoted(match):
         quoted.append(match.group(0))
         return 'QUOTED_TEXT'
-    text_with_placeholders = re.sub(r'(["\']).*?\1', save_quoted, text)
+    text_with_placeholders = re.sub(rule, save_quoted, text)
     if signDic:
         for i in signDic:
-            text_with_placeholders = text_with_placeholders.replace(i[0], i[1])
+            text_with_placeholders = text_with_placeholders.replace(i[0], i[1], count)
     for q in quoted:
         text_with_placeholders = text_with_placeholders.replace('QUOTED_TEXT', q, 1)
     return text_with_placeholders
-def find_lines_with_text_outside_quotes(text, txt):
+def find_lines_with_text_outside_quotes(text: str, txt: str) -> list[str]:
     lines = text.splitlines()
     result_lines = []
     for line in lines:
@@ -156,11 +159,13 @@ def loading_page(page, name):
 
 # 编译
 def compilation(text):
-    exec(text.split("# UI_start")[1], globals())
-    return f"<script>{text.split('# UI_start')[0]}</script>" + html
+    text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
+    exec(text_list[1], globals())
+    return f"<script>{text_list[0]}</script>" + html
 page_init = ""
 for page in app_json5["page"]:
     if page["name"] == "init":
-        page_init = compilation(loading_page(page, "init.yh"))
+        print(Beta.beta(loading_page(page, "init.yh")))
+        page_init = compilation(Beta.beta(loading_page(page, "init.yh")))
 with open("app.html", "w", encoding="utf-8") as file:
     file.write(page_init)
