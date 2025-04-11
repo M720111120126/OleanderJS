@@ -1,4 +1,4 @@
-import os, json5, re, json
+import os, json5, re, json, sys
 import BetaOfAlpha as Beta
 
 # 读取文件
@@ -7,6 +7,17 @@ with open('app.json5', 'r', encoding='utf-8') as file:
     app_json5 = json5.loads(file.read())
 with open('build.json5', 'r', encoding='utf-8') as file:
     build_json5 = json5.loads(file.read())
+with open('OleanderTS.json5', 'r', encoding='utf-8') as file:
+    OleanderTS_json5 = json5.loads(file.read())
+
+# 检查环境
+if build_json5["Minimum-required-API-version"] > OleanderTS_json5["API-version"]:
+    sys.exit("""最低兼容的API版本高于当前API
+The minimum compatible API version is higher than the current API""")
+elif build_json5["Target-API-version"] > OleanderTS_json5["API-version"]:
+        print("""警告：当前API低于目标的API版本（可能能够正常运行）
+Warning: The current API is lower than the target API version (may be able to run normally)""")
+
 
 # 依赖函数
 class UIComponent:
@@ -161,7 +172,7 @@ def loading_page(page, name):
 def compilation(text):
     text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     exec(text_list[1], globals())
-    return f"<script>{text_list[0]}</script>" + html
+    return f"<!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script>" + html
 page_init = ""
 for page in app_json5["page"]:
     if page["name"] == "init":
