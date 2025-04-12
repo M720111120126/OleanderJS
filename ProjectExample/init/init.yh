@@ -28,15 +28,26 @@ Row() {
       data_text : "3",
       data_on_click: "alert('按钮3被点击')",
     }
-    Button() {
-      data_text : "2-白天才能看见的按钮",
-      data_on_click: "alert('按钮2被点击')",
-      method_condition: "isDaytime"
+    if(isDaytime) {
+      Button() {
+        data_text : "2-白天才能看见的按钮",
+        data_on_click: "alert('按钮2被点击')"
+      }
     }
+    if(!isDaytime) {
+      Button() {
+        data_text : "2-晚上才能看见的按钮",
+        data_on_click: "alert('按钮2被点击')"
+      }
+    }
+    Column() {
+    "margin" : "20px",
+    "padding" : "10px",
     Button() {
-      data_text : "2-晚上才能看见的按钮",
-      data_on_click: "alert('按钮2被点击')",
-      method_condition: "!isDaytime"
+      data_text : "${item}",
+      data_on_click: "alert(${item})",
+      method_for_render: "[1,2,3]"
+    }
     }
   }
 }

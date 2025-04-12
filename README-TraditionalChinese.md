@@ -110,6 +110,22 @@ Button() {
   }
 ```
 
+#### 條件渲染
+```Oleander TS
+if(條件) {
+  條件渲染的組件
+}
+```
+
+#### 循環渲染
+```Oleander TS
+x() {
+  data_text : "${item}",
+  method_for_render: "[1,2,3]"
+}
+```
+這樣就會渲染三個“x”，並顯示爲 1、2、3。任何需要調用list（如這裏的 `[1,2,3]`）的內容的地方都可以使用 `${item}`
+
 #### 示例：
 ```Oleander TS
 Row() {
@@ -130,15 +146,17 @@ Row() {
       data_text : "3",
       data_on_click: "alert('按鈕3被點擊')",
     }
-    Button() {
-      data_text : "2-白天才能看見的按鈕",
-      data_on_click: "alert('按鈕2被點擊')",
-      method_condition: "isDaytime"
+    if(isDaytime) {
+      Button() {
+        data_text : "2-白天才能看見的按鈕",
+        data_on_click: "alert('按鈕2被點擊')"
+      }
     }
-    Button() {
-      data_text : "2-晚上才能看見的按鈕",
-      data_on_click: "alert('按鈕2被點擊')",
-      method_condition: "!isDaytime"
+    if(!isDaytime) {
+      Button() {
+        data_text : "2-晚上才能看見的按鈕",
+        data_on_click: "alert('按鈕2被點擊')"
+      }
     }
   }
 }
@@ -356,4 +374,4 @@ Row() {
 將編譯爲 app.html
 
 注意：
-* 本教程適用於 OleanderTS-API V0.4.7 Beta2 版
+* 本教程適用於 OleanderTS-API V0.4.8 Beta3 版

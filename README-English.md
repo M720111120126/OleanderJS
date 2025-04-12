@@ -1,6 +1,6 @@
 # Oleander TS Documentation
 
-Actually, this language is Oleander+JS+OleanderUI, but the author originally wanted to use Oleander+TS+OleanderUI. So it's called "Oleander TS".
+In reality, this language is Oleander+JS+OleanderUI, but the author originally intended to use Oleander+TS+OleanderUI. Hence the name "Oleander TS".
 
 [简体中文](https://github.com/M720111120126/OleanderTS/blob/master/README.md) [繁體中文](https://github.com/M720111120126/OleanderTS/blob/master/README-TraditionalChinese.md)
 
@@ -8,9 +8,9 @@ Actually, this language is Oleander+JS+OleanderUI, but the author originally wan
 
 ## Syntax
 
-### Oleander Part
+### Oleander Section
 
-The Oleander part only brings preprocessing and JS calling features to Oleander TS.
+The Oleander section only brings preprocessing and JS calling features to Oleander TS.
 
 #### Preprocessing
 
@@ -24,9 +24,9 @@ Preprocessing directives start with `#` and are expanded at compile time.
 ```
 Note:
 
-1.  The file here is the relative directory of the page code, such as ./entry/init.yh. Using #include preprocess_test.yh fills in ./entry/preprocess_test.yh.
+1.  Here, `file` is the relative directory of the page code, such as `./entry/init.yh`. Using `#include preprocess_test.yh` fills in `./entry/preprocess_test.yh`.
 
-2.  All included items must have their names written in the dependencies of the page corresponding to app.json5, such as:
+2.  Everything included must have its name written in the `dependencies` of the page corresponding to `page` in `app.json5`. For example:
 ```json5
 {
   "page": [// Page table
@@ -34,7 +34,7 @@ Note:
       "name": "init",// Page name
       "srcPath": "./entry",// Page location (relative path)
       "dependencies": [
-        "preprocess_test.yh"// Fill in the name
+        "preprocess_test.yh"// Enter the name
       ]// Dependency library table
     }
   ]
@@ -46,7 +46,7 @@ Note:
 A replacement
 
 ```Oleander TS
-# The code here works normally
+# For example, the code here works normally
 #define + left
 
 1 left 1
@@ -54,7 +54,7 @@ A replacement
 
 ##### `# UI_start`
 
-The opening flag of the Oleander UI part
+The start flag for the Oleander UI section
 
 ```Oleander TS
 #include ……
@@ -68,30 +68,30 @@ Oleander UI code should be written here
 
 #### JS Calling
 
-See the example of # UI_start above, js can be executed directly by writing it in the Oleander part.
+See the example of `# UI_start` above. JS can be directly written in the Oleander section and executed.
 
-### Oleander UI Part
+### Oleander UI Section
 
-This document describes how to use the provided UI components to help you quickly create and render interfaces. The document will help you understand how to build interactive and responsive UIs through detailed examples.
+This document introduces how to use the provided UI components to help you quickly create and render interfaces. The document will help you understand how to build interactive and responsive UIs through detailed examples.
 
 ### 0. Oleander UI Syntax
 
 #### Layout Components
 
-Use `LayoutComponentName() {}` Note that the setting of attributes (css attributes) requires a trailing comma.
+Use `LayoutComponentName() {}`. Note that the setting of attributes (CSS attributes) requires a trailing comma.
 
 ```Oleander TS
 LayoutComponentName() {
   attribute: value,
-  contained components
+  containedComponents
 }
 ```
 
 #### Basic Components
 
-Use `BasicComponentName(passed content)` or `BasicComponentName() {content}`
+Use `BasicComponentName(contentPassedIn)` or `BasicComponentName() {content}`
 
-##### `BasicComponentName(passed content)`
+##### `BasicComponentName(contentPassedIn)`
 
 ```Oleander TS
 Button(1)
@@ -101,7 +101,7 @@ Button(1)
 
 Please note the trailing comma.
 
-Use the `data_` prefix to change attributes and the `method_` prefix to call methods in `{}`.
+Use the `data_` prefix to change attributes in `{}` and the `method_` prefix to call methods.
 
 ```Oleander TS
 Button() {
@@ -109,6 +109,22 @@ Button() {
   method_set_on_click: "alert('Button 1 was clicked')",
   }
 ```
+
+#### Conditional Rendering
+```Oleander TS
+if(condition) {
+  componentsRenderedConditionally
+}
+```
+
+#### Loop Rendering
+```Oleander TS
+x() {
+  data_text : "${item}",
+  method_for_render: "[1,2,3]"
+}
+```
+This will render three "x"s and display them as 1, 2, 3. `${item}` can be used anywhere that requires calling a list (such as `[1,2,3]` here).
 
 #### Example:
 ```Oleander TS
@@ -130,15 +146,17 @@ Row() {
       data_text : "3",
       data_on_click: "alert('Button 3 was clicked')",
     }
-    Button() {
-      data_text : "2-Button visible only during the day",
-      data_on_click: "alert('Button 2 was clicked')",
-      method_condition: "isDaytime"
+    if(isDaytime) {
+      Button() {
+        data_text : "Button 2 - Only visible during the day",
+        data_on_click: "alert('Button 2 was clicked')"
+      }
     }
-    Button() {
-      data_text : "2-Button visible only at night",
-      data_on_click: "alert('Button 2 was clicked')",
-      method_condition: "!isDaytime"
+    if(!isDaytime) {
+      Button() {
+        data_text : "Button 2 - Only visible at night",
+        data_on_click: "alert('Button 2 was clicked')"
+      }
     }
   }
 }
@@ -149,43 +167,43 @@ Row() {
 These basic components are the core of UI construction. You can build your interface by combining and customizing these components.
 
 #### 1.1 `UIComponent` Class
-All UI components inherit from the `UIComponent` class. This class contains common style and subcomponent management functions.
+All UI components inherit from the `UIComponent` class. This class contains common style and sub-component management functions.
 
 ##### Methods:
-- `set_style(**kwargs)`: Sets the style, supports passing in multiple CSS attributes and values.
+- `set_style(**kwargs)`: Sets the style, supporting passing in multiple CSS properties and values.
 - `render()`: Renders the component and returns HTML.
 
 #### 1.2 `Button` Class
 
-Button component, allows users to create clickable buttons.
+Button component, allowing users to create clickable buttons.
 
 ##### Methods:
-- `set_on_click(callback)`: Sets the click event of the button, you can pass in JavaScript code or a callback function. (Depends on the on_click attribute)
+- `set_on_click(callback)`: Sets the click event of the button, which can pass in JavaScript code or a callback function. (Depends on the on_click attribute)
 
 ##### Attributes:
-- `text`: Displayed text
-- `on_click`: Sets the click event of the button, you can pass in JavaScript code or a callback function.
+- `text`: The text displayed
+- `on_click`: Sets the click event of the button, which can pass in JavaScript code or a callback function.
 
 #### 1.3 `Radio` Class
 
-Radio button component, allows users to select one of multiple options.
+Radio button component, allowing users to select one of multiple options.
 
-##### Methods
+##### Method
 
 - `set_checked(True)`: Whether to select by default
 
 #### 1.4 `Toggle` Class
 
-Toggle button component, can switch between two states (such as on/off).
+Toggle button component, which can switch between two states (such as on/off).
 
-##### Methods
+##### Method
 
 - `set_checked(True)`: Whether to select by default
 
 ##### Attributes
 
-- `label_on`: Text displayed when turned on
-- `label_off`: Text displayed when turned off on style="background: lightgreen; padding: 10px;">On</button>
+- `label_on`: The text displayed when turned on
+- `label_off`: The text displayed when turned offon style="background: lightgreen; padding: 10px;">On</button>
 
 #### 1.5 `Progress` Class
 
@@ -205,15 +223,15 @@ Image component, used to embed images in the interface.
 
 ### 2. Layout Components
 
-Layout components are used to control the layout of multiple subcomponents. You can use the `Row` or `Column` class to organize components.
+Layout components are used to control the layout of multiple sub-components. You can use the `Row` or `Column` class to organize components.
 
 #### 2.1 `Row` Class
 
-Row layout, subcomponents are arranged horizontally.
+Row layout, sub-components are arranged horizontally.
 
 #### 2.2 `Column` Class
 
-Column layout, subcomponents are arranged vertically.
+Column layout, sub-components are arranged vertically.
 
 ### 3. Interactive Components
 
@@ -232,28 +250,28 @@ Dialog box component, used to display messages or content.
 
 Menu component, used to create clickable list items.
 
-##### Methods
+##### Method
 
 - `add_item`: Add a list item
 
 ### 4. Advanced Usage
 
-#### 4.1 Conditional Rendering (Method available for all components)
+#### 4.1 Conditional Rendering (Method Available for All Components)
 
-You can determine the condition and decide whether to render
+You can determine conditions and decide whether to render
 
 ##### Example
 ```Oleander TS
 Button() {
-  data_text : "2-Button visible only during the day",
+  data_text : "Button 2 - Only visible during the day",
   data_on_click: "alert('Button 2 was clicked')",
   method_condition: "isDaytime"
 }
 ```
 
-Note: The isDaytime function has been defined in JS in the Oleander part. It returns true during the day and false at night.
+Note: The `isDaytime` function has already been defined using JS in the Oleander section. It returns true during the day and false at night.
 
-You can see the button during the day, but you can't see it when you open it at night.
+You can see the button during the day, but you won't see it when you open it at night.
 
 #### 4.2 Page Calling
 
@@ -297,12 +315,12 @@ Row() {
       data_on_click: "alert('Button 3 was clicked')",
     }
     Button() {
-      data_text : "2-Button visible only during the day",
+      data_text : "Button 2 - Only visible during the day",
       data_on_click: "alert('Button 2 was clicked')",
       method_condition: "isDaytime"
     }
     Button() {
-      data_text : "2-Button visible only at night",
+      data_text : "Button 2 - Only visible at night",
       data_on_click: "alert('Button 2 was clicked')",
       method_condition: "!isDaytime"
     }
@@ -349,11 +367,11 @@ Row() {
 
 ### Compilation Method
 
-First cd to the OleanderTS project folder
+First, `cd` to the OleanderTS project folder.
 
-Directly execute main.py
+Directly execute `main.py`.
 
-Will be compiled into app.html
+It will be compiled into `app.html`.
 
 Note:
-* This tutorial is applicable to OleanderTS-API V0.4.7 Beta2 version
+* This tutorial is applicable to OleanderTS-API V0.4.8 Beta3 version.

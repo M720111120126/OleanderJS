@@ -7,7 +7,7 @@ with open('app.json5', 'r', encoding='utf-8') as file:
     app_json5 = json5.loads(file.read())
 with open('build.json5', 'r', encoding='utf-8') as file:
     build_json5 = json5.loads(file.read())
-with open('OleanderTS.json5', 'r', encoding='utf-8') as file:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'OleanderTS.json5'), 'r', encoding='utf-8') as file:
     OleanderTS_json5 = json5.loads(file.read())
 
 # 检查环境
@@ -34,6 +34,11 @@ class UIComponent:
         self.render2 = self.render
         def a():
             return "<script>if ("+condition+") {document.write(\""+self.render2().replace('"', r'\"')+"\");}</script>"
+        self.render = a
+    def for_render(self, f):
+        self.render2 = self.render
+        def a():
+            return "<script>" + f + ".forEach(item => {document.write(`"+self.render2().replace('"', r'\"')+"`);});</script>"
         self.render = a
     def render(self):
         raise NotImplementedError("""呈现方法必须由子类实现
