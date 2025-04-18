@@ -392,4 +392,4 @@ Row() {
 将编译为 app.html
 
 注意：
-* 本教程适用于 OleanderTS-API V0.4.8 Beta3 版
+* 本教程适用于 OleanderTS-API V0.5.0 Beta1 版
