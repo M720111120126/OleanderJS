@@ -353,19 +353,37 @@ Row() {
 }
 ```
 
-### app.json5
+### build.json5
 
 ```json5
 {
-  "Minimum-required-API-version": "0.1.0",// 最低兼容的API版本，必須
-  "Target-API-version": "0.1.0",// 目標的API版本，必須
+  "Minimum-required-API-version": "0.4.7",// 最低兼容的API版本，必須
+  "Target-API-version": "0.4.7",// 目標的API版本，必須
   "name": "demo",// 項目名及模塊 root 包名，必需
   "version": "1.0.0",// 模塊版本信息，必需
-  "compile-option": ""// 額外編譯命令選項，非必需
+  "compile-option": {
+    "version": true
+  }// 額外編譯命令選項，非必需
 }
 ```
 
 ### 編譯方式
+
+額外編譯命令選項 :
+
+```
+“--fapi-version API版本” 或 “-fver API版本” 指定 API 版本
+“--version” 或 “-v” 獲取 API 版本
+“--skip-env-check” 或 “-e” 跳過環境檢查
+
+也可以在 build.json5 中指定
+"compile-option": {
+  "version": true,// 獲取 API 版本，使用true或false控制
+  "skip_env_check": true,// 跳過環境檢查，使用true或false控制
+  "fapi_version": "beta"// 指定 API 版本，有beta和alpha兩個版本可選
+}
+
+```
 
 先 cd 至OleanderTS項目文件夾
 

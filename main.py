@@ -1,4 +1,4 @@
-import os, json5, re, json, sys
+import os, json5, re, json, sys, argparse
 import BetaOfAlpha as Beta
 
 # 读取文件
@@ -11,10 +11,28 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'OleanderTS.j
     OleanderTS_json5 = json5.loads(file.read())
 
 # 检查环境
-if build_json5["Minimum-required-API-version"] > OleanderTS_json5["API-version"]:
-    sys.exit("""最低兼容的API版本高于当前API
+parser = argparse.ArgumentParser()
+parser.add_argument("-fver", "--fapi-version", help="""指定 API 版本
+Specify API version""", type=str, required=False)
+parser.add_argument("-v", "--version", help="""获取 API 版本
+Get the API version""", action="store_true")
+parser.add_argument("-e", "--skip-env-check", help="""跳过环境检查
+Get the API version""", action="store_true")
+args = vars(parser.parse_args())
+compile_option = build_json5["compile-option"]
+args.update(compile_option)
+print(args)
+if args["fapi_version"]:
+    fapi_version = args["fapi_version"]
+else:
+    fapi_version = ""
+if args["version"]:
+    print(OleanderTS_json5["API-version"])
+if not args["skip_env_check"]:
+    if build_json5["Minimum-required-API-version"] > OleanderTS_json5["API-version"]:
+        sys.exit("""最低兼容的API版本高于当前API
 The minimum compatible API version is higher than the current API""")
-elif build_json5["Target-API-version"] > OleanderTS_json5["API-version"]:
+    elif build_json5["Target-API-version"] > OleanderTS_json5["API-version"]:
         print("""警告：当前API低于目标的API版本（可能能够正常运行）
 Warning: The current API is lower than the target API version (may be able to run normally)""")
 
@@ -181,7 +199,11 @@ def compilation(text):
 page_init = ""
 for page in app_json5["page"]:
     if page["name"] == "init":
-        print(Beta.beta(loading_page(page, "init.yh")))
-        page_init = compilation(Beta.beta(loading_page(page, "init.yh")))
+        if fapi_version == "":
+            page_init = compilation(Beta.beta(loading_page(page, "init.yh")))
+        elif fapi_version == "beta":
+            page_init = compilation(Beta.beta(loading_page(page, "init.yh")))
+        elif fapi_version == "alpha":
+            page_init = compilation(loading_page(page, "init.yh"))
 with open("app.html", "w", encoding="utf-8") as file:
     file.write(page_init)

@@ -34,7 +34,7 @@ Note:
       "name": "init",// Page name
       "srcPath": "./entry",// Page location (relative path)
       "dependencies": [
-        "preprocess_test.yh"// Enter the name
+        "preprocess_test.yh"// Fill in the name
       ]// Dependency library table
     }
   ]
@@ -99,14 +99,14 @@ Button(1)
 
 ##### `BasicComponentName() {content}`
 
-Please note the trailing comma.
+Note the trailing comma.
 
 Use the `data_` prefix to change attributes in `{}` and the `method_` prefix to call methods.
 
 ```Oleander TS
 Button() {
   data_text : "1",
-  method_set_on_click: "alert('Button 1 was clicked')",
+  method_set_on_click: "alert('Button 1 clicked')",
   }
 ```
 
@@ -124,7 +124,7 @@ x() {
   method_for_render: "[1,2,3]"
 }
 ```
-This will render three "x"s and display them as 1, 2, 3. `${item}` can be used anywhere that requires calling a list (such as `[1,2,3]` here).
+This will render three "x"s and display them as 1, 2, 3. `${item}` can be used anywhere that needs to call a list (such as `[1,2,3]` here).
 
 #### Example:
 ```Oleander TS
@@ -136,7 +136,7 @@ Row() {
     "padding" : "10px",
     Button() {
       data_text : "1",
-      data_on_click: "alert('Button 1 was clicked')",
+      data_on_click: "alert('Button 1 clicked')",
     }
   }
   Column() {
@@ -144,18 +144,18 @@ Row() {
     "padding" : "10px",
     Button() {
       data_text : "3",
-      data_on_click: "alert('Button 3 was clicked')",
+      data_on_click: "alert('Button 3 clicked')",
     }
     if(isDaytime) {
       Button() {
-        data_text : "Button 2 - Only visible during the day",
-        data_on_click: "alert('Button 2 was clicked')"
+        data_text : "Button 2 - Visible only during the day",
+        data_on_click: "alert('Button 2 clicked')"
       }
     }
     if(!isDaytime) {
       Button() {
-        data_text : "Button 2 - Only visible at night",
-        data_on_click: "alert('Button 2 was clicked')"
+        data_text : "Button 2 - Visible only at night",
+        data_on_click: "alert('Button 2 clicked')"
       }
     }
   }
@@ -167,7 +167,7 @@ Row() {
 These basic components are the core of UI construction. You can build your interface by combining and customizing these components.
 
 #### 1.1 `UIComponent` Class
-All UI components inherit from the `UIComponent` class. This class contains common style and sub-component management functions.
+All UI components inherit from the `UIComponent` class. This class contains common style and subcomponent management functions.
 
 ##### Methods:
 - `set_style(**kwargs)`: Sets the style, supporting passing in multiple CSS properties and values.
@@ -178,11 +178,11 @@ All UI components inherit from the `UIComponent` class. This class contains comm
 Button component, allowing users to create clickable buttons.
 
 ##### Methods:
-- `set_on_click(callback)`: Sets the click event of the button, which can pass in JavaScript code or a callback function. (Depends on the on_click attribute)
+- `set_on_click(callback)`: Sets the button's click event, which can pass in JavaScript code or a callback function. (Depends on the on_click attribute)
 
 ##### Attributes:
 - `text`: The text displayed
-- `on_click`: Sets the click event of the button, which can pass in JavaScript code or a callback function.
+- `on_click`: Sets the button's click event, which can pass in JavaScript code or a callback function.
 
 #### 1.3 `Radio` Class
 
@@ -202,8 +202,8 @@ Toggle button component, which can switch between two states (such as on/off).
 
 ##### Attributes
 
-- `label_on`: The text displayed when turned on
-- `label_off`: The text displayed when turned offon style="background: lightgreen; padding: 10px;">On</button>
+- `label_on`: Text displayed when on
+- `label_off`: Text displayed when offon style="background: lightgreen; padding: 10px;">On</button>
 
 #### 1.5 `Progress` Class
 
@@ -223,15 +223,15 @@ Image component, used to embed images in the interface.
 
 ### 2. Layout Components
 
-Layout components are used to control the layout of multiple sub-components. You can use the `Row` or `Column` class to organize components.
+Layout components are used to control the layout of multiple subcomponents. You can use the `Row` or `Column` class to organize components.
 
 #### 2.1 `Row` Class
 
-Row layout, sub-components are arranged horizontally.
+Row layout, subcomponents are arranged horizontally.
 
 #### 2.2 `Column` Class
 
-Column layout, sub-components are arranged vertically.
+Column layout, subcomponents are arranged vertically.
 
 ### 3. Interactive Components
 
@@ -263,15 +263,15 @@ You can determine conditions and decide whether to render
 ##### Example
 ```Oleander TS
 Button() {
-  data_text : "Button 2 - Only visible during the day",
-  data_on_click: "alert('Button 2 was clicked')",
+  data_text : "Button 2 - Visible only during the day",
+  data_on_click: "alert('Button 2 clicked')",
   method_condition: "isDaytime"
 }
 ```
 
 Note: The `isDaytime` function has already been defined using JS in the Oleander section. It returns true during the day and false at night.
 
-You can see the button during the day, but you won't see it when you open it at night.
+The button can be seen during the day, but it will disappear when opened at night.
 
 #### 4.2 Page Calling
 
@@ -304,7 +304,7 @@ Row() {
     "padding" : "10px",
     Button() {
       data_text : "1",
-      data_on_click: "alert('Button 1 was clicked')",
+      data_on_click: "alert('Button 1 clicked')",
     }
   }
   Column() {
@@ -312,16 +312,16 @@ Row() {
     "padding" : "10px",
     Button() {
       data_text : "3",
-      data_on_click: "alert('Button 3 was clicked')",
+      data_on_click: "alert('Button 3 clicked')",
     }
     Button() {
-      data_text : "Button 2 - Only visible during the day",
-      data_on_click: "alert('Button 2 was clicked')",
+      data_text : "Button 2 - Visible only during the day",
+      data_on_click: "alert('Button 2 clicked')",
       method_condition: "isDaytime"
     }
     Button() {
-      data_text : "Button 2 - Only visible at night",
-      data_on_click: "alert('Button 2 was clicked')",
+      data_text : "Button 2 - Visible only at night",
+      data_on_click: "alert('Button 2 clicked')",
       method_condition: "!isDaytime"
     }
   }
@@ -353,25 +353,43 @@ Row() {
 }
 ```
 
-### app.json5
+### build.json5
 
 ```json5
 {
-  "Minimum-required-API-version": "0.1.0",// Minimum compatible API version, required
-  "Target-API-version": "0.1.0",// Target API version, required
+  "Minimum-required-API-version": "0.4.7",// Minimum compatible API version, required
+  "Target-API-version": "0.4.7",// Target API version, required
   "name": "demo",// Project name and module root package name, required
   "version": "1.0.0",// Module version information, required
-  "compile-option": ""// Additional compilation command options, not required
+  "compile-option": {
+    "version": true
+  }// Additional compilation command options, not required
 }
 ```
 
 ### Compilation Method
 
-First, `cd` to the OleanderTS project folder.
+Additional compilation command options:
 
-Directly execute `main.py`.
+```
+“--fapi-version API version” or “-fver API version” specifies the API version
+“--version” or “-v” gets the API version
+“--skip-env-check” or “-e” skips the environment check
 
-It will be compiled into `app.html`.
+Can also be specified in build.json5
+"compile-option": {
+  "version": true,// Get the API version, use true or false to control
+  "skip_env_check": true,// Skip the environment check, use true or false to control
+  "fapi_version": "beta"// Specify the API version, with beta and alpha versions available
+}
+
+```
+
+First, `cd` to the OleanderTS project folder
+
+Directly execute `main.py`
+
+It will be compiled into `app.html`
 
 Note:
-* This tutorial is applicable to OleanderTS-API V0.4.8 Beta3 version.
+* This tutorial is applicable to OleanderTS-API V0.4.8 Beta3

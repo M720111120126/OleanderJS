@@ -353,19 +353,37 @@ Row() {
 }
 ```
 
-### app.json5
+### build.json5
 
 ```json5
 {
-  "Minimum-required-API-version": "0.1.0",// 最低兼容的API版本，必须
-  "Target-API-version": "0.1.0",// 目标的API版本，必须
+  "Minimum-required-API-version": "0.4.7",// 最低兼容的API版本，必须
+  "Target-API-version": "0.4.7",// 目标的API版本，必须
   "name": "demo",// 项目名及模块 root 包名，必需
   "version": "1.0.0",// 模块版本信息，必需
-  "compile-option": ""// 额外编译命令选项，非必需
+  "compile-option": {
+    "version": true
+  }// 额外编译命令选项，非必需
 }
 ```
 
 ### 编译方式
+
+额外编译命令选项 :
+
+```
+“--fapi-version API版本” 或 “-fver API版本” 指定 API 版本
+“--version” 或 “-v” 获取 API 版本
+“--skip-env-check” 或 “-e” 跳过环境检查
+
+也可以在 build.json5 中指定
+"compile-option": {
+  "version": true,// 获取 API 版本，使用true或false控制
+  "skip_env_check": true,// 跳过环境检查，使用true或false控制
+  "fapi_version": "beta"// 指定 API 版本，有beta和alpha两个版本可选
+}
+
+```
 
 先 cd 至OleanderTS项目文件夹
 
