@@ -1,6 +1,6 @@
-# Oleander TS文档
+# OleanderTS文档
 
-其实本语言是Oleander+JS+OleanderUI，但是作者本来想用Oleander+TS+OleanderUI。所以叫“Oleander TS”
+其实本语言是Oleander+JS+OleanderUI，但是作者本来想用Oleander+TS+OleanderUI。所以叫“OleanderTS”
 
 [繁體中文](https://github.com/M720111120126/OleanderTS/blob/master/README-TraditionalChinese.md) [English](https://github.com/M720111120126/OleanderTS/blob/master/README-English.md)
 
@@ -10,7 +10,7 @@
 
 ### Oleander部分
 
-Oleander部分只为Oleander TS带来了预处理和JS调用特性
+Oleander部分只为OleanderTS带来了预处理和JS调用特性
 
 #### 预处理
 
@@ -18,7 +18,7 @@ Oleander部分只为Oleander TS带来了预处理和JS调用特性
 
 ##### `#include "file"`
 
-```scl
+```OleanderTS
 #include preprocess_test.yh
 // → 直接将文件内容复制到此处
 ```
@@ -45,7 +45,7 @@ Oleander部分只为Oleander TS带来了预处理和JS调用特性
 
 一个替换
 
-```Oleander TS
+```OleanderTS
 # 例如这里的代码正常工作
 #define + left
 
@@ -56,7 +56,7 @@ Oleander部分只为Oleander TS带来了预处理和JS调用特性
 
 Oleander UI部分的开启标志
 
-```Oleander TS
+```OleanderTS
 #include ……
 #define ……
 一些JS代码
@@ -80,7 +80,7 @@ Oleander UI部分的开启标志
 
 使用 `布局组件名称() {}` 请注意，属性（css属性）的设置需要尾随逗号
 
-```Oleander TS
+```OleanderTS
 布局组件名称() {
   属性: 值,
   包含的组件
@@ -93,7 +93,7 @@ Oleander UI部分的开启标志
 
 ##### `基础组件名称(传入的内容)`
 
-```Oleander TS
+```OleanderTS
 Button(1)
 ```
 
@@ -103,7 +103,7 @@ Button(1)
 
 `{}` 中使用 `data_` 前缀更改属性，使用 `method_` 前缀调用方法
 
-```Oleander TS
+```OleanderTS
 Button() {
   data_text : "1",
   method_set_on_click: "alert('按钮1被点击')",
@@ -111,14 +111,14 @@ Button() {
 ```
 
 #### 条件渲染
-```Oleander TS
+```OleanderTS
 if(条件) {
   条件渲染的组件
 }
 ```
 
 #### 循环渲染
-```Oleander TS
+```OleanderTS
 x() {
   data_text : "${item}",
   method_for_render: "[1,2,3]"
@@ -127,7 +127,7 @@ x() {
 这样就会渲染三个“x”，并显示为 1、2、3。任何需要调用list（如这里的 `[1,2,3]`）的内容的地方都可以使用 `${item}`
 
 #### 示例：
-```Oleander TS
+```OleanderTS
 Row() {
   "background" : "lightblue",
   "padding" : "20px",
@@ -261,7 +261,7 @@ Row() {
 可以判断条件并决定是否渲染
 
 ##### 示例
-```Oleander TS
+```OleanderTS
 Button() {
   data_text : "2-白天才能看见的按钮",
   data_on_click: "alert('按钮2被点击')",
@@ -284,7 +284,7 @@ Button() {
 - `height`：嵌入高度
 
 ##### 示例：
-```Oleander TS
+```OleanderTS
 iframe = Iframe(src="pay", width="800", height="600")
 iframe.set_style(border="2px solid black")
 html = button.render() + iframe.render() + auto_js_code
@@ -295,7 +295,7 @@ html = button.render() + iframe.render() + auto_js_code
 你可以通过将多个布局组件（如 `Row` 和 `Column`）嵌套在一起，创建复杂的布局。
 
 ##### 示例：
-```Oleander TS
+```OleanderTS
 Row() {
   "background" : "lightblue",
   "padding" : "20px",

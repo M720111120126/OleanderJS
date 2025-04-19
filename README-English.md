@@ -1,6 +1,6 @@
-# Oleander TS Documentation
+# OleanderTS Documentation
 
-In reality, this language is Oleander+JS+OleanderUI, but the author originally intended to use Oleander+TS+OleanderUI. Hence the name "Oleander TS".
+In reality, this language is Oleander+JS+OleanderUI, but the author originally intended to use Oleander+TS+OleanderUI. Hence the name "OleanderTS".
 
 [简体中文](https://github.com/M720111120126/OleanderTS/blob/master/README.md) [繁體中文](https://github.com/M720111120126/OleanderTS/blob/master/README-TraditionalChinese.md)
 
@@ -10,7 +10,7 @@ In reality, this language is Oleander+JS+OleanderUI, but the author originally i
 
 ### Oleander Section
 
-The Oleander section only brings preprocessing and JS calling features to Oleander TS.
+The Oleander section only brings preprocessing and JS calling features to OleanderTS.
 
 #### Preprocessing
 
@@ -18,7 +18,7 @@ Preprocessing directives start with `#` and are expanded at compile time.
 
 ##### `#include "file"`
 
-```scl
+```OleanderTS
 #include preprocess_test.yh
 // → Directly copy the file content here
 ```
@@ -45,7 +45,7 @@ Note:
 
 A replacement
 
-```Oleander TS
+```OleanderTS
 # For example, the code here works normally
 #define + left
 
@@ -56,7 +56,7 @@ A replacement
 
 The start flag for the Oleander UI section
 
-```Oleander TS
+```OleanderTS
 #include ……
 #define ……
 Some JS code
@@ -80,7 +80,7 @@ This document introduces how to use the provided UI components to help you quick
 
 Use `LayoutComponentName() {}`. Note that the setting of attributes (CSS attributes) requires a trailing comma.
 
-```Oleander TS
+```OleanderTS
 LayoutComponentName() {
   attribute: value,
   containedComponents
@@ -93,7 +93,7 @@ Use `BasicComponentName(contentPassedIn)` or `BasicComponentName() {content}`
 
 ##### `BasicComponentName(contentPassedIn)`
 
-```Oleander TS
+```OleanderTS
 Button(1)
 ```
 
@@ -103,7 +103,7 @@ Note the trailing comma.
 
 Use the `data_` prefix to change attributes in `{}` and the `method_` prefix to call methods.
 
-```Oleander TS
+```OleanderTS
 Button() {
   data_text : "1",
   method_set_on_click: "alert('Button 1 clicked')",
@@ -111,14 +111,14 @@ Button() {
 ```
 
 #### Conditional Rendering
-```Oleander TS
+```OleanderTS
 if(condition) {
   componentsRenderedConditionally
 }
 ```
 
 #### Loop Rendering
-```Oleander TS
+```OleanderTS
 x() {
   data_text : "${item}",
   method_for_render: "[1,2,3]"
@@ -127,7 +127,7 @@ x() {
 This will render three "x"s and display them as 1, 2, 3. `${item}` can be used anywhere that needs to call a list (such as `[1,2,3]` here).
 
 #### Example:
-```Oleander TS
+```OleanderTS
 Row() {
   "background" : "lightblue",
   "padding" : "20px",
@@ -261,7 +261,7 @@ Menu component, used to create clickable list items.
 You can determine conditions and decide whether to render
 
 ##### Example
-```Oleander TS
+```OleanderTS
 Button() {
   data_text : "Button 2 - Visible only during the day",
   data_on_click: "alert('Button 2 clicked')",
@@ -284,7 +284,7 @@ You can embed other pages by setting the attributes of the component.
 - `height`: Embedded height
 
 ##### Example:
-```Oleander TS
+```OleanderTS
 iframe = Iframe(src="pay", width="800", height="600")
 iframe.set_style(border="2px solid black")
 html = button.render() + iframe.render() + auto_js_code
@@ -295,7 +295,7 @@ html = button.render() + iframe.render() + auto_js_code
 You can create complex layouts by nesting multiple layout components (such as `Row` and `Column`) together.
 
 ##### Example:
-```Oleander TS
+```OleanderTS
 Row() {
   "background" : "lightblue",
   "padding" : "20px",

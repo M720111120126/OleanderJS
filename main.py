@@ -21,7 +21,6 @@ Get the API version""", action="store_true")
 args = vars(parser.parse_args())
 compile_option = build_json5["compile-option"]
 args.update(compile_option)
-print(args)
 if args["fapi_version"]:
     fapi_version = args["fapi_version"]
 else:
