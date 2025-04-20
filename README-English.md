@@ -24,9 +24,9 @@ Preprocessing directives start with `#` and are expanded at compile time.
 ```
 Note:
 
-1.  Here, `file` is the relative directory of the page code, such as `./entry/init.yh`. Using `#include preprocess_test.yh` fills in `./entry/preprocess_test.yh`.
+1.  Here, `file` is the relative directory of the page code. For example, `#include preprocess_test.yh` in `./entry/init.yh` fills in `./entry/preprocess_test.yh`.
 
-2.  Everything included must have its name written in the `dependencies` of the page corresponding to `page` in `app.json5`. For example:
+2.  All included items must have their names written in the `dependencies` of the page corresponding to `app.json5`. For example:
 ```json5
 {
   "page": [// Page table
@@ -89,9 +89,9 @@ LayoutComponentName() {
 
 #### Basic Components
 
-Use `BasicComponentName(contentPassedIn)` or `BasicComponentName() {content}`
+Use `BasicComponentName(content)` or `BasicComponentName() {content}`
 
-##### `BasicComponentName(contentPassedIn)`
+##### `BasicComponentName(content)`
 
 ```OleanderTS
 Button(1)
@@ -113,7 +113,7 @@ Button() {
 #### Conditional Rendering
 ```OleanderTS
 if(condition) {
-  componentsRenderedConditionally
+  componentsToRenderConditionally
 }
 ```
 
@@ -178,17 +178,17 @@ All UI components inherit from the `UIComponent` class. This class contains comm
 Button component, allowing users to create clickable buttons.
 
 ##### Methods:
-- `set_on_click(callback)`: Sets the button's click event, which can pass in JavaScript code or a callback function. (Depends on the on_click attribute)
+- `set_on_click(callback)`: Sets the click event of the button, which can pass in JavaScript code or a callback function. (Depends on the on_click attribute)
 
 ##### Attributes:
 - `text`: The text displayed
-- `on_click`: Sets the button's click event, which can pass in JavaScript code or a callback function.
+- `on_click`: Sets the click event of the button, which can pass in JavaScript code or a callback function.
 
 #### 1.3 `Radio` Class
 
 Radio button component, allowing users to select one of multiple options.
 
-##### Method
+##### Methods
 
 - `set_checked(True)`: Whether to select by default
 
@@ -196,14 +196,14 @@ Radio button component, allowing users to select one of multiple options.
 
 Toggle button component, which can switch between two states (such as on/off).
 
-##### Method
+##### Methods
 
 - `set_checked(True)`: Whether to select by default
 
 ##### Attributes
 
-- `label_on`: Text displayed when on
-- `label_off`: Text displayed when off
+- `label_on`: The text displayed when turned on
+- `label_off`: The text displayed when turned off
 
 #### 1.5 `Progress` Class
 
@@ -250,7 +250,7 @@ Dialog box component, used to display messages or content.
 
 Menu component, used to create clickable list items.
 
-##### Method
+##### Methods
 
 - `add_item`: Add a list item
 
@@ -269,9 +269,9 @@ Button() {
 }
 ```
 
-Note: The `isDaytime` function has already been defined using JS in the Oleander section. It returns true during the day and false at night.
+Note: The `isDaytime` function has already been defined in JS in the Oleander section. It returns true during the day and false at night.
 
-The button can be seen during the day, but it will disappear when opened at night.
+You can see the button during the day, but you can't see it when you open it again at night.
 
 #### 4.2 Page Calling
 
@@ -332,6 +332,12 @@ Row() {
 
 ## Compilation
 
+### Precautions
+
+Please install the `json5` and `filetype` libraries first.
+
+### File Structure
+
 ```file
 └─ init
 └─── init.yh
@@ -346,10 +352,15 @@ Row() {
   "page": [// Page table
     {
       "name": "init",// Page name
-      "srcPath": "./entry",// Page location (relative path)
-      "dependencies": []// Dependency library table
+      "srcPath": "./init",// Page location (relative path)
+      "dependencies": ["dependencies.yh"]// Dependency library table
     }
-  ]
+  ],
+  "APP_Scope": {// Software configuration
+    "icon": "$media: app_icon.png",// Icon, located in “APP_Scope/media/app_icon.png” $xx means under the “APP_Scope/xx” path
+    "name": "DEMO",// Name
+    "lang":"en"
+  }
 }
 ```
 
@@ -357,8 +368,8 @@ Row() {
 
 ```json5
 {
-  "Minimum-required-API-version": "0.4.7",// Minimum compatible API version, required
-  "Target-API-version": "0.4.7",// Target API version, required
+  "Minimum-required-API-version": "0.6.3",// Minimum compatible API version, required
+  "Target-API-version": "0.6.3",// Target API version, required
   "name": "demo",// Project name and module root package name, required
   "version": "1.0.0",// Module version information, required
   "compile-option": {
@@ -392,4 +403,4 @@ Directly execute `main.py`
 It will be compiled into `app.html`
 
 Note:
-* This tutorial is applicable to OleanderTS-API V0.5.0 Beta1
+* This tutorial is applicable to OleanderTS-API V0.6.3 Gamma version

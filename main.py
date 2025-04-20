@@ -1,4 +1,4 @@
-import os, json5, json, sys, argparse
+import os, json5, json, sys, argparse, filetype
 import BetaOfAlpha as Beta
 from ReusableFunctions import  *
 
@@ -183,7 +183,13 @@ def loading_page(page_loading, name):
 def compilation(text):
     text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     exec(text_list[1], globals())
-    return f"<!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script>" + html
+    icon_path = "APP_Scope/" + app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", "") + "/" + app_json5['APP_Scope']['icon'].split(": ")[1]
+    mime_type = filetype.guess(icon_path)
+    if mime_type is None:
+        mime_type = "image/png"
+    else:
+        mime_type = mime_type.mime
+    return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>" + html + "</body></html>"
 page_init = ""
 html = ""
 for page in app_json5["page"]:

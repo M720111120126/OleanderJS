@@ -332,6 +332,12 @@ Row() {
 
 ## 编译
 
+### 注意事项
+
+请先安装 json5 和 filetype 库
+
+### 文件结构
+
 ```file
 └─ init
 └─── init.yh
@@ -346,10 +352,15 @@ Row() {
   "page": [// 页面表
     {
       "name": "init",// 页面名称
-      "srcPath": "./entry",// 页面位置（相对路径）
-      "dependencies": []// 依赖库表
+      "srcPath": "./init",// 页面位置（相对路径）
+      "dependencies": ["dependencies.yh"]// 依赖库表
     }
-  ]
+  ],
+  "APP_Scope": {// 软件配置
+    "icon": "$media: app_icon.png",// 图标，位于 “APP_Scope/media/app_icon.png” $xx 就代表在 “APP_Scope/xx” 路径下
+    "name": "DEMO",// 名称
+    "lang":"zh_cn"
+  }
 }
 ```
 
@@ -357,8 +368,8 @@ Row() {
 
 ```json5
 {
-  "Minimum-required-API-version": "0.4.7",// 最低兼容的API版本，必需
-  "Target-API-version": "0.4.7",// 目标的API版本，必需
+  "Minimum-required-API-version": "0.6.3",// 最低兼容的API版本，必需
+  "Target-API-version": "0.6.3",// 目标的API版本，必需
   "name": "demo",// 项目名及模块 root 包名，必需
   "version": "1.0.0",// 模块版本信息，必需
   "compile-option": {
@@ -392,4 +403,4 @@ Row() {
 将编译为 app.html
 
 注意：
-* 本教程适用于 OleanderTS-API V0.5.0 Beta1 版
+* 本教程适用于 OleanderTS-API V0.6.3 Gamma 版

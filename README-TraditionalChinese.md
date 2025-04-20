@@ -1,16 +1,16 @@
-# OleanderTS文檔
+# OleanderTS 文件
 
-其實本語言是Oleander+JS+OleanderUI，但是作者本來想用Oleander+TS+OleanderUI。所以叫“OleanderTS”
+實際上，本語言是 Oleander+JS+OleanderUI，但作者本來想用 Oleander+TS+OleanderUI。所以叫“OleanderTS”
 
-[简体中文](https://github.com/M720111120126/OleanderTS/blob/master/README.md) [English](https://github.com/M720111120126/OleanderTS/blob/master/README-English.md)
+[繁體中文](https://github.com/M720111120126/OleanderTS/blob/master/README-TraditionalChinese.md) [English](https://github.com/M720111120126/OleanderTS/blob/master/README-English.md)
 
 ---
 
 ## 語法
 
-### Oleander部分
+### Oleander 部分
 
-Oleander部分只爲OleanderTS帶來了預處理和JS調用特性
+Oleander 部分只為 OleanderTS 帶來了預處理和 JS 調用特性
 
 #### 預處理
 
@@ -24,9 +24,9 @@ Oleander部分只爲OleanderTS帶來了預處理和JS調用特性
 ```
 注意：
 
-1.此處的file爲頁面代碼的相對目錄，如 ./entry/init.yh 使用 #include preprocess_test.yh 填充的是 ./entry/preprocess_test.yh
+1.此處的 file 為頁面代碼的相對目錄，如 ./entry/init.yh 使用 #include preprocess_test.yh 填充的是 ./entry/preprocess_test.yh
 
-2.include的所有東西，都必須在 app.json5 的 page 對應頁面的 dependencies 中寫好名稱 如：
+2.include 的所有東西，都必須在 app.json5 的 page 對應頁面的 dependencies 中寫好名稱 如：
 ```json5
 {
   "page": [// 頁面表
@@ -46,7 +46,7 @@ Oleander部分只爲OleanderTS帶來了預處理和JS調用特性
 一個替換
 
 ```OleanderTS
-# 例如這裏的代碼正常工作
+# 例如這裡的代碼正常工作
 #define + left
 
 1 left 1
@@ -54,7 +54,7 @@ Oleander部分只爲OleanderTS帶來了預處理和JS調用特性
 
 ##### `# UI_start`
 
-Oleander UI部分的開啓標誌
+Oleander UI 部分的開啟標誌
 
 ```OleanderTS
 #include ……
@@ -63,22 +63,22 @@ Oleander UI部分的開啓標誌
 
 # UI_start
 
-這裏應該寫Oleander UI代碼了
+這裡應該寫 Oleander UI 代碼了
 ```
 
-#### JS調用
+#### JS 調用
 
-見上面的 # UI_start 的示例，js直接寫在 Oleander部分 就可以執行了
+見上面的 # UI_start 的示例，js 直接寫在 Oleander 部分 就可以執行了
 
-### Oleander UI部分
+### Oleander UI 部分
 
-本文檔介紹瞭如何使用提供的 UI 組件，幫助你快速創建和渲染界面。文檔將通過詳細的示例，幫助你理解如何構建交互式和響應式 UI。
+本文檔介紹了如何使用提供的 UI 組件，幫助你快速創建和渲染介面。文檔將通過詳細的示例，幫助你理解如何構建互動式和響應式 UI。
 
 ### 0. Oleander UI 語法
 
 #### 佈局組件
 
-使用 `佈局組件名稱() {}` 請注意，屬性（css屬性）的設置需要尾隨逗號
+使用 `佈局組件名稱() {}` 請注意，屬性（css 屬性）的設置需要尾隨逗號
 
 ```OleanderTS
 佈局組件名稱() {
@@ -124,7 +124,7 @@ x() {
   method_for_render: "[1,2,3]"
 }
 ```
-這樣就會渲染三個“x”，並顯示爲 1、2、3。任何需要調用list（如這裏的 `[1,2,3]`）的內容的地方都可以使用 `${item}`
+這樣就會渲染三個“x”，並顯示為 1、2、3。任何需要調用 list（如這裡的 `[1,2,3]`）的內容的地方都可以使用 `${item}`
 
 #### 示例：
 ```OleanderTS
@@ -164,7 +164,7 @@ Row() {
 
 ### 1. 基礎組件
 
-這些基礎組件是 UI 構建的核心，可以通過組合和定製這些組件來構建你的界面。
+這些基礎組件是 UI 構建的核心，可以通過組合和定制這些組件來構建你的介面。
 
 #### 1.1 `UIComponent` 類
 所有 UI 組件都繼承自 `UIComponent` 類。該類包含常見的樣式和子組件管理功能。
@@ -178,7 +178,7 @@ Row() {
 按鈕組件，允許用戶創建可點擊的按鈕。
 
 ##### 方法：
-- `set_on_click(callback)`：設置按鈕的點擊事件，可以傳入 JavaScript 代碼或回調函數。（依賴於on_click屬性）
+- `set_on_click(callback)`：設置按鈕的點擊事件，可以傳入 JavaScript 代碼或回調函數。（依賴於 on_click 屬性）
 
 ##### 屬性：
 - `text`：顯示的文本
@@ -194,7 +194,7 @@ Row() {
 
 #### 1.4 `Toggle` 類
 
-切換按鈕組件，可以在兩種狀態（如開啓/關閉）之間切換。
+切換按鈕組件，可以在兩種狀態（如開啟/關閉）之間切換。
 
 ##### 方法
 
@@ -202,7 +202,7 @@ Row() {
 
 ##### 屬性
 
-- `label_on`：開啓時顯示的文本
+- `label_on`：開啟時顯示的文本
 - `label_off`：關閉時顯示的文本
 
 #### 1.5 `Progress` 類
@@ -215,7 +215,7 @@ Row() {
 
 #### 1.6 `Image` 類
 
-圖片組件，用於在界面中嵌入圖片。
+圖片組件，用於在介面中嵌入圖片。
 
 ##### 屬性
 
@@ -231,11 +231,11 @@ Row() {
 
 #### 2.2 `Column` 類
 
-列布局，子組件按垂直方向排列。
+列佈局，子組件按垂直方向排列。
 
-### 3. 交互組件
+### 3. 互動組件
 
-交互組件如 `Dialog` 和 `Menu` 可以幫助你創建包含交互式內容的彈窗和導航菜單。
+互動組件如 `Dialog` 和 `Menu` 可以幫助你創建包含互動式內容的彈窗和導航菜單。
 
 #### 3.1 `Dialog` 類
 
@@ -269,9 +269,9 @@ Button() {
 }
 ```
 
-注意：isDaytime函數已經在 Oleander 部分使用JS定義過了，白天返回true，晚上返回false
+注意：isDaytime 函數已經在 Oleander 部分使用 JS 定義過了，白天返回 true，晚上返回 false
 
-白天能看見button，晚上再打開就看不見了
+白天能看見 button，晚上再打開就看不見了
 
 #### 4.2 頁面調用
 
@@ -332,6 +332,12 @@ Row() {
 
 ## 編譯
 
+### 注意事項
+
+請先安裝 json5 和 filetype 庫
+
+### 文件結構
+
 ```file
 └─ init
 └─── init.yh
@@ -346,10 +352,15 @@ Row() {
   "page": [// 頁面表
     {
       "name": "init",// 頁面名稱
-      "srcPath": "./entry",// 頁面位置（相對路徑）
-      "dependencies": []// 依賴庫表
+      "srcPath": "./init",// 頁面位置（相對路徑）
+      "dependencies": ["dependencies.yh"]// 依賴庫表
     }
-  ]
+  ],
+  "APP_Scope": {// 軟件配置
+    "icon": "$media: app_icon.png",// 圖標，位於 “APP_Scope/media/app_icon.png” $xx 就代表在 “APP_Scope/xx” 路徑下
+    "name": "DEMO",// 名稱
+    "lang":"zh_tw"
+  }
 }
 ```
 
@@ -357,8 +368,8 @@ Row() {
 
 ```json5
 {
-  "Minimum-required-API-version": "0.4.7",// 最低兼容的API版本，必須
-  "Target-API-version": "0.4.7",// 目標的API版本，必須
+  "Minimum-required-API-version": "0.6.3",// 最低兼容的 API 版本，必需
+  "Target-API-version": "0.6.3",// 目標的 API 版本，必需
   "name": "demo",// 項目名及模塊 root 包名，必需
   "version": "1.0.0",// 模塊版本信息，必需
   "compile-option": {
@@ -378,9 +389,9 @@ Row() {
 
 也可以在 build.json5 中指定
 "compile-option": {
-  "version": true,// 獲取 API 版本，使用true或false控制
-  "skip_env_check": true,// 跳過環境檢查，使用true或false控制
-  "fapi_version": "beta"// 指定 API 版本，有beta和alpha兩個版本可選
+  "version": true,// 獲取 API 版本，使用 true 或 false 控制
+  "skip_env_check": true,// 跳過環境檢查，使用 true 或 false 控制
+  "fapi_version": "beta"// 指定 API 版本，有 beta 和 alpha 兩個版本可選
 }
 
 ```
@@ -392,4 +403,4 @@ Row() {
 將編譯爲 app.html
 
 注意：
-* 本教程適用於 OleanderTS-API V0.5.0 Beta1 版
+* 本教程適用於 OleanderTS-API V0.6.3 Gamma 版
