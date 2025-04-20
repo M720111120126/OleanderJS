@@ -1,5 +1,6 @@
-import os, json5, re, json, sys, argparse
+import os, json5, json, sys, argparse
 import BetaOfAlpha as Beta
+from ReusableFunctions import  *
 
 # 读取文件
 project = os.getcwd()
@@ -114,18 +115,25 @@ class Image(UIComponent):
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         return f'<img src="{self.src}" style="{style_str}"/>'
-class Row(UIComponent):
+class Linear(UIComponent):
+    def __init__(self):
+        super().__init__()
+    def render(self):
+        style_str = " ".join([f'{k}: {v};' for k, v in json.loads(json.dumps(self.styles).replace("_", "-")).items()])
+        children_str = "".join([child.render() for child in self.children])
+        return f'<div style="{style_str}">{children_str}</div>'
+class Row(Linear):
+    def __init__(self):
+        super().__init__()
     def render(self):
         self.set_style(display='flex', flex_direction='row')
-        style_str = " ".join([f'{k}: {v};' for k, v in json.loads(json.dumps(self.styles).replace("_", "-")).items()])
-        children_str = "".join([child.render() for child in self.children])
-        return f'<div style="{style_str}">{children_str}</div>'
-class Column(UIComponent):
+        return super().render()
+class Column(Linear):
+    def __init__(self):
+        super().__init__()
     def render(self):
         self.set_style(display='flex', flex_direction='column')
-        style_str = " ".join([f'{k}: {v};' for k, v in json.loads(json.dumps(self.styles).replace("_", "-")).items()])
-        children_str = "".join([child.render() for child in self.children])
-        return f'<div style="{style_str}">{children_str}</div>'
+        return super().render()
 class Dialog(UIComponent):
     def __init__(self, title="", content=""):
         super().__init__()
@@ -155,37 +163,18 @@ class Iframe(UIComponent):
     def set_style(self, **kwargs):
         self.style = "; ".join([f"{key}: {value}" for key, value in kwargs.items()])
     def render(self):
-        for page in app_json5["page"]:
-            if page["name"] == self.src:
+        for Iframe_page in app_json5["page"]:
+            if Iframe_page["name"] == self.src:
                 # 返回一个iframe标签，包含src和其他属性
                 return f'<iframe width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
-def replace_outside_quotes(text: str, signDic: list, rule: str = r'(["\']).*?\1', count: int = -1) -> str:
-    quoted = []
-    def save_quoted(match):
-        quoted.append(match.group(0))
-        return 'QUOTED_TEXT'
-    text_with_placeholders = re.sub(rule, save_quoted, text)
-    if signDic:
-        for i in signDic:
-            text_with_placeholders = text_with_placeholders.replace(i[0], i[1], count)
-    for q in quoted:
-        text_with_placeholders = text_with_placeholders.replace('QUOTED_TEXT', q, 1)
-    return text_with_placeholders
-def find_lines_with_text_outside_quotes(text: str, txt: str) -> list[str]:
-    lines = text.splitlines()
-    result_lines = []
-    for line in lines:
-        modified_line = re.sub(r'(["\']).*?\1', '', line)
-        if txt in modified_line:
-            result_lines.append(line)
-    return result_lines
-def loading_page(page, name):
-    with open(os.path.join(page["srcPath"], name), "r", encoding='utf-8') as file:
-        f = file.read()
+        return None
+def loading_page(page_loading, name):
+    with open(os.path.join(page_loading["srcPath"], name), "r", encoding='utf-8') as f:
+        f = f.read()
         include = []
-        for i in page["dependencies"]:
+        for i in page_loading["dependencies"]:
             if not i == name:
-                include.append([f'#include {i}', loading_page(page, i)])
+                include.append([f'#include {i}', loading_page(page_loading, i)])
         for i in find_lines_with_text_outside_quotes(f, "#define "):
             include.append([i.split(" ")[1], i.split(" ")[2]])
         return replace_outside_quotes(f, include)
@@ -196,6 +185,7 @@ def compilation(text):
     exec(text_list[1], globals())
     return f"<!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script>" + html
 page_init = ""
+html = ""
 for page in app_json5["page"]:
     if page["name"] == "init":
         if fapi_version == "":

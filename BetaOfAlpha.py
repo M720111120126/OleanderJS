@@ -1,25 +1,5 @@
-import json5, re, sys
-
-def replace_outside_quotes(text: str, signDic: list, rule: str = r'(["\']).*?\1', count: int = -1) -> str:
-    quoted = []
-    def save_quoted(match):
-        quoted.append(match.group(0))
-        return 'QUOTED_TEXT'
-    text_with_placeholders = re.sub(rule, save_quoted, text)
-    if signDic:
-        for i in signDic:
-            text_with_placeholders = text_with_placeholders.replace(i[0], i[1], count)
-    for q in quoted:
-        text_with_placeholders = text_with_placeholders.replace('QUOTED_TEXT', q, 1)
-    return text_with_placeholders
-def find_lines_with_text_outside_quotes(text: str, txt: str) -> list[str]:
-    lines = text.splitlines()
-    result_lines = []
-    for line in lines:
-        modified_line = re.sub(r'(["\']).*?\1', '', line)
-        if txt in modified_line:
-            result_lines.append(line)
-    return result_lines
+import json5, sys
+from ReusableFunctions import  *
 
 def analyzing(s:dict) -> dict:
     key = list(s.keys())
@@ -70,11 +50,13 @@ def compilation(input_str:str):
         output_str = output_str.replace(i, '"quote' + str(i2) + '":"' + replace_outside_quotes(
             replace_outside_quotes(i.replace("'", r"\'").replace('"', r'\"'), [[";", '']]), [[" ", ""]]) + '",', 1)
     output_str = replace_outside_quotes(output_str, [["}", "},"]])
-    if True:
+    try:
         output_str = json5.loads("{" + output_str + "}")
         if len(output_str.keys()) > 1:
             sys.exit("""最外层只能使用一个组件
 The outermost layer can only use one component""")
         return render(output_str) + "\n\nhtml = " + list(output_str.keys())[0].translate(str.maketrans("0123456789", "abcdefghij")) + ".render()"
+    except:
+        return input_str
 
 
