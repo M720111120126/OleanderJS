@@ -385,7 +385,7 @@ Can also be specified in build.json5
 
 ```
 
-First, `cd` to the OleanderTS project folder
+First, `cd` to your project folder
 
 Directly execute `main.py`
 
