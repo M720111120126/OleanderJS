@@ -357,8 +357,8 @@ Row() {
 
 ```json5
 {
-  "Minimum-required-API-version": "0.4.7",// 最低兼容的API版本，必须
-  "Target-API-version": "0.4.7",// 目标的API版本，必须
+  "Minimum-required-API-version": "0.4.7",// 最低兼容的API版本，必需
+  "Target-API-version": "0.4.7",// 目标的API版本，必需
   "name": "demo",// 项目名及模块 root 包名，必需
   "version": "1.0.0",// 模块版本信息，必需
   "compile-option": {
