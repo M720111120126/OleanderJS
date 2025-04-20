@@ -70,7 +70,7 @@ class Button(UIComponent):
         return self
     def render(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
-        return f"<button style='{style_str}' onclick='"+self.on_click.replace("'", '"')+f"'>{self.text}</button>"
+        return f"<button style='{style_str}' onclick='" + self.on_click.replace("'", '"') + f"'>{self.text}</button>"
 class Radio(UIComponent):
     def __init__(self, name="", value=""):
         super().__init__()
