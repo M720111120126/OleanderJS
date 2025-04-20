@@ -203,7 +203,7 @@ Row() {
 ##### 属性
 
 - `label_on`：开启时显示的文本
-- `label_off`：关闭时显示的文本on style="background: lightgreen; padding: 10px;">开启</button>
+- `label_off`：关闭时显示的文本
 
 #### 1.5 `Progress` 类
 

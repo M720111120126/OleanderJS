@@ -203,7 +203,7 @@ Row() {
 ##### 屬性
 
 - `label_on`：開啓時顯示的文本
-- `label_off`：關閉時顯示的文本on style="background: lightgreen; padding: 10px;">開啓</button>
+- `label_off`：關閉時顯示的文本
 
 #### 1.5 `Progress` 類
 

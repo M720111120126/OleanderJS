@@ -203,7 +203,7 @@ Toggle button component, which can switch between two states (such as on/off).
 ##### Attributes
 
 - `label_on`: Text displayed when on
-- `label_off`: Text displayed when offon style="background: lightgreen; padding: 10px;">On</button>
+- `label_off`: Text displayed when off
 
 #### 1.5 `Progress` Class
 
