@@ -385,7 +385,7 @@ Row() {
 
 ```
 
-先 cd 至OleanderTS项目文件夹
+先 `cd` 至您的项目文件夹
 
 直接执行 main.py
 
