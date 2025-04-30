@@ -7,6 +7,8 @@ function isDaytime() {
     return currentHour >= 6 && currentHour < 18;
 }
 
+i = "点我"
+
 
 # UI_start
 
@@ -19,6 +21,13 @@ Row() {
     Button() {
       data_text : "1",
       data_on_click: "alert('按钮1被点击')",
+    }
+    Button() {
+      data_text : "js_i",
+      data_on_click: "i='按钮i被点击';",
+    }
+    Text() {
+      data_text : "js_i",
     }
   }
   Column() {

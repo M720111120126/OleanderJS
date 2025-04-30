@@ -107,7 +107,7 @@ Use the `data_` prefix to change attributes in `{}` and the `method_` prefix to 
 Button() {
   data_text : "1",
   method_set_on_click: "alert('Button 1 clicked')",
-  }
+}
 ```
 
 #### Conditional Rendering
@@ -173,115 +173,117 @@ All UI components inherit from the `UIComponent` class. This class contains comm
 - `set_style(**kwargs)`: Sets the style, supporting passing in multiple CSS properties and values.
 - `render()`: Renders the component and returns HTML.
 
-#### 1.2 `Button` Class
+##### Features:
+- `Text`: Use the `js_` prefix to use variables defined in JavaScript as display text.
 
-Button component, allowing users to create clickable buttons.
+#### 1.2 `Text` Class
+
+Text component, used for creating text.
+
+##### Properties:
+- `text`: The text to display.
+
+#### 1.3 `Button` Class
+
+Button component, allows creation of clickable buttons.
 
 ##### Methods:
-- `set_on_click(callback)`: Sets the click event of the button, which can pass in JavaScript code or a callback function. (Depends on the on_click attribute)
+- `set_on_click(callback)`: Sets the click event for the button, which can take JavaScript code or a callback function.
 
-##### Attributes:
-- `text`: The text displayed
-- `on_click`: Sets the click event of the button, which can pass in JavaScript code or a callback function.
+##### Properties:
+- `text`: Text to display.
+- `on_click`: The button's click event.
 
-#### 1.3 `Radio` Class
+#### 1.4 `Radio` Class
 
-Radio button component, allowing users to select one of multiple options.
+Radio button component, allows users to select one option from multiple choices.
 
-##### Methods
+##### Methods:
+- `set_checked(True)`: Whether it is checked by default.
 
-- `set_checked(True)`: Whether to select by default
+#### 1.5 `Toggle` Class
 
-#### 1.4 `Toggle` Class
+Toggle button component, can switch between two states (e.g., on/off).
 
-Toggle button component, which can switch between two states (such as on/off).
+##### Methods:
+- `set_checked(True)`: Whether it is checked by default.
 
-##### Methods
+##### Properties:
+- `label_on`: Text displayed when on.
+- `label_off`: Text displayed when off.
 
-- `set_checked(True)`: Whether to select by default
+#### 1.6 `Progress` Class
 
-##### Attributes
+Progress bar component, shows the completion progress of a task.
 
-- `label_on`: The text displayed when turned on
-- `label_off`: The text displayed when turned off
+##### Properties:
+- `value`: Progress value.
 
-#### 1.5 `Progress` Class
+#### 1.7 `Image` Class
 
-Progress bar component, used to display the completion progress of a task.
+Image component, used for embedding images in the UI.
 
-##### Attributes
-
-- `value`: Progress
-
-#### 1.6 `Image` Class
-
-Image component, used to embed images in the interface.
-
-##### Attributes
-
-- `src`: Image address
+##### Properties:
+- `src`: Image source URL.
 
 ### 2. Layout Components
 
-Layout components are used to control the layout of multiple subcomponents. You can use the `Row` or `Column` class to organize components.
+Layout components control the arrangement of multiple child components. You can use `Row` or `Column` classes to organize components.
 
 #### 2.1 `Row` Class
 
-Row layout, subcomponents are arranged horizontally.
+Row layout, arranges child components horizontally.
 
 #### 2.2 `Column` Class
 
-Column layout, subcomponents are arranged vertically.
+Column layout, arranges child components vertically.
 
 ### 3. Interactive Components
 
-Interactive components such as `Dialog` and `Menu` can help you create pop-up windows and navigation menus containing interactive content.
+Interactive components such as `Dialog` and `Menu` help you create popups and navigation menus with interactive content.
 
 #### 3.1 `Dialog` Class
 
-Dialog box component, used to display messages or content.
+Dialog component, used to display messages or content.
 
-##### Attributes
-
-- `title`: Title
-- `content`: Content
+##### Properties:
+- `title`: The title.
+- `content`: The content.
 
 #### 3.2 `Menu` Class
 
 Menu component, used to create clickable list items.
 
-##### Methods
-
-- `add_item`: Add a list item
+##### Methods:
+- `add_item`: Adds a list item.
 
 ### 4. Advanced Usage
 
-#### 4.1 Conditional Rendering (Method Available for All Components)
+#### 4.1 Conditional Rendering (Available for all components)
 
-You can determine conditions and decide whether to render
+You can evaluate a condition to decide whether to render a component.
 
-##### Example
+##### Example:
 ```OleanderTS
 Button() {
-  data_text : "Button 2 - Visible only during the day",
+  data_text : "2-Daytime only",
   data_on_click: "alert('Button 2 clicked')",
   method_condition: "isDaytime"
 }
 ```
 
-Note: The `isDaytime` function has already been defined in JS in the Oleander section. It returns true during the day and false at night.
+Note: The `isDaytime` function has been defined in the Oleander section with JS, returning `true` during the day and `false` at night.
 
-You can see the button during the day, but you can't see it when you open it again at night.
+The button will be visible during the day, and will not be visible at night.
 
-#### 4.2 Page Calling
+#### 4.2 Page Invocation
 
-You can embed other pages by setting the attributes of the component.
+You can embed other pages by setting component properties.
 
-##### Attributes
-
-- `src`: Page name
-- `width`: Embedded width
-- `height`: Embedded height
+##### Properties:
+- `src`: The page name.
+- `width`: The embedded width.
+- `height`: The embedded height.
 
 ##### Example:
 ```OleanderTS
@@ -292,7 +294,7 @@ html = button.render() + iframe.render() + auto_js_code
 
 #### 4.3 Combining Complex Layouts
 
-You can create complex layouts by nesting multiple layout components (such as `Row` and `Column`) together.
+You can create complex layouts by nesting multiple layout components (such as `Row` and `Column`).
 
 ##### Example:
 ```OleanderTS
@@ -315,12 +317,12 @@ Row() {
       data_on_click: "alert('Button 3 clicked')",
     }
     Button() {
-      data_text : "Button 2 - Visible only during the day",
+      data_text : "2-Daytime only",
       data_on_click: "alert('Button 2 clicked')",
       method_condition: "isDaytime"
     }
     Button() {
-      data_text : "Button 2 - Visible only at night",
+      data_text : "2-Nighttime only",
       data_on_click: "alert('Button 2 clicked')",
       method_condition: "!isDaytime"
     }
@@ -332,9 +334,9 @@ Row() {
 
 ## Compilation
 
-### Precautions
+### Notes
 
-Please install the `json5` and `filetype` libraries first.
+Please install the json5 and filetype libraries first.
 
 ### File Structure
 
@@ -403,4 +405,4 @@ Directly execute `main.py`
 It will be compiled into `app.html`
 
 Note:
-* This tutorial is applicable to OleanderTS-API V0.6.3 Gamma version
+* This tutorial is applicable to OleanderTS-API V0.7.2 Gamma version.

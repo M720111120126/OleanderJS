@@ -38,10 +38,19 @@ Warning: The current API is lower than the target API version (may be able to ru
 
 
 # 依赖函数
+def js(s, id_this=None):
+    if id_this is None:
+        return f"<script>{s}</script>"
+    else:
+        id_this = str(id_this)
+        return "<script>document.getElementById('"+id_this+"').innerHTML = "+s+";function autoUpdateButton() {document.getElementById('"+id_this+"').innerHTML = i;};setInterval(autoUpdateButton, 1000);</script>"
+ids = []
 class UIComponent:
     def __init__(self):
         self.styles = {}
         self.children = []
+        self.id = ""
+        self.text = ""
     def set_style(self, **kwargs):
         self.styles.update(kwargs)
         return self
@@ -58,9 +67,23 @@ class UIComponent:
         def a():
             return "<script>" + f + ".forEach(item => {document.write(`"+self.render2().replace('"', r'\"')+"`);});</script>"
         self.render = a
+    def render_original(self):
+            raise NotImplementedError("""呈现方法必须由子类实现
+    render method must be implemented by subclasses""")
     def render(self):
-        raise NotImplementedError("""呈现方法必须由子类实现
-render method must be implemented by subclasses""")
+        self.id = id(self)
+        ids.append(self.id)
+        if "js_" in self.text:
+            self.text = js(self.text.replace("js_", ""), self.id)
+        return self.render_original()
+class Text(UIComponent):
+    def __init__(self, text="", size=1):
+        super().__init__()
+        self.text = text
+        self.size = size
+    def render_original(self):
+        style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
+        return f"<h{self.size} id=\"{self.id}\" style='{style_str}'>{self.text}</h{self.size}>"
 class Button(UIComponent):
     def __init__(self, text=""):
         super().__init__()
@@ -69,9 +92,9 @@ class Button(UIComponent):
     def set_on_click(self, callback):
         self.on_click = callback
         return self
-    def render(self):
+    def render_original(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
-        return f"<button style='{style_str}' onclick='" + self.on_click.replace("'", '"') + f"'>{self.text}</button>"
+        return f"<button id=\"{self.id}\" style='{style_str}' onclick='" + self.on_click.replace("'", '"') + f"'>{self.text}</button>"
 class Radio(UIComponent):
     def __init__(self, name="", value=""):
         super().__init__()
@@ -81,10 +104,10 @@ class Radio(UIComponent):
     def set_checked(self, checked):
         self.checked = checked
         return self
-    def render(self):
+    def render_original(self):
         checked_attr = 'checked' if self.checked else ''
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
-        return f'<input type="radio" name="{self.name}" value="{self.value}" {checked_attr} style="{style_str}"/>'
+        return f'<input id=\"{self.id}\" type="radio" name="{self.name}" value="{self.value}" {checked_attr} style="{style_str}"/>'
 class Toggle(UIComponent):
     def __init__(self, label_on="", label_off=""):
         super().__init__()
@@ -94,10 +117,10 @@ class Toggle(UIComponent):
     def set_checked(self, checked):
         self.checked = checked
         return self
-    def render(self):
+    def render_original(self):
         label = self.label_on if self.checked else self.label_off
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
-        return f'<button style="{style_str}">{label}</button>'
+        return f'<button id=\"{self.id}\" style="{style_str}">{label}</button>'
 class Progress(UIComponent):
     def __init__(self, value=0):
         super().__init__()
@@ -105,43 +128,43 @@ class Progress(UIComponent):
     def set_value(self, value):
         self.value = value
         return self
-    def render(self):
+    def render_original(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
-        return f'<progress value="{self.value}" max="100" style="{style_str}"></progress>'
+        return f'<progress id=\"{self.id}\" value="{self.value}" max="100" style="{style_str}"></progress>'
 class Image(UIComponent):
     def __init__(self, src=""):
         super().__init__()
         self.src = src
-    def render(self):
+    def render_original(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
-        return f'<img src="{self.src}" style="{style_str}"/>'
+        return f'<img id=\"{self.id}\" src="{self.src}" style="{style_str}"/>'
 class Linear(UIComponent):
     def __init__(self):
         super().__init__()
-    def render(self):
+    def render_original(self):
         style_str = " ".join([f'{k}: {v};' for k, v in json.loads(json.dumps(self.styles).replace("_", "-")).items()])
         children_str = "".join([child.render() for child in self.children])
-        return f'<div style="{style_str}">{children_str}</div>'
+        return f'<div id=\"{self.id}\" style="{style_str}">{children_str}</div>'
 class Row(Linear):
     def __init__(self):
         super().__init__()
-    def render(self):
+    def render_original(self):
         self.set_style(display='flex', flex_direction='row')
-        return super().render()
+        return super().render_original()
 class Column(Linear):
     def __init__(self):
         super().__init__()
-    def render(self):
+    def render_original(self):
         self.set_style(display='flex', flex_direction='column')
-        return super().render()
+        return super().render_original()
 class Dialog(UIComponent):
     def __init__(self, title="", content=""):
         super().__init__()
         self.title = title
         self.content = content
-    def render(self):
+    def render_original(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
-        return f'<div class="dialog" style="{style_str}"><h1>{self.title}</h1><p>{self.content}</p></div>'
+        return f'<div id=\"{self.id}\" class="dialog" style="{style_str}"><h1>{self.title}</h1><p>{self.content}</p></div>'
 class Menu(UIComponent):
     def __init__(self):
         super().__init__()
@@ -149,10 +172,10 @@ class Menu(UIComponent):
     def add_item(self, item):
         self.items.append(item)
         return self
-    def render(self):
+    def render_original(self):
         style_str = " ".join([f'{k}: {v};' for k, v in self.styles.items()])
         items_str = "".join([f'<li>{item}</li>' for item in self.items])
-        return f'<ul style="{style_str}">{items_str}</ul>'
+        return f'<ul id=\"{self.id}\" style="{style_str}">{items_str}</ul>'
 class Iframe(UIComponent):
     def __init__(self, src="", width="600", height="400"):
         super().__init__()
@@ -162,11 +185,11 @@ class Iframe(UIComponent):
         self.style = ""
     def set_style(self, **kwargs):
         self.style = "; ".join([f"{key}: {value}" for key, value in kwargs.items()])
-    def render(self):
+    def render_original(self):
         for Iframe_page in app_json5["page"]:
             if Iframe_page["name"] == self.src:
                 # 返回一个iframe标签，包含src和其他属性
-                return f'<iframe width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
+                return f'<iframe id=\"{self.id}\" width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
         return None
 def loading_page(page_loading, name):
     with open(os.path.join(page_loading["srcPath"], name), "r", encoding='utf-8') as f:
