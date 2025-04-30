@@ -25,7 +25,7 @@ def replace_outside_quotes(text: str, sign_dic: list, rule: str = r'(["\']).*?\1
     for q in quoted:
         text_with_placeholders = text_with_placeholders.replace('QUOTED_TEXT', q, 1)
     return text_with_placeholders
-def find_lines_with_text_outside_quotes(text: str, txt: str) -> list[str]:
+def find_lines_with_text_outside_quotes(text: str, txt: str) -> list:
     lines = text.splitlines()
     result_lines = []
     for line in lines:
