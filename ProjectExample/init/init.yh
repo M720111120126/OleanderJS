@@ -1,4 +1,4 @@
-alert('义核引擎测试')
+alert('义核引擎测试');
 #include dependencies.yh
 
 function isDaytime() {
@@ -7,11 +7,10 @@ function isDaytime() {
     return currentHour >= 6 && currentHour < 18;
 }
 
-i = "点我"
+let i = false;
 
 
 # UI_start
-
 Row() {
   "background" : "lightblue",
   "padding" : "20px",
@@ -24,7 +23,7 @@ Row() {
     }
     Button() {
       data_text : "js_i",
-      data_on_click: "i='按钮i被点击';",
+      data_on_click: "i=true;",
     }
     Text() {
       data_text : "js_i",
@@ -47,6 +46,11 @@ Row() {
       Button() {
         data_text : "2-晚上才能看见的按钮",
         data_on_click: "alert('按钮2被点击')"
+      }
+    }
+    if(!i) {
+      Text() {
+        data_text : "未点击",
       }
     }
     Column() {

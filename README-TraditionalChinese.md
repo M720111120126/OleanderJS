@@ -12,6 +12,12 @@
 
 Oleander部分只爲OleanderTS帶來了預處理和JS調用特性
 
+#### 注意事項
+
+##### 變數
+
+變數必須以字母開頭，只能有字母和底線
+
 #### 預處理
 
 預處理指令以 `#` 開頭，在編譯時會進行展開。
@@ -405,4 +411,4 @@ Row() {
 將編譯爲 app.html
 
 注意：
-* 本教程適用於 OleanderTS-API V0.7.2 Gamma 版
+* 本教程適用於 OleanderTS-API V0.7.2 Gamma - PRO 版

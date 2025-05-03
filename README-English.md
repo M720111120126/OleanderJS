@@ -12,6 +12,13 @@ In reality, this language is Oleander+JS+OleanderUI, but the author originally i
 
 The Oleander section only brings preprocessing and JS calling features to OleanderTS.
 
+
+#### Notes
+
+### Variables
+
+Variables must start with a letter and can only contain letters and underscores.
+
 #### Preprocessing
 
 Preprocessing directives start with `#` and are expanded at compile time.
@@ -405,4 +412,4 @@ Directly execute `main.py`
 It will be compiled into `app.html`
 
 Note:
-* This tutorial is applicable to OleanderTS-API V0.7.2 Gamma version.
+* This tutorial is applicable to OleanderTS-API V0.7.2 Gamma - PRO version.

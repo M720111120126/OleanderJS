@@ -3,10 +3,14 @@ import BetaOfAlpha as Beta
 from ReusableFunctions import  *
 
 # 读取文件
-project = os.getcwd()
-with open('app.json5', 'r', encoding='utf-8') as file:
+if os.path.exists("app.json5"):
+    OleanderTS_project_page = ""
+else:
+    OleanderTS_project_page = input("OleanderTS_project_page $ ")
+OleanderTS_api_page = os.getcwd()
+with open(os.path.join(OleanderTS_project_page, 'app.json5'), 'r', encoding='utf-8') as file:
     app_json5 = json5.loads(file.read())
-with open('build.json5', 'r', encoding='utf-8') as file:
+with open(os.path.join(OleanderTS_project_page, 'build.json5'), 'r', encoding='utf-8') as file:
     build_json5 = json5.loads(file.read())
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'OleanderTS.json5'), 'r', encoding='utf-8') as file:
     OleanderTS_json5 = json5.loads(file.read())
@@ -38,12 +42,13 @@ Warning: The current API is lower than the target API version (may be able to ru
 
 
 # 依赖函数
-def js(s, id_this=None):
+def js(s, id_this=None, mode="text"):
     if id_this is None:
         return f"<script>{s}</script>"
-    else:
-        id_this = str(id_this)
-        return "<script>document.getElementById('"+id_this+"').innerHTML = "+s+";function autoUpdateButton() {document.getElementById('"+id_this+"').innerHTML = i;};setInterval(autoUpdateButton, 1000);</script>"
+    elif mode == "text":
+        return "<script>document.getElementById('"+id_this+"').innerHTML = "+s+";function autoUpdateButton() {document.getElementById('"+id_this+"').innerHTML = i;};setInterval(autoUpdateButton, 100);</script>"
+    elif mode == "if":
+        return "<script>"+s+";setInterval(() => {document.getElementById('"+id_this+"').remove();"+s+"}, 100);</script>"
 ids = []
 class UIComponent:
     def __init__(self):
@@ -60,7 +65,7 @@ class UIComponent:
     def condition(self, condition):
         self.render2 = self.render
         def a():
-            return "<script>if ("+condition+") {document.write(\""+self.render2().replace('"', r'\"')+"\");}</script>"
+            return "<script>document.write(\""+self.render2().replace('"', r'\"')+"\");setInterval(() => {document.getElementById('"+self.id+"').style.display = 'none';if ("+condition+") {document.getElementById('"+self.id+"').style.display = 'block';}}, 100)</script>"
         self.render = a
     def for_render(self, f):
         self.render2 = self.render
@@ -71,7 +76,7 @@ class UIComponent:
             raise NotImplementedError("""呈现方法必须由子类实现
     render method must be implemented by subclasses""")
     def render(self):
-        self.id = id(self)
+        self.id = str(id(self))
         ids.append(self.id)
         if "js_" in self.text:
             self.text = js(self.text.replace("js_", ""), self.id)
@@ -192,7 +197,7 @@ class Iframe(UIComponent):
                 return f'<iframe id=\"{self.id}\" width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
         return None
 def loading_page(page_loading, name):
-    with open(os.path.join(page_loading["srcPath"], name), "r", encoding='utf-8') as f:
+    with open(os.path.join(OleanderTS_project_page, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
         f = f.read()
         include = []
         for i in page_loading["dependencies"]:
@@ -206,7 +211,7 @@ def loading_page(page_loading, name):
 def compilation(text):
     text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     exec(text_list[1], globals())
-    icon_path = "APP_Scope/" + app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", "") + "/" + app_json5['APP_Scope']['icon'].split(": ")[1]
+    icon_path = os.path.join(OleanderTS_project_page, "APP_Scope", app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", ""), app_json5['APP_Scope']['icon'].split(": ")[1])
     mime_type = filetype.guess(icon_path)
     if mime_type is None:
         mime_type = "image/png"
@@ -223,5 +228,5 @@ for page in app_json5["page"]:
             page_init = compilation(Beta.beta(loading_page(page, "init.yh")))
         elif fapi_version == "alpha":
             page_init = compilation(loading_page(page, "init.yh"))
-with open("app.html", "w", encoding="utf-8") as file:
+with open(os.path.join(OleanderTS_project_page, "app.html"), "w", encoding="utf-8") as file:
     file.write(page_init)
