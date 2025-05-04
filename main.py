@@ -23,8 +23,8 @@ parser.add_argument("-v", "--version", help="""获取 API 版本
 Get the API version""", action="store_true")
 parser.add_argument("-e", "--skip-env-check", help="""跳过环境检查
 Get the API version""", action="store_true")
-args = vars(parser.parse_args())
-compile_option = build_json5["compile-option"]
+args = build_json5["compile-option"]
+compile_option = vars(parser.parse_args())
 args.update(compile_option)
 if args["fapi_version"]:
     fapi_version = args["fapi_version"]
@@ -42,13 +42,6 @@ Warning: The current API is lower than the target API version (may be able to ru
 
 
 # 依赖函数
-def js(s, id_this=None, mode="text"):
-    if id_this is None:
-        return f"<script>{s}</script>"
-    elif mode == "text":
-        return "<script>document.getElementById('"+id_this+"').innerHTML = "+s+";function autoUpdateButton() {document.getElementById('"+id_this+"').innerHTML = i;};setInterval(autoUpdateButton, 100);</script>"
-    elif mode == "if":
-        return "<script>"+s+";setInterval(() => {document.getElementById('"+id_this+"').remove();"+s+"}, 100);</script>"
 ids = []
 class UIComponent:
     def __init__(self):
@@ -79,7 +72,7 @@ class UIComponent:
         self.id = str(id(self))
         ids.append(self.id)
         if "js_" in self.text:
-            self.text = js(self.text.replace("js_", ""), self.id)
+            self.text = "<script>document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";function autoUpdateButton() {document.getElementById('"+self.id+"').innerHTML = i;};setInterval(autoUpdateButton, 100);</script>"
         return self.render_original()
 class Text(UIComponent):
     def __init__(self, text="", size=1):
