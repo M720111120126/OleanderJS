@@ -14,9 +14,9 @@ Oleander部分只爲OleanderTS帶來了預處理和JS調用特性
 
 #### 注意事項
 
-##### 變數
+##### 變量
 
-變數必須以字母開頭，只能有字母和底線
+變量必須以字母開頭，只能有字母和下劃線。
 
 #### 預處理
 
@@ -95,7 +95,7 @@ Oleander UI部分的開啓標誌
 
 #### 基礎組件
 
-使用 `基礎組件名稱(傳入的內容)`
+##### OleanderUI-ark框架（更推薦）
 
 請注意尾隨逗號
 
@@ -105,7 +105,7 @@ Oleander UI部分的開啓標誌
 Button() {
   data_text : "1",
   method_set_on_click: "alert('按鈕1被點擊')",
-  }
+}
 ```
 
 #### 條件渲染
@@ -125,40 +125,41 @@ x() {
 這樣就會渲染三個“x”，並顯示爲 1、2、3。任何需要調用list（如這裏的 `[1,2,3]`）的內容的地方都可以使用 `${item}`
 
 #### 示例：
+
+見項目 `/ProjectExample-ark` 文件夾
+
+##### OleanderUI-object框架（更強大）
+
+類似於 python 的對象
+
+使用 `對象.屬性=內容` 前綴更改屬性，使用 `對象.方法(內容)` 前綴調用方法
+
 ```OleanderTS
-Row() {
-  "background" : "lightblue",
-  "padding" : "20px",
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "1",
-      data_on_click: "alert('按鈕1被點擊')",
-    }
-  }
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "3",
-      data_on_click: "alert('按鈕3被點擊')",
-    }
-    if(isDaytime) {
-      Button() {
-        data_text : "2-白天才能看見的按鈕",
-        data_on_click: "alert('按鈕2被點擊')"
-      }
-    }
-    if(!isDaytime) {
-      Button() {
-        data_text : "2-晚上才能看見的按鈕",
-        data_on_click: "alert('按鈕2被點擊')"
-      }
-    }
-  }
-}
+Button = Button()
+Button.text = "1"
+Button.on_click = "alert('按鈕1被點擊')"
 ```
+
+#### 條件渲染
+
+使用 `condition` 方法
+
+```OleanderTS
+對象.condition("js返回bool的表達式")
+```
+
+#### 循環渲染
+
+使用 `for_render` 方法
+
+```OleanderTS
+對象.for_render(第一項,第二項...)
+```
+這樣就會渲染三個“對象”，並顯示爲 1、2...。任何需要調用list（如這裏的 `[1,2...]`）的內容的地方都可以使用 `${item}`
+
+#### 示例：
+
+見項目 `/ProjectExample-object` 文件夾
 
 ### 1. 基礎組件
 
@@ -399,7 +400,7 @@ Row() {
 "compile-option": {
   "version": true,// 獲取 API 版本，使用true或false控制
   "skip_env_check": true,// 跳過環境檢查，使用true或false控制
-  "fapi_version": "beta"// 指定 API 版本，有beta和alpha兩個版本可選
+  "fapi_version": "ark"// 指定 API 版本，有object和ark兩個版本可選
 }
 
 ```
@@ -411,4 +412,4 @@ Row() {
 將編譯爲 app.html
 
 注意：
-* 本教程適用於 OleanderTS-API V0.7.2 Gamma - PRO 版
+* 本教程適用於 OleanderTS-API V1.0.0 Stable 版

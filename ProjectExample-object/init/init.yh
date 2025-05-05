@@ -1,0 +1,74 @@
+alert('义核引擎测试');
+#include dependencies.yh
+
+function isDaytime() {
+    let currentTime = new Date();
+    let currentHour = currentTime.getHours();
+    return currentHour >= 6 && currentHour < 18;
+}
+
+let i = false;
+
+
+# UI_start
+Row_main = Row()
+Row_main.set_style(background="lightblue",padding="20px")
+
+Column_1 = Column()
+Column_1.set_style(margin="20px",padding="10px")
+
+Button_1 = Button()
+Button_1.text = "1"
+Button_1.on_click = "alert('按钮1被点击')"
+Column_1.add_child(Button_1)
+
+Button_i = Button()
+Button_i.text = "js_i"
+Button_i.set_on_click("i=true;")
+Column_1.add_child(Button_i)
+
+Text_i = Text()
+Text_i.text="js_i"
+Column_1.add_child(Text_i)
+
+Row_main.add_child(Column_1)
+
+Column_2 = Column()
+Column_2.set_style(margin="20px",padding="10px")
+
+Button_3 = Button()
+Button_3.text="3"
+Button_3.on_click="alert('按钮3被点击')"
+Column_2.add_child(Button_3)
+
+Button_2_day = Button()
+Button_2_day.text = "2-白天才能看见的按钮"
+Button_2_day.on_click = "alert('按钮2被点击')"
+Button_2_day.condition("isDaytime")
+Column_2.add_child(Button_2_day)
+
+Button_2_night = Button()
+Button_2_night.text = "2-晚上才能看见的按钮"
+Button_2_night.on_click = "alert('按钮2被点击')"
+Button_2_night.condition("!isDaytime")
+Column_2.add_child(Button_2_night)
+
+Text_i_2 = Text()
+Text_i_2.text = "未点击"
+Text_i_2.condition("!i")
+Column_2.add_child(Text_i_2)
+
+Column_3 = Column()
+Column_3.set_style(margin="20px",padding="10px")
+
+Button_list = Button()
+Button_list.text = "${item}"
+Button_list.on_click = "alert(${item})"
+Button_list.for_render("[1,2,3]")
+Column_3.add_child(Button_list)
+
+Column_2.add_child(Column_3)
+
+Row_main.add_child(Column_2)
+
+html = Row_main.render()

@@ -1,0 +1,54 @@
+alert('义核引擎测试');
+#include dependencies.yh
+
+function isDaytime() {
+    let currentTime = new Date();
+    let currentHour = currentTime.getHours();
+    return currentHour >= 6 && currentHour < 18;
+}
+
+let i = false;
+
+
+# UI_start
+Row() {
+  Column() {
+    Button() {}
+    .text = "1"
+    .set_on_click("alert('按钮1被点击')")
+    Button() {}
+    .text = "js_i"
+    .set_on_click("i=true;")
+    Text() {}
+    .text = "js_i"
+  }
+  .style(margin="20px",padding="10px")
+  Column() {
+    Button() {}
+    .text = "3"
+    .set_on_click("alert('按钮3被点击')")
+    if(isDaytime) {
+      Button() {}
+      .text = "2-白天才能看见的按钮"
+      .set_on_click("alert('按钮2被点击')")
+    }
+    if(!isDaytime) {
+      Button() {}
+      .text = "2-晚上才能看见的按钮"
+      .set_on_click("alert('按钮2被点击')")
+    }
+    if(!i) {
+      Text() {}
+      .text = "未点击"
+    }
+    Column() {
+      Button() {}
+      .text = "${item}"
+      .set_on_click("alert(${item})")
+      .for_render("[1,2,3]")
+    }
+    .style(margin="20px",padding="10px")
+  }
+  .style(margin="20px",padding="10px")
+}
+.style(background="lightblue",padding="20px")

@@ -1,6 +1,13 @@
 import re, base64, filetype
 from urllib.parse import quote_plus
 
+def str_encrypt(text):
+    return str(int.from_bytes(text.encode('utf-8'), byteorder='big')).translate(str.maketrans("0123456789", "abcdefghij"))
+def str_decrypt(text:str):
+    decoded_text = text.translate(str.maketrans("abcdefghij", "0123456789"))
+    integer_rep = int(decoded_text)
+    byte_length = (integer_rep.bit_length() + 7) // 8
+    return integer_rep.to_bytes(byte_length, byteorder='big').decode('utf-8')
 def file_to_data_url(file_path):
     mime_type = filetype.guess(file_path)
     if mime_type is None:

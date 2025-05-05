@@ -1,5 +1,5 @@
 import os, json5, json, sys, argparse
-import BetaOfAlpha as Beta
+import ArkOfObject as ark
 from ReusableFunctions import  *
 
 # 读取文件
@@ -215,10 +215,10 @@ html = ""
 for page in app_json5["page"]:
     if page["name"] == "init":
         if fapi_version == "":
-            page_init = compilation(Beta.beta(loading_page(page, "init.yh")))
-        elif fapi_version == "beta":
-            page_init = compilation(Beta.beta(loading_page(page, "init.yh")))
-        elif fapi_version == "alpha":
+            page_init = compilation(ark.ark(loading_page(page, "init.yh"), "into"))
+        elif fapi_version == "ark":
+            page_init = compilation(ark.ark(loading_page(page, "init.yh"), "ark"))
+        elif fapi_version == "object":
             page_init = compilation(loading_page(page, "init.yh"))
 with open(os.path.join(OleanderTS_project_page, "app.html"), "w", encoding="utf-8") as file:
     file.write(page_init)

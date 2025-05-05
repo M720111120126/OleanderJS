@@ -95,7 +95,7 @@ Oleander UI部分的开启标志
 
 #### 基础组件
 
-使用 `基础组件名称(传入的内容)`
+##### OleanderUI-ark框架（更推荐）
 
 请注意尾随逗号
 
@@ -105,7 +105,7 @@ Oleander UI部分的开启标志
 Button() {
   data_text : "1",
   method_set_on_click: "alert('按钮1被点击')",
-  }
+}
 ```
 
 #### 条件渲染
@@ -125,40 +125,41 @@ x() {
 这样就会渲染三个“x”，并显示为 1、2、3。任何需要调用list（如这里的 `[1,2,3]`）的内容的地方都可以使用 `${item}`
 
 #### 示例：
+
+见项目 `/ProjectExample-ark` 文件夹
+
+##### OleanderUI-object框架（更强大）
+
+类似于 python 的对象
+
+使用 `对象.属性=内容` 前缀更改属性，使用 `对象.方法(内容)` 前缀调用方法
+
 ```OleanderTS
-Row() {
-  "background" : "lightblue",
-  "padding" : "20px",
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "1",
-      data_on_click: "alert('按钮1被点击')",
-    }
-  }
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "3",
-      data_on_click: "alert('按钮3被点击')",
-    }
-    if(isDaytime) {
-      Button() {
-        data_text : "2-白天才能看见的按钮",
-        data_on_click: "alert('按钮2被点击')"
-      }
-    }
-    if(!isDaytime) {
-      Button() {
-        data_text : "2-晚上才能看见的按钮",
-        data_on_click: "alert('按钮2被点击')"
-      }
-    }
-  }
-}
+Button = Button()
+Button.text = "1"
+Button.on_click = "alert('按钮1被点击')"
 ```
+
+#### 条件渲染
+
+使用 `condition` 方法
+
+```OleanderTS
+对象.condition("js返回bool的表达式")
+```
+
+#### 循环渲染
+
+使用 `for_render` 方法
+
+```OleanderTS
+对象.for_render(第一项,第二项...)
+```
+这样就会渲染三个“对象”，并显示为 1、2...。任何需要调用list（如这里的 `[1,2...]`）的内容的地方都可以使用 `${item}`
+
+#### 示例：
+
+见项目 `/ProjectExample-object` 文件夹
 
 ### 1. 基础组件
 
@@ -399,7 +400,7 @@ Row() {
 "compile-option": {
   "version": true,// 获取 API 版本，使用true或false控制
   "skip_env_check": true,// 跳过环境检查，使用true或false控制
-  "fapi_version": "beta"// 指定 API 版本，有beta和alpha两个版本可选
+  "fapi_version": "ark"// 指定 API 版本，有object和ark两个版本可选
 }
 
 ```
@@ -411,4 +412,4 @@ Row() {
 将编译为 app.html
 
 注意：
-* 本教程适用于 OleanderTS-API V0.7.2 Gamma - PRO 版
+* 本教程适用于 OleanderTS-API V1.0.0 Stable 版

@@ -4,6 +4,7 @@
   "name": "demo",// 项目名及模块 root 包名，必需
   "version": "1.0.0",// 模块版本信息，必需
   "compile-option": {
-    "version": true
+    "version": true,
+    "fapi_version": "object"
   }// 额外编译命令选项，非必需
 }
