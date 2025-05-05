@@ -58,5 +58,3 @@ The outermost layer can only use one component""")
         return render(output_str) + "\n\nhtml = " + list(output_str.keys())[0].translate(str.maketrans("0123456789", "abcdefghij")) + ".render()"
     except:
         return input_str
-
-

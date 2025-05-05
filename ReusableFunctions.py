@@ -1,7 +1,6 @@
 import re, base64, filetype
 from urllib.parse import quote_plus
 
-
 def file_to_data_url(file_path):
     mime_type = filetype.guess(file_path)
     if mime_type is None:

@@ -1,4 +1,4 @@
-import os, json5, json, sys, argparse, filetype
+import os, json5, json, sys, argparse
 import BetaOfAlpha as Beta
 from ReusableFunctions import  *
 
@@ -23,8 +23,8 @@ parser.add_argument("-v", "--version", help="""获取 API 版本
 Get the API version""", action="store_true")
 parser.add_argument("-e", "--skip-env-check", help="""跳过环境检查
 Get the API version""", action="store_true")
-args = build_json5["compile-option"]
-compile_option = vars(parser.parse_args())
+args = vars(parser.parse_args())
+compile_option = build_json5["compile-option"]
 args.update(compile_option)
 if args["fapi_version"]:
     fapi_version = args["fapi_version"]
@@ -39,7 +39,6 @@ The minimum compatible API version is higher than the current API""")
     elif build_json5["Target-API-version"] > OleanderTS_json5["API-version"]:
         print("""警告：当前API低于目标的API版本（可能能够正常运行）
 Warning: The current API is lower than the target API version (may be able to run normally)""")
-
 
 # 依赖函数
 ids = []
