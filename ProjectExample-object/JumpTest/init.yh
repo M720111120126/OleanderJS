@@ -1,5 +1,3 @@
-alert('义核引擎测试');
-#include dependencies.yh
 #include std
 
 function isDaytime() {
@@ -38,8 +36,8 @@ Column_2 = Column()
 Column_2.set_style(margin="20px",padding="10px")
 
 Button_3 = Button()
-Button_3.text="跳转"
-Button_3.on_click="router.pushUrl('JumpTest.html')"
+Button_3.text="返回"
+Button_3.on_click="router.back()"
 Column_2.add_child(Button_3)
 
 Button_2_day = Button()
@@ -60,7 +58,7 @@ Text_i_2.condition("!i")
 Column_2.add_child(Text_i_2)
 
 Text_jump = Text()
-Text_jump.text = "未跳转"
+Text_jump.text = "已跳转"
 Column_2.add_child(Text_jump)
 
 Column_3 = Column()

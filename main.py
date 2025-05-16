@@ -1,16 +1,17 @@
 import os, json5, json, sys, argparse
 import ArkOfObject as ark
+from PageProDependencyLibrary import PageProCompilation
 from ReusableFunctions import  *
 
 # 读取文件
 if os.path.exists("app.json5"):
-    OleanderTS_project_page = ""
+    OleanderTS_project_path = ""
 else:
-    OleanderTS_project_page = input("OleanderTS_project_page $ ")
-OleanderTS_api_page = os.getcwd()
-with open(os.path.join(OleanderTS_project_page, 'app.json5'), 'r', encoding='utf-8') as file:
+    OleanderTS_project_path = input("OleanderTS_project_page $ ")
+OleanderTS_api_path = os.getcwd()
+with open(os.path.join(OleanderTS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
     app_json5 = json5.loads(file.read())
-with open(os.path.join(OleanderTS_project_page, 'build.json5'), 'r', encoding='utf-8') as file:
+with open(os.path.join(OleanderTS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
     build_json5 = json5.loads(file.read())
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'OleanderTS.json5'), 'r', encoding='utf-8') as file:
     OleanderTS_json5 = json5.loads(file.read())
@@ -189,12 +190,17 @@ class Iframe(UIComponent):
                 return f'<iframe id=\"{self.id}\" width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
         return None
 def loading_page(page_loading, name):
-    with open(os.path.join(OleanderTS_project_page, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
+    with open(os.path.join(OleanderTS_project_path, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
         f = f.read()
         include = []
         for i in page_loading["dependencies"]:
             if not i == name:
                 include.append([f'#include {i}', loading_page(page_loading, i)])
+        library_path = os.path.join(OleanderTS_api_path, "library")
+        for i in [f for f in os.listdir(library_path) if os.path.isfile(os.path.join(library_path, f))]:
+            with open(os.path.join(library_path, i), "r", encoding='utf-8') as f2:
+                i2 = i.replace(".js", "")
+                include.append([f'#include {i2}', f2.read()])
         for i in find_lines_with_text_outside_quotes(f, "#define "):
             include.append([i.split(" ")[1], i.split(" ")[2]])
         return replace_outside_quotes(f, include)
@@ -203,7 +209,7 @@ def loading_page(page_loading, name):
 def compilation(text):
     text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     exec(text_list[1], globals())
-    icon_path = os.path.join(OleanderTS_project_page, "APP_Scope", app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", ""), app_json5['APP_Scope']['icon'].split(": ")[1])
+    icon_path = os.path.join(OleanderTS_project_path, "APP_Scope", app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", ""), app_json5['APP_Scope']['icon'].split(": ")[1])
     mime_type = filetype.guess(icon_path)
     if mime_type is None:
         mime_type = "image/png"
@@ -220,5 +226,7 @@ for page in app_json5["page"]:
             page_init = compilation(ark.ark(loading_page(page, "init.yh"), "ark"))
         elif fapi_version == "object":
             page_init = compilation(loading_page(page, "init.yh"))
-with open(os.path.join(OleanderTS_project_page, "app.html"), "w", encoding="utf-8") as file:
+    else:
+        PageProCompilation(loading_page, fapi_version, page, compilation, OleanderTS_project_path)
+with open(os.path.join(OleanderTS_project_path, "build", "app.html"), "w", encoding="utf-8") as file:
     file.write(page_init)

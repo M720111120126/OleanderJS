@@ -4,6 +4,11 @@
       "name": "init",// 页面名称
       "srcPath": "./init",// 页面位置（相对路径）
       "dependencies": ["dependencies.yh"]// 依赖库表
+    },
+    {
+      "name": "JumpTest",// 页面名称
+      "srcPath": "./JumpTest",// 页面位置（相对路径）
+      "dependencies": []// 依赖库表
     }
   ],
   "APP_Scope": {// 软件配置
