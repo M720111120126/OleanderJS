@@ -412,4 +412,4 @@ Row() {
 将编译为 app.html
 
 注意：
-* 本教程适用于 OleanderTS-API V1.0.0 Stable 版
+* 本教程适用于 OleanderTS-API V1.3.0 Stable 版

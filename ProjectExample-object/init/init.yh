@@ -1,6 +1,13 @@
 alert('义核引擎测试');
 #include dependencies.yh
 #include std
+#include data
+
+KVManager.init();
+KVManager.getKVStore("test")
+let times_old = KVManager.get("times") || 0
+KVManager.put(key="times", value=parseInt(times_old)+1);
+let times = KVManager.get("times");
 
 function isDaytime() {
     let currentTime = new Date();
@@ -31,6 +38,10 @@ Column_1.add_child(Button_i)
 Text_i = Text()
 Text_i.text="js_i"
 Column_1.add_child(Text_i)
+
+Text_times = Text()
+Text_times.text="js_times"
+Column_1.add_child(Text_times)
 
 Row_main.add_child(Column_1)
 

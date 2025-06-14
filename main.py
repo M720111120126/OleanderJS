@@ -8,12 +8,12 @@ if os.path.exists("app.json5"):
     OleanderTS_project_path = ""
 else:
     OleanderTS_project_path = input("OleanderTS_project_page $ ")
-OleanderTS_api_path = os.getcwd()
+OleanderTS_api_path = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(OleanderTS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
     app_json5 = json5.loads(file.read())
 with open(os.path.join(OleanderTS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
     build_json5 = json5.loads(file.read())
-with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'OleanderTS.json5'), 'r', encoding='utf-8') as file:
+with open(os.path.join(OleanderTS_api_path, 'OleanderTS.json5'), 'r', encoding='utf-8') as file:
     OleanderTS_json5 = json5.loads(file.read())
 
 # 检查环境
@@ -72,7 +72,7 @@ class UIComponent:
         self.id = str(id(self))
         ids.append(self.id)
         if "js_" in self.text:
-            self.text = "<script>document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";function autoUpdateButton() {document.getElementById('"+self.id+"').innerHTML = i;};setInterval(autoUpdateButton, 100);</script>"
+            self.text = "<script>document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";function autoUpdateButton() {document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";};setInterval(autoUpdateButton, 100);</script>"
         return self.render_original()
 class Text(UIComponent):
     def __init__(self, text="", size=1):
