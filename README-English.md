@@ -412,4 +412,4 @@ Directly execute main.py
 It will be compiled into app.html
 
 Note:
-* This tutorial is applicable to OleanderTS-API V1.0.0 Stable version
+* This tutorial is applicable to OleanderTS-API V1.3.0 Stable version

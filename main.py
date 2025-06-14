@@ -8,12 +8,12 @@ if os.path.exists("app.json5"):
     OleanderTS_project_path = ""
 else:
     OleanderTS_project_path = input("OleanderTS_project_page $ ")
-OleanderTS_api_path = os.getcwd()
+OleanderTS_api_path = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(OleanderTS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
     app_json5 = json5.loads(file.read())
 with open(os.path.join(OleanderTS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
     build_json5 = json5.loads(file.read())
-with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'OleanderTS.json5'), 'r', encoding='utf-8') as file:
+with open(os.path.join(OleanderTS_api_path, 'OleanderTS.json5'), 'r', encoding='utf-8') as file:
     OleanderTS_json5 = json5.loads(file.read())
 
 # 检查环境
@@ -60,6 +60,8 @@ class UIComponent:
         def a():
             return "<script>document.write(\""+self.render2().replace('"', r'\"')+"\");setInterval(() => {document.getElementById('"+self.id+"').style.display = 'none';if ("+condition+") {document.getElementById('"+self.id+"').style.display = 'block';}}, 100)</script>"
         self.render = a
+    def if_render(self, condition):
+        self.condition(condition)
     def for_render(self, f):
         self.render2 = self.render
         def a():
@@ -72,7 +74,7 @@ class UIComponent:
         self.id = str(id(self))
         ids.append(self.id)
         if "js_" in self.text:
-            self.text = "<script>document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";function autoUpdateButton() {document.getElementById('"+self.id+"').innerHTML = i;};setInterval(autoUpdateButton, 100);</script>"
+            self.text = "<script>document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";function autoUpdateButton() {document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";};setInterval(autoUpdateButton, 100);</script>"
         return self.render_original()
 class Text(UIComponent):
     def __init__(self, text="", size=1):
@@ -209,13 +211,16 @@ def loading_page(page_loading, name):
 def compilation(text):
     text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     exec(text_list[1], globals())
-    icon_path = os.path.join(OleanderTS_project_path, "APP_Scope", app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", ""), app_json5['APP_Scope']['icon'].split(": ")[1])
-    mime_type = filetype.guess(icon_path)
-    if mime_type is None:
-        mime_type = "image/png"
-    else:
-        mime_type = mime_type.mime
-    return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>" + html + "</body></html>"
+    try:
+        icon_path = os.path.join(OleanderTS_project_path, "APP_Scope", app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", ""), app_json5['APP_Scope']['icon'].split(": ")[1])
+        mime_type = filetype.guess(icon_path)
+        if mime_type is None:
+            mime_type = "image/png"
+        else:
+            mime_type = mime_type.mime
+        return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>" + html + "</body></html>"
+    except:
+        return f"<!DECTYPE HTML><html><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script><meta charset='utf-8'></head><body>" + html + "</body></html>"
 page_init = ""
 html = ""
 for page in app_json5["page"]:
@@ -228,5 +233,8 @@ for page in app_json5["page"]:
             page_init = compilation(loading_page(page, "init.yh"))
     else:
         PageProCompilation(loading_page, fapi_version, page, compilation, OleanderTS_project_path)
+build_dir = os.path.join(OleanderTS_project_path, "build")
+if not os.path.exists(build_dir):
+    os.makedirs(build_dir)
 with open(os.path.join(OleanderTS_project_path, "build", "app.html"), "w", encoding="utf-8") as file:
     file.write(page_init)
