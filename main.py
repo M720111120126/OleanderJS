@@ -237,9 +237,9 @@ def compilation(text):
             mime_type = "image/png"
         else:
             mime_type = mime_type.mime
-        return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let rights_name_json = JSON.parse(localStorage.getItem(ProjectName+'/rights')) || [];let ProjectName = '{build_json5['name']}';{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>" + html + "</body></html>"
+        return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let ProjectName = '{build_json5['name']}';let rights_name_json = [];"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}"+f"{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>{html}</body></html>"
     except:
-        return f"<!DECTYPE HTML><html><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let rights_name_json = JSON.parse(localStorage.getItem(ProjectName+'/rights')) || [];let ProjectName = '{build_json5['name']}';{text_list[0]}</script><meta charset='utf-8'></head><body>" + html + "</body></html>"
+        return f"<!DECTYPE HTML><html><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let ProjectName = '{build_json5['name']}';let rights_name_json = [];"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}"+f"{text_list[0]}</script><meta charset='utf-8'></head><body>{html}</body></html>"
 page_init = ""
 html = ""
 for page in app_json5["page"]:

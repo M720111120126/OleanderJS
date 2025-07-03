@@ -1,7 +1,9 @@
 /* jshint esversion: 6 */
 
 if (rights_name_json.includes("file") || window.confirm("应用想要获取 文件读写 权限")) {
-    rights_name_json.push("file");
+    if (!rights_name_json.includes("file")) {
+        rights_name_json.push("file");
+    }
     localStorage.setItem(ProjectName+"/rights", JSON.stringify(rights_name_json));
     class FileSystem {
         static read(name="") {

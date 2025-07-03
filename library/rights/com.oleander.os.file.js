@@ -1,7 +1,9 @@
 /* jshint esversion: 6 */
 
 if (rights_name_json.includes("OSfile") || window.confirm("应用想要获取 完全访问文件 权限")) {
-    rights_name_json.push("OSfile");
+    if (!rights_name_json.includes("OSfile")) {
+        rights_name_json.push("OSfile");
+    }
     localStorage.setItem("Oleander/rights", JSON.stringify(rights_name_json));
     class OleanderFileSystem {
         static read(name="") {
