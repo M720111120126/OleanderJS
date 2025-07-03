@@ -1,6 +1,6 @@
 alert('义核引擎测试');
 #include dependencies.yh
-#include std
+#include router
 #include data
 
 KVManager.init();

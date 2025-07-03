@@ -1,8 +1,6 @@
-# OleanderTS文档
+# OleanderJS文档
 
-其实本语言是Oleander+JS+OleanderUI，但是作者本来想用Oleander+TS+OleanderUI。所以叫“OleanderTS”
-
-[繁體中文](https://github.com/M720111120126/OleanderTS/blob/master/README-TraditionalChinese.md) [English](https://github.com/M720111120126/OleanderTS/blob/master/README-English.md)
+[繁體中文](https://github.com/M720111120126/OleanderJS/blob/master/README-TraditionalChinese.md) [English](https://github.com/M720111120126/OleanderJS/blob/master/README-English.md)
 
 ---
 
@@ -10,7 +8,7 @@
 
 ### Oleander部分
 
-Oleander部分只为OleanderTS带来了预处理和JS调用特性
+Oleander部分只为OleanderJS带来了预处理和JS调用特性
 
 #### 注意事项
 
@@ -22,9 +20,9 @@ Oleander部分只为OleanderTS带来了预处理和JS调用特性
 
 预处理指令以 `#` 开头，在编译时会进行展开。
 
-##### `#include "file"`
+##### `#include file`
 
-```OleanderTS
+```OleanderJS
 #include preprocess_test.yh
 // → 直接将文件内容复制到此处
 ```
@@ -47,11 +45,18 @@ Oleander部分只为OleanderTS带来了预处理和JS调用特性
 }
 ```
 
+##### `#include 依赖库`
+
+可用的标注库
+
+* [data](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/data.md)
+* [router](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/router.md)
+
 ##### `#define value key`
 
 一个替换
 
-```OleanderTS
+```OleanderJS
 # 例如这里的代码正常工作
 #define + left
 
@@ -62,7 +67,7 @@ Oleander部分只为OleanderTS带来了预处理和JS调用特性
 
 Oleander UI部分的开启标志
 
-```OleanderTS
+```OleanderJS
 #include ……
 #define ……
 一些JS代码
@@ -76,6 +81,44 @@ Oleander UI部分的开启标志
 
 见上面的 # UI_start 的示例，js直接写在 Oleander部分 就可以执行了
 
+#### 权限管理
+
+##### 权限列表
+
+* [`com.oleander.file` 获取一个属于该app的文件空间](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/com.oleander.file.md)
+* [`con.oleander.os.file` 获取所有OleanderAPP共用的文件空间](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/com.oleander.os.file.md)
+* [`com.oleander.JMS` JZH账号支持（尚未实现）]()
+
+请注意：请求权限失败不会抛出异常，在获取权限后应当检查`rights_name_json`这个list内有没有请求的权限
+
+##### 权限获取方式-静态获取
+
+这将会在app启动的时候向用户请求权限。
+
+在 `app.json5` 中定义。
+
+```json5
+{
+  ...
+  "APP_Scope": {// 软件配置
+    ...
+    "require":[// APP需要调用的权限
+      "com.oleander.file"
+    ]
+  }
+}
+```
+
+##### 权限获取方式-动态获取
+
+这将会在app运行至导入的地方的时候向用户请求权限。
+
+使用 `#include` 导入
+
+```OleanderJS
+#include com.oleander.file
+```
+
 ### Oleander UI部分
 
 本文档介绍了如何使用提供的 UI 组件，帮助你快速创建和渲染界面。文档将通过详细的示例，帮助你理解如何构建交互式和响应式 UI。
@@ -86,11 +129,11 @@ Oleander UI部分的开启标志
 
 使用 `布局组件名称() {}` 请注意，属性（css属性）的设置需要尾随逗号
 
-```OleanderTS
+```OleanderJS
 布局组件名称() {
-  属性: 值,
   包含的组件
 }
+.style(属性=值)
 ```
 
 #### 基础组件
@@ -99,28 +142,26 @@ Oleander UI部分的开启标志
 
 请注意尾随逗号
 
-`{}` 中使用 `data_` 前缀更改属性，使用 `method_` 前缀调用方法
+`{}` 中使用 `.x=y` 更改属性，使用 `.x(y)` 调用方法
 
-```OleanderTS
-Button() {
-  data_text : "1",
-  method_set_on_click: "alert('按钮1被点击')",
-}
+```OleanderJS
+Button() {}
+.text = "1"
+.set_on_click("alert('按钮1被点击')")
 ```
 
 #### 条件渲染
-```OleanderTS
+```OleanderJS
 if(条件) {
   条件渲染的组件
 }
 ```
 
 #### 循环渲染
-```OleanderTS
-x() {
-  data_text : "${item}",
-  method_for_render: "[1,2,3]"
-}
+```OleanderJS
+x() {}
+.text = "${item}"
+.for_render("[1,2,3]")
 ```
 这样就会渲染三个“x”，并显示为 1、2、3。任何需要调用list（如这里的 `[1,2,3]`）的内容的地方都可以使用 `${item}`
 
@@ -134,7 +175,7 @@ x() {
 
 使用 `对象.属性=内容` 前缀更改属性，使用 `对象.方法(内容)` 前缀调用方法
 
-```OleanderTS
+```OleanderJS
 Button = Button()
 Button.text = "1"
 Button.on_click = "alert('按钮1被点击')"
@@ -144,7 +185,7 @@ Button.on_click = "alert('按钮1被点击')"
 
 使用 `condition` 方法
 
-```OleanderTS
+```OleanderJS
 对象.condition("js返回bool的表达式")
 ```
 
@@ -152,7 +193,7 @@ Button.on_click = "alert('按钮1被点击')"
 
 使用 `for_render` 方法
 
-```OleanderTS
+```OleanderJS
 对象.for_render(第一项,第二项...)
 ```
 这样就会渲染三个“对象”，并显示为 1、2...。任何需要调用list（如这里的 `[1,2...]`）的内容的地方都可以使用 `${item}`
@@ -270,7 +311,7 @@ Button.on_click = "alert('按钮1被点击')"
 可以判断条件并决定是否渲染
 
 ##### 示例
-```OleanderTS
+```OleanderJS
 Button() {
   data_text : "2-白天才能看见的按钮",
   data_on_click: "alert('按钮2被点击')",
@@ -293,7 +334,7 @@ Button() {
 - `height`：嵌入高度
 
 ##### 示例：
-```OleanderTS
+```OleanderJS
 iframe = Iframe(src="pay", width="800", height="600")
 iframe.set_style(border="2px solid black")
 html = button.render() + iframe.render() + auto_js_code
@@ -304,7 +345,7 @@ html = button.render() + iframe.render() + auto_js_code
 你可以通过将多个布局组件（如 `Row` 和 `Column`）嵌套在一起，创建复杂的布局。
 
 ##### 示例：
-```OleanderTS
+```OleanderJS
 Row() {
   "background" : "lightblue",
   "padding" : "20px",
@@ -363,12 +404,20 @@ Row() {
       "name": "init",// 页面名称
       "srcPath": "./init",// 页面位置（相对路径）
       "dependencies": ["dependencies.yh"]// 依赖库表
+    },
+    {
+      "name": "JumpTest",// 页面名称
+      "srcPath": "./JumpTest",// 页面位置（相对路径）
+      "dependencies": []// 依赖库表
     }
   ],
   "APP_Scope": {// 软件配置
     "icon": "$media: app_icon.png",// 图标，位于 “APP_Scope/media/app_icon.png” $xx 就代表在 “APP_Scope/xx” 路径下
     "name": "DEMO",// 名称
-    "lang":"zh_cn"
+    "lang":"zh_cn",// 语言
+    "require":[// APP需要调用的权限
+      "com.oleander.file"
+    ]
   }
 }
 ```
@@ -377,8 +426,8 @@ Row() {
 
 ```json5
 {
-  "Minimum-required-API-version": "0.6.3",// 最低兼容的API版本，必需
-  "Target-API-version": "0.6.3",// 目标的API版本，必需
+  "Minimum-required-API-version": "0.10.9",// 最低兼容的API版本，必需
+  "Target-API-version": "0.10.9",// 目标的API版本，必需
   "name": "demo",// 项目名及模块 root 包名，必需
   "version": "1.0.0",// 模块版本信息，必需
   "compile-option": {
@@ -412,4 +461,4 @@ Row() {
 将编译为 app.html
 
 注意：
-* 本教程适用于 OleanderTS-API V1.3.0 Stable 版
+* 本教程适用于 OleanderJS-API V1.10.9 BETA 版

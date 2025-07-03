@@ -2,21 +2,34 @@ import os, json5, json, sys, argparse
 import ArkOfObject as ark
 from PageProDependencyLibrary import PageProCompilation
 from ReusableFunctions import  *
+from RightsManagement import ImportModulesThatRequirePermission
 
 # 读取文件
 if os.path.exists("app.json5"):
-    OleanderTS_project_path = ""
+    OleanderJS_project_path = ""
 else:
-    OleanderTS_project_path = input("OleanderTS_project_page $ ")
-OleanderTS_api_path = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(OleanderTS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
+    OleanderJS_project_path = input("OleanderJS_project_page $ ")
+OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(OleanderJS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
     app_json5 = json5.loads(file.read())
-with open(os.path.join(OleanderTS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
+with open(os.path.join(OleanderJS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
     build_json5 = json5.loads(file.read())
-with open(os.path.join(OleanderTS_api_path, 'OleanderTS.json5'), 'r', encoding='utf-8') as file:
-    OleanderTS_json5 = json5.loads(file.read())
+with open(os.path.join(OleanderJS_api_path, 'OleanderJS.json5'), 'r', encoding='utf-8') as file:
+    OleanderJS_json5 = json5.loads(file.read())
 
 # 检查环境
+def compare_versions(version1, version2):
+    v1_parts = list(map(int, version1.split('.')))
+    v2_parts = list(map(int, version2.split('.')))
+    max_length = max(len(v1_parts), len(v2_parts))
+    v1_parts += [0] * (max_length - len(v1_parts))
+    v2_parts += [0] * (max_length - len(v2_parts))
+    for v1, v2 in zip(v1_parts, v2_parts):
+        if v1 > v2:
+            return 1
+        elif v1 < v2:
+            return 2
+    return 0
 parser = argparse.ArgumentParser()
 parser.add_argument("-fver", "--fapi-version", help="""指定 API 版本
 Specify API version""", type=str, required=False)
@@ -32,14 +45,18 @@ if args["fapi_version"]:
 else:
     fapi_version = ""
 if args["version"]:
-    print(OleanderTS_json5["API-version"])
+    print(OleanderJS_json5["API-version"])
 if not args["skip_env_check"]:
-    if build_json5["Minimum-required-API-version"] > OleanderTS_json5["API-version"]:
+    if compare_versions(OleanderJS_json5["API-version"], build_json5["Minimum-required-API-version"]) == 2:
         sys.exit("""最低兼容的API版本高于当前API
 The minimum compatible API version is higher than the current API""")
-    elif build_json5["Target-API-version"] > OleanderTS_json5["API-version"]:
+    elif compare_versions(OleanderJS_json5["API-version"], build_json5["Target-API-version"]) == 2:
         print("""警告：当前API低于目标的API版本（可能能够正常运行）
 Warning: The current API is lower than the target API version (may be able to run normally)""")
+    elif compare_versions(OleanderJS_json5["API-version"], build_json5["Target-API-version"]) == 11:
+        print("""警告：当前API高于目标的API版本（可能能够正常运行）
+Warning: The current API is higher than the target API version (may be able to run normally)""")
+
 
 # 依赖函数
 ids = []
@@ -191,36 +208,38 @@ class Iframe(UIComponent):
                 # 返回一个iframe标签，包含src和其他属性
                 return f'<iframe id=\"{self.id}\" width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
         return None
-def loading_page(page_loading, name):
-    with open(os.path.join(OleanderTS_project_path, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
+def loading_page(page_loading, name, mode="init"):
+    with open(os.path.join(OleanderJS_project_path, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
         f = f.read()
         include = []
         for i in page_loading["dependencies"]:
             if not i == name:
-                include.append([f'#include {i}', loading_page(page_loading, i)])
-        library_path = os.path.join(OleanderTS_api_path, "library")
+                include.append([f'#include {i}', loading_page(page_loading, i, "self")])
+        library_path = os.path.join(OleanderJS_api_path, "library")
         for i in [f for f in os.listdir(library_path) if os.path.isfile(os.path.join(library_path, f))]:
             with open(os.path.join(library_path, i), "r", encoding='utf-8') as f2:
                 i2 = i.replace(".js", "")
                 include.append([f'#include {i2}', f2.read()])
         for i in find_lines_with_text_outside_quotes(f, "#define "):
             include.append([i.split(" ")[1], i.split(" ")[2]])
-        return replace_outside_quotes(f, include)
+        if mode == "self":
+            return replace_outside_quotes(f, include)
+        return ImportModulesThatRequirePermission(replace_outside_quotes(f, include), OleanderJS_project_path, page_loading, name, loading_page)
 
 # 编译
 def compilation(text):
     text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     exec(text_list[1], globals())
     try:
-        icon_path = os.path.join(OleanderTS_project_path, "APP_Scope", app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", ""), app_json5['APP_Scope']['icon'].split(": ")[1])
+        icon_path = os.path.join(OleanderJS_project_path, "APP_Scope", app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", ""), app_json5['APP_Scope']['icon'].split(": ")[1])
         mime_type = filetype.guess(icon_path)
         if mime_type is None:
             mime_type = "image/png"
         else:
             mime_type = mime_type.mime
-        return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>" + html + "</body></html>"
+        return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let rights_name_json = JSON.parse(localStorage.getItem(ProjectName+'/rights')) || [];let ProjectName = '{build_json5['name']}';{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>" + html + "</body></html>"
     except:
-        return f"<!DECTYPE HTML><html><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>{text_list[0]}</script><meta charset='utf-8'></head><body>" + html + "</body></html>"
+        return f"<!DECTYPE HTML><html><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let rights_name_json = JSON.parse(localStorage.getItem(ProjectName+'/rights')) || [];let ProjectName = '{build_json5['name']}';{text_list[0]}</script><meta charset='utf-8'></head><body>" + html + "</body></html>"
 page_init = ""
 html = ""
 for page in app_json5["page"]:
@@ -232,9 +251,9 @@ for page in app_json5["page"]:
         elif fapi_version == "object":
             page_init = compilation(loading_page(page, "init.yh"))
     else:
-        PageProCompilation(loading_page, fapi_version, page, compilation, OleanderTS_project_path)
-build_dir = os.path.join(OleanderTS_project_path, "build")
+        PageProCompilation(loading_page, fapi_version, page, compilation, OleanderJS_project_path)
+build_dir = os.path.join(OleanderJS_project_path, "build")
 if not os.path.exists(build_dir):
     os.makedirs(build_dir)
-with open(os.path.join(OleanderTS_project_path, "build", "app.html"), "w", encoding="utf-8") as file:
+with open(os.path.join(OleanderJS_project_path, "build", "app.html"), "w", encoding="utf-8") as file:
     file.write(page_init)
