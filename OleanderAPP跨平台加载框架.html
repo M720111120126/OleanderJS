@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OleanderAPP</title>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let appid = urlParams.get('appid');
+            if (appid) {
+                document.open();
+                document.write(localStorage.getItem(appid));
+                document.close();
+            } else {
+                populateDropdown()
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>选择一个 .oap 安装包并安装app</h1>
+    <input type="file" id="fileInput" accept=".oap" />
+    <button onclick="readFile()">安装</button>
+    <pre id="fileContent"></pre>
+    <select id="appSelect">
+    </select>
+    <button onclick="deleteSelectedOption()">卸载此App</button>
+    <button onclick="manageSelectedOption()">管理此App</button>
+    <button onclick="openSelectedOption()">启动此App</button>
+    <br>
+    <select id="permissionSelect">
+    </select>
+    <button onclick="disablePermission()">禁用此权限</button>
+    <script>
+        function readFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const fileContent = event.target.result;
+                appid = Date.now().toString()
+                localStorage.setItem(appid, fileContent);
+                let currentUrl = window.location.href;
+                if (currentUrl.indexOf('?') === -1) {
+                    currentUrl += `?appid=${appid}`;
+                } else {
+                    currentUrl += `&appid=${appid}`;
+                }
+                function extractContent(inputString, regex) {
+                    const match = inputString.match(regex);
+                    if (match && match[1]) {
+                        return match[1].trim();
+                    }
+                    return null;
+                }
+                let OleanderAPP_json_w;
+                try {
+                    OleanderAPP_json_w = JSON.parse(localStorage.getItem("OleanderAPP_json")) || [];
+                } catch (error) {
+                    OleanderAPP_json_w = [];
+                }
+                OleanderAPP_json_w.push({"appid":appid,"name":extractContent(fileContent, /<title>(.*?)<\/title>/s),"projectName":extractContent(fileContent, /<!-- Project: (.*?) -->/s)});
+                localStorage.setItem("OleanderAPP_json", JSON.stringify(OleanderAPP_json_w));
+                window.location.assign(currentUrl);
+            };
+            reader.onerror = function() {
+                alert('文件读取出错，请重试。');
+            };
+            reader.readAsText(file);
+        }
+        function populateDropdown() {
+            const selectElement = document.getElementById('appSelect');
+            let OleanderAPP_json_r;
+            try {
+                OleanderAPP_json_r = JSON.parse(localStorage.getItem("OleanderAPP_json")) || [];
+            } catch (error) {
+                OleanderAPP_json_r = [];
+            }
+            OleanderAPP_json_r.forEach(oleanderapp => {
+                let appName = oleanderapp.name;
+                const option = document.createElement('option');
+                option.value = appName;
+                option.textContent = appName;
+                selectElement.appendChild(option);
+            });
+        }
+        function deleteSelectedOption() {
+            let OleanderAPP_json_d;
+                try {
+                    OleanderAPP_json_d = JSON.parse(localStorage.getItem("OleanderAPP_json")) || [];
+                } catch (error) {
+                    OleanderAPP_json_d = [];
+                }
+            const selectElement = document.getElementById('appSelect');
+            const selectedIndex = selectElement.selectedIndex;
+            if (selectedIndex !== -1) {
+                const selectedValue = selectElement.options[selectedIndex].value;
+                selectElement.remove(selectedIndex);
+                for (let i = 0; i < OleanderAPP_json_d.length; i++) {
+                    i = OleanderAPP_json_d[i];
+                    if (i.name === selectedValue) {
+                        localStorage.removeItem(i.appid);
+                    }
+                }
+                OleanderAPP_json_d = OleanderAPP_json_d.filter(item => item.name !== selectedValue);
+                localStorage.setItem("OleanderAPP_json", OleanderAPP_json_d);
+            } else {
+                alert("请选择要删除的APP");
+            }
+        }
+        function manageSelectedOption() {
+            let OleanderAPP_json_m;
+                try {
+                    OleanderAPP_json_m = JSON.parse(localStorage.getItem("OleanderAPP_json")) || [];
+                } catch (error) {
+                    OleanderAPP_json_m = [];
+                }
+            const selectElement = document.getElementById('permissionSelect');
+            const APPselectElement = document.getElementById('appSelect');
+            const APPselectedIndex = APPselectElement.selectedIndex;
+            if (APPselectedIndex !== -1) {
+                const APPselectedValue = APPselectElement.options[APPselectedIndex].value;
+                for (let i = 0; i < OleanderAPP_json_m.length; i++) {
+                    i = OleanderAPP_json_m[i];
+                    if (i.name === APPselectedValue) {
+                        let rights_name_json = JSON.parse(localStorage.getItem(i.projectName+'/rights')) || [];
+                        rights_name_json.forEach(rights_name => {
+                            const option = document.createElement('option');
+                            option.value = rights_name;
+                            option.textContent = rights_name;
+                            selectElement.appendChild(option);
+                        });
+                    }
+                }
+            } else {
+                alert("请选择要管理的APP");
+            }
+        }
+        function disablePermission() {
+            let OleanderAPP_json_dp;
+            try {
+                OleanderAPP_json_dp = JSON.parse(localStorage.getItem("OleanderAPP_json")) || [];
+            } catch (error) {
+                OleanderAPP_json_dp = [];
+            }
+            const selectElement = document.getElementById('permissionSelect');
+            const selectedIndex = selectElement.selectedIndex;
+            if (selectedIndex !== -1) {
+                const selectedValue = selectElement.options[selectedIndex].value;
+                const APPselectElement = document.getElementById('appSelect');
+                const APPselectedIndex = selectElement.selectedIndex;
+                const APPselectedValue = APPselectElement.options[APPselectedIndex].value;
+                let rights_name_json = []
+                let projectName = ""
+                for (let i = 0; i < OleanderAPP_json_dp.length; i++) {
+                    i = OleanderAPP_json_dp[i];
+                    if (i.name === APPselectedValue) {
+                        projectName = i.projectName
+                        rights_name_json = JSON.parse(localStorage.getItem(projectName+'/rights')) || [];
+                    }
+                }
+                rights_name_json = rights_name_json.filter(item => item == selectedValue);
+                if (rights_name_json == "") {
+                    localStorage.removeItem(projectName+'/rights');
+                } else {
+                    localStorage.setItem(projectName+'/rights', rights_name_json);
+                }
+                selectElement.remove(selectedIndex);
+            } else {
+                alert("请选择要禁用的权限");
+            }
+        }
+        function openSelectedOption() {
+            let OleanderAPP_json_o;
+            try {
+                OleanderAPP_json_o = JSON.parse(localStorage.getItem("OleanderAPP_json")) || [];
+            } catch (error) {
+                OleanderAPP_json_o = [];
+            }
+            const selectElement = document.getElementById('appSelect');
+            const selectedIndex = selectElement.selectedIndex;
+            if (selectedIndex !== -1) {
+                const selectedValue = selectElement.options[selectedIndex].value;
+                selectElement.remove(selectedIndex);
+                for (let i = 0; i < OleanderAPP_json_o.length; i++) {
+                    i = OleanderAPP_json_o[i];
+                    if (i.name === selectedValue) {
+                        let currentUrl = window.location.href;
+                        if (currentUrl.indexOf('?') === -1) {
+                            currentUrl += `?appid=${i.appid}`;
+                        } else {
+                            currentUrl += `&appid=${i.appid}`;
+                        }
+                        window.location.assign(currentUrl);
+                    }
+                }
+            } else {
+                alert("请选择要启动的APP");
+            }
+        }
+    </script>
+</body>
+</html>
