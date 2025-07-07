@@ -4,6 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OleanderAPP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        pre {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-y: auto;
+            max-height: 150px;
+        }
+    </style>
     <script>
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -19,19 +73,21 @@
     </script>
 </head>
 <body>
-    <h1>选择一个 .oap 安装包并安装app</h1>
-    <input type="file" id="fileInput" accept=".oap" />
-    <button onclick="readFile()">安装</button>
-    <pre id="fileContent"></pre>
-    <select id="appSelect">
-    </select>
-    <button onclick="deleteSelectedOption()">卸载此App</button>
-    <button onclick="manageSelectedOption()">管理此App</button>
-    <button onclick="openSelectedOption()">启动此App</button>
-    <br>
-    <select id="permissionSelect">
-    </select>
-    <button onclick="disablePermission()">禁用此权限</button>
+    <div class="container">
+        <h1>选择一个 .oap 安装包并安装app</h1>
+        <input type="file" id="fileInput" accept=".oap" />
+        <button onclick="readFile()">安装</button>
+        <pre id="fileContent"></pre>
+        <select id="appSelect">
+        </select>
+        <button onclick="deleteSelectedOption()">卸载此App</button>
+        <button onclick="manageSelectedOption()">管理此App</button>
+        <button onclick="openSelectedOption()">启动此App</button>
+        <br>
+        <select id="permissionSelect">
+        </select>
+        <button onclick="disablePermission()">禁用此权限</button>
+    </div>
     <script>
         function readFile() {
             const fileInput = document.getElementById('fileInput');
