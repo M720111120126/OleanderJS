@@ -87,7 +87,7 @@ Oleander UI部分的开启标志
 
 * [`com.oleander.file` 获取一个属于该app的文件空间](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/com.oleander.file.md)
 * [`con.oleander.os.file` 获取所有OleanderAPP共用的文件空间](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/com.oleander.os.file.md)
-* [`com.oleander.JMS` JZH账号支持（尚未实现）]()
+* [`com.oleander.JMS` JZH账号支持（仅提供简体中文文档，不建议国外使用）](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/com.oleander.os.jms.md)
 
 请注意：请求权限失败不会抛出异常，在获取权限后应当检查`rights_name_json`这个list内有没有请求的权限
 

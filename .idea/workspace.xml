@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1858712f-0fcd-4841-835e-149bc8beff60" name="更改" comment="修复了一些无关紧要的弱警告">
+    <list default="true" id="1858712f-0fcd-4841-835e-149bc8beff60" name="更改" comment="添加了OleanderAPP跨平台加载框架">
+      <change afterPath="$PROJECT_DIR$/library/docs/com.oleander.os.jms.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/library/rights/com.oleander.os.jms.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OleanderAPP跨平台加载框架.html" beforeDir="false" afterPath="$PROJECT_DIR$/OleanderAPP跨平台加载框架.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +18,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -67,7 +69,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/桌面/编程/py/测试/OleanderJS/library&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/19847/AppData/Roaming/JetBrains/PyCharm2025.1/scratches&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -89,7 +91,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\19847\AppData\Roaming\JetBrains\PyCharm2025.1\scratches" />
       <recent name="D:\桌面\编程\py\测试\OleanderJS\library" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\桌面\编程\py\测试\OleanderJS" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -173,7 +179,12 @@
       <workItem from="1751861935368" duration="1199000" />
       <workItem from="1751864132801" duration="154000" />
       <workItem from="1751870347334" duration="609000" />
-      <workItem from="1751873110481" duration="302000" />
+      <workItem from="1751873110481" duration="715000" />
+      <workItem from="1751883779004" duration="2259000" />
+      <workItem from="1751941086887" duration="5318000" />
+      <workItem from="1751960556366" duration="2241000" />
+      <workItem from="1751969252055" duration="1651000" />
+      <workItem from="1751971789502" duration="3086000" />
     </task>
     <task id="LOCAL-00001" summary="更名为 OleanderJS&#10;更新至 OleanderJS V1.10.9">
       <option name="closed" value="true" />
@@ -215,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751873345870</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="添加了OleanderAPP跨平台加载框架">
+      <option name="closed" value="true" />
+      <created>1751873713422</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1751873713422</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,7 +256,8 @@
     <MESSAGE value="更名为 OleanderJS&#10;更新至 OleanderJS V1.10.9" />
     <MESSAGE value="修补了一些bug" />
     <MESSAGE value="修复了一些无关紧要的弱警告" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复了一些无关紧要的弱警告" />
+    <MESSAGE value="添加了OleanderAPP跨平台加载框架" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加了OleanderAPP跨平台加载框架" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/OleanderJS$scratch.coverage" NAME="scratch 覆盖结果" MODIFIED="1751870382610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
