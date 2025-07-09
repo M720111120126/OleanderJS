@@ -137,7 +137,7 @@ Oleander UI 部分的開啟標誌
 
 #### 基礎元件
 
-##### OleanderUI-ark 框架（更推薦）
+##### OleanderUI-ArkPRO 框架（更推薦）
 
 請注意尾隨逗號
 

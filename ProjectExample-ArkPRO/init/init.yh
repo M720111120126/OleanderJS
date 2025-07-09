@@ -22,40 +22,40 @@ let i = false;
 Row() {
   Column() {
     Button() {}
-    .text = "1"
+    .SA("text","1")
     .set_on_click("alert('按钮1被点击')")
     Button() {}
-    .text = "js_i"
+    .SA("text","js_i")
     .set_on_click("i=true;")
     Text() {}
-    .text = "js_i"
+    .SA("text","js_i")
     Text() {}
-    .text = "js_times"
+    .SA("text","js_times")
   }
   .style(margin="20px",padding="10px")
   Column() {
     Button() {}
-    .text = "跳转"
+    .SA("text","跳转")
     .set_on_click("router.pushUrl('JumpTest.html')")
-    if(isDaytime) {
+    if("isDaytime") {
       Button() {}
-      .text = "2-白天才能看见的按钮"
+      .SA("text","2-白天才能看见的按钮")
       .set_on_click("alert('按钮2被点击')")
     }
-    if(!isDaytime) {
+    if("!isDaytime") {
       Button() {}
-      .text = "2-晚上才能看见的按钮"
+      .SA("text","2-晚上才能看见的按钮")
       .set_on_click("alert('按钮2被点击')")
     }
-    if(!i) {
+    if("!i") {
       Text() {}
-      .text = "未点击"
+      .SA("text","未点击")
     }
     Text() {}
-    .text = "未跳转"
+    .SA("text","未跳转")
     Column() {
       Button() {}
-      .text = "${item}"
+      .SA("text","${item}")
       .set_on_click("alert(${item})")
       .for_render("[1,2,3]")
     }

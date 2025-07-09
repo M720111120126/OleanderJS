@@ -138,7 +138,7 @@ Oleander UI部分的开启标志
 
 #### 基础组件
 
-##### OleanderUI-ark框架（更推荐）
+##### OleanderUI-ArkPRO框架（更推荐）
 
 请注意尾随逗号
 
@@ -152,7 +152,7 @@ Button() {}
 
 #### 条件渲染
 ```OleanderJS
-if(条件) {
+if("条件") {
   条件渲染的组件
 }
 ```

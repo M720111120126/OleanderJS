@@ -137,7 +137,7 @@ LayoutComponentName() {
 
 #### Basic Components
 
-##### OleanderUI-ark Framework (More Recommended)
+##### OleanderUI-ArkPRO Framework (More Recommended)
 
 Please note the trailing comma
 
@@ -151,7 +151,7 @@ Button() {}
 
 #### Conditional Rendering
 ```OleanderJS
-if(condition) {
+if("condition") {
   Components for conditional rendering
 }
 ```
