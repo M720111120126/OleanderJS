@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1858712f-0fcd-4841-835e-149bc8beff60" name="更改" comment="添加了OleanderAPP跨平台加载框架">
-      <change afterPath="$PROJECT_DIR$/library/docs/com.oleander.os.jms.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/library/rights/com.oleander.os.jms.js" afterDir="false" />
+    <list default="true" id="1858712f-0fcd-4841-835e-149bc8beff60" name="更改" comment="重构了ark架构（升级为ArkPRO），同时保留了对ark旧架构的兼容。&#10;项目升级至ark架构只需将 if(X) 这个X加上引号，并将额外编译命令选项指定的编译器从“ark”修改为“ArkPRO”（如果有）&#10;升级至 OleanderJS-API V1.12.3">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ArkOfObjectPro.py" beforeDir="false" afterPath="$PROJECT_DIR$/ArkOfObjectPro.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +45,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;git@github.com:M720111120126/OleanderJS.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/M720111120126/OleanderJS&quot;,
     &quot;accountId&quot;: &quot;cef91313-90fd-483a-a1a5-1d9c7f07ee62&quot;
   }
 }</component>
@@ -59,31 +60,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/19847/AppData/Roaming/JetBrains/PyCharm2025.1/scratches&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.ReusableFunctions.executor": "Run",
+    "Python.main (1).executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.scratch.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "D:/桌面/编程/py/测试/OleanderJS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/更改语言&quot;: [
-      &quot;HTML&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/更改语言": [
+      "HTML"
     ]
   }
-}</component>
+}]]></component>
   <component name="Push.Settings">
     <force-push-targets>
       <force-push-target remote-path="origin" branch="master" />
@@ -99,6 +102,52 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
+    <configuration name="ReusableFunctions" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="OleanderTS" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ReusableFunctions.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="OleanderTS" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$ - 副本" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$ - 副本/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="OleanderTS" />
       <option name="ENV_FILES" value="" />
@@ -148,6 +197,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.ReusableFunctions" />
         <item itemvalue="Python.scratch" />
       </list>
     </recent_temporary>
@@ -185,6 +236,8 @@
       <workItem from="1751960556366" duration="2241000" />
       <workItem from="1751969252055" duration="1651000" />
       <workItem from="1751971789502" duration="3086000" />
+      <workItem from="1752078310342" duration="368000" />
+      <workItem from="1752114264864" duration="2417000" />
     </task>
     <task id="LOCAL-00001" summary="更名为 OleanderJS&#10;更新至 OleanderJS V1.10.9">
       <option name="closed" value="true" />
@@ -234,7 +287,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751873713422</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="重构了ark架构（升级为ArkPRO），同时保留了对ark旧架构的兼容。&#10;项目升级至ark架构只需将 if(X) 这个X加上引号，并将额外编译命令选项指定的编译器从“ark”修改为“ArkPRO”（如果有）&#10;升级至 OleanderJS-API V1.12.3">
+      <option name="closed" value="true" />
+      <created>1752078560175</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1752078560175</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,10 +318,13 @@
     <MESSAGE value="修补了一些bug" />
     <MESSAGE value="修复了一些无关紧要的弱警告" />
     <MESSAGE value="添加了OleanderAPP跨平台加载框架" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加了OleanderAPP跨平台加载框架" />
+    <MESSAGE value="重构了ark架构（升级为ArkPRO），同时保留了对ark旧架构的兼容。&#10;项目升级至ark架构只需将 if(X) 这个X加上引号，并将额外编译命令选项指定的编译器从“ark”修改为“ArkPRO”（如果有）&#10;升级至 OleanderJS-API V1.12.3" />
+    <option name="LAST_COMMIT_MESSAGE" value="重构了ark架构（升级为ArkPRO），同时保留了对ark旧架构的兼容。&#10;项目升级至ark架构只需将 if(X) 这个X加上引号，并将额外编译命令选项指定的编译器从“ark”修改为“ArkPRO”（如果有）&#10;升级至 OleanderJS-API V1.12.3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/OleanderJS$ReusableFunctions.coverage" NAME="ReusableFunctions 覆盖结果" MODIFIED="1752115129233" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/OleanderJS$main__1_.coverage" NAME="main (1) 覆盖结果" MODIFIED="1752116049951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../OleanderJS - 副本" />
     <SUITE FILE_PATH="coverage/OleanderJS$scratch.coverage" NAME="scratch 覆盖结果" MODIFIED="1751870382610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
-    <SUITE FILE_PATH="coverage/OleanderJS$main.coverage" NAME="main 覆盖结果" MODIFIED="1751870757508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/OleanderJS$main.coverage" NAME="main 覆盖结果" MODIFIED="1752116796177" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

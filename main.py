@@ -1,4 +1,5 @@
 import os, json5, json, sys, argparse
+import ArkOfObjectPro as ArkPRO
 import ArkOfObject as ark
 from PageProDependencyLibrary import PageProCompilation
 from ReusableFunctions import  *
@@ -59,6 +60,10 @@ Warning: The current API is higher than the target API version (may be able to r
 
 
 # 依赖函数
+def path(file_path):
+    return os.path.join(OleanderJS_project_path, "APP_Scope", file_path.split(": ")[0].replace("$", ""), file_path.split(": ")[1])
+def Oleander_r(file_path):
+    return file_to_data_url(path(file_path))
 ids = []
 class UIComponent:
     def __init__(self):
@@ -69,24 +74,36 @@ class UIComponent:
     def set_style(self, **kwargs):
         self.styles.update(kwargs)
         return self
-    def add_child(self, child):
-        self.children.append(child)
+    def style(self, **kwargs):
+        return self.set_style(**kwargs)
+    def set_attributes(self, key, value):
+        setattr(self, key, value)
+        return self
+    def SA(self, key, value):
+        return self.set_attributes(key, value)
+    def add_child(self, *childs):
+        childs = list(childs)
+        for child in childs:
+            self.children.append(child)
         return self
     def condition(self, condition):
         self.render2 = self.render
         def a():
             return "<script>document.write(\""+self.render2().replace('"', r'\"')+"\");setInterval(() => {document.getElementById('"+self.id+"').style.display = 'none';if ("+condition+") {document.getElementById('"+self.id+"').style.display = 'block';}}, 100)</script>"
         self.render = a
+        return self
     def if_render(self, condition):
         self.condition(condition)
+        return self
     def for_render(self, f):
         self.render2 = self.render
         def a():
             return "<script>" + f + ".forEach(item => {document.write(`"+self.render2().replace('"', r'\"')+"`);});</script>"
         self.render = a
+        return self
     def render_original(self):
-            raise NotImplementedError("""呈现方法必须由子类实现
-    render method must be implemented by subclasses""")
+        raise NotImplementedError("""呈现方法必须由子类实现
+render method must be implemented by subclasses""")
     def render(self):
         self.id = str(id(self))
         ids.append(self.id)
@@ -200,14 +217,19 @@ class Iframe(UIComponent):
         self.width = width
         self.height = height
         self.style = ""
-    def set_style(self, **kwargs):
-        self.style = "; ".join([f"{key}: {value}" for key, value in kwargs.items()])
     def render_original(self):
         for Iframe_page in app_json5["page"]:
             if Iframe_page["name"] == self.src:
                 # 返回一个iframe标签，包含src和其他属性
                 return f'<iframe id=\"{self.id}\" width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
         return None
+class if_UIComponent(UIComponent):
+    def __init__(self, condition=""):
+        super().__init__()
+        self.condition = condition
+    def render_original(self):
+        self.children[0].if_render(self.condition)
+        return self.children[0].render()
 def loading_page(page_loading, name, mode="init"):
     with open(os.path.join(OleanderJS_project_path, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
         f = f.read()
@@ -229,9 +251,9 @@ def loading_page(page_loading, name, mode="init"):
 # 编译
 def compilation(text):
     text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
-    exec(text_list[1], globals())
+    exec(replace_outside_quotes(text_list[1], [["$", "Oleander_"]]), globals())
     try:
-        icon_path = os.path.join(OleanderJS_project_path, "APP_Scope", app_json5['APP_Scope']['icon'].split(": ")[0].replace("$", ""), app_json5['APP_Scope']['icon'].split(": ")[1])
+        icon_path = path(app_json5['APP_Scope']['icon'])
         mime_type = filetype.guess(icon_path)
         if mime_type is None:
             mime_type = "image/png"
@@ -245,7 +267,9 @@ html = ""
 for page in app_json5["page"]:
     if page["name"] == "init":
         if fapi_version == "":
-            page_init = compilation(ark.ark(loading_page(page, "init.yh"), "into"))
+            page_init = compilation(ArkPRO.ArkPRO(loading_page(page, "init.yh"), "into"))
+        elif fapi_version == "ArkPRO":
+            page_init = compilation(ArkPRO.ArkPRO(loading_page(page, "init.yh"), "ArkPRO"))
         elif fapi_version == "ark":
             page_init = compilation(ark.ark(loading_page(page, "init.yh"), "ark"))
         elif fapi_version == "object":
