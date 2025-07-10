@@ -266,16 +266,16 @@ page_init = ""
 html = ""
 for page in app_json5["page"]:
     if page["name"] == "init":
-        if fapi_version == "":
-            page_init = compilation(ArkPRO.ArkPRO(loading_page(page, "init.yh"), "into"))
-        elif fapi_version == "ArkPRO":
-            page_init = compilation(ArkPRO.ArkPRO(loading_page(page, "init.yh"), "ArkPRO"))
+        if fapi_version == "ArkPRO":
+            page_init = compilation(ArkPRO.ArkPRO(loading_page(page, "init.yh"), "ArkPRO", get_all_subclasses(UIComponent)))
         elif fapi_version == "ark":
             page_init = compilation(ark.ark(loading_page(page, "init.yh"), "ark"))
         elif fapi_version == "object":
             page_init = compilation(loading_page(page, "init.yh"))
+        else:
+            page_init = compilation(ArkPRO.ArkPRO(loading_page(page, "init.yh"), "into", get_all_subclasses(UIComponent)))
     else:
-        PageProCompilation(loading_page, fapi_version, page, compilation, OleanderJS_project_path)
+        PageProCompilation(loading_page, fapi_version, page, compilation, OleanderJS_project_path, UIComponent)
 build_dir = os.path.join(OleanderJS_project_path, "build")
 if not os.path.exists(build_dir):
     os.makedirs(build_dir)

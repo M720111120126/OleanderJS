@@ -92,7 +92,7 @@ Oleander UI 部分的開啟標誌
 
 ##### 權限獲取方式-靜態獲取
 
-這將會在 app 啟動的時候向使用者請求權限。
+這將會在 app 啟動的時候向用戶請求權限。
 
 在 `app.json5` 中定義。
 
@@ -110,7 +110,7 @@ Oleander UI 部分的開啟標誌
 
 ##### 權限獲取方式-動態獲取
 
-這將會在 app 執行至導入的地方的時候向使用者請求權限。
+這將會在 app 運行至導入的地方的時候向用戶請求權限。
 
 使用 `#include` 導入
 
@@ -120,39 +120,48 @@ Oleander UI 部分的開啟標誌
 
 ### Oleander UI 部分
 
-本文檔介紹了如何使用提供的 UI 元件，幫助你快速建立和渲染介面。文檔將通過詳細的示例，幫助你理解如何構建互動式和響應式 UI。
+本文檔介紹了如何使用提供的 UI 組件，幫助你快速建立和渲染介面。文檔將通過詳細的示例，幫助你理解如何構建互動式和響應式 UI。
 
 ### 0. Oleander UI 語法
 
-#### 佈局元件
+#### 佈局組件
 
-使用 `佈局元件名稱() {}` 請注意，屬性（css 屬性）的設定需要尾隨逗號
+使用 `佈局組件名稱() {}` 請注意，屬性（css 屬性）的設定需要尾隨逗號
 
 ```OleanderJS
-佈局元件名稱() {
-  包含的元件
+佈局組件名稱() {
+  包含的組件
 }
 .style(屬性=值)
 ```
 
-#### 基礎元件
+#### 基礎組件
 
 ##### OleanderUI-ArkPRO 框架（更推薦）
 
 請注意尾隨逗號
 
-`{}` 中使用 `.x=y` 更改屬性，使用 `.x(y)` 調用方法
+使用 `.SA("x",y)` 更改屬性，使用 `.x(y)` 調用方法
 
 ```OleanderJS
-Button() {}
-.text = "1"
+Button()
+.SA("text", "1")
+.set_on_click("alert('按鈕1被點擊')")
+```
+
+更改屬性的特殊方式支持通過 `組件名稱(屬性)` 的方法更改屬性，這種方法叫做 `DCA`
+
+比如上面的例子就可以寫成
+
+```OleanderJS
+Button("1")
 .set_on_click("alert('按鈕1被點擊')")
 ```
 
 #### 條件渲染
 ```OleanderJS
-if(條件) {
-  條件渲染的元件
+if("條件") {
+  條件渲染的組件
 }
 ```
 
@@ -166,7 +175,7 @@ x() {}
 
 #### 示例：
 
-見專案 `/ProjectExample-ark` 資料夾
+見項目 `/ProjectExample-ark` 資料夾
 
 ##### OleanderUI-object 框架（更強大）
 
@@ -177,7 +186,7 @@ x() {}
 ```OleanderJS
 Button = Button()
 Button.text = "1"
-Button.on_click = "alert('按鈕1被點擊')"
+Button.on_click = "alert('按鈕1被點擊')
 ```
 
 #### 條件渲染
@@ -199,113 +208,129 @@ Button.on_click = "alert('按鈕1被點擊')"
 
 #### 示例：
 
-見專案 `/ProjectExample-object` 資料夾
+見項目 `/ProjectExample-object` 資料夾
 
-### 1. 基礎元件
+### 1. 基礎組件
 
-這些基礎元件是 UI 構建的核心，可以通過組合和定制這些元件來構建你的介面。
+這些基礎組件是 UI 構建的核心，可以通過組合和定制這些組件來構建你的介面。
 
 #### 1.1 `UIComponent` 類別
-所有 UI 元件都繼承自 `UIComponent` 類別。該類別包含常見的樣式和子元件管理功能。
+所有 UI 組件都繼承自 `UIComponent` 類別。該類別包含常見的樣式和子組件管理功能。
 
 ##### 方法：
-- `set_style(**kwargs)`：設定樣式，支援傳入多個 CSS 屬性和值。
-- `render()`：渲染該元件並返回 HTML。
+- `set_style(**kwargs)`：設定樣式，支持傳入多個 CSS 屬性和值。
+- `render()`：渲染該組件並返回 HTML。
 
 ##### 特性
-- `Text`：可以使用`js_`前綴以使用在 JavaScript 中定義的變數作為顯示的文字
+- `text屬性`：可以使用`js_`前綴以使用在 JavaScript 中定義的變數作為顯示的文字
 
 #### 1.2 `Text` 類別
 
-文字元件，允許建立文字。
+文字組件，允許建立文字。
 
 ##### 屬性：
 - `text`：顯示的文字
+
+##### DCA：
+`Text(text="", size=1)`
 
 #### 1.3 `Button` 類別
 
-按鈕元件，允許使用者建立可點擊的按鈕。
+按鈕組件，允許用戶建立可點擊的按鈕。
 
 ##### 方法：
-- `set_on_click(callback)`：設定按鈕的點擊事件，可以傳入 JavaScript 程式碼或回呼函數。（依賴於 on_click 屬性）
+- `set_on_click(callback)`：設定按鈕的點擊事件，可以傳入 JavaScript 程式碼或回調函數。（依賴於 on_click 屬性）
 
 ##### 屬性：
 - `text`：顯示的文字
-- `on_click`：設定按鈕的點擊事件，可以傳入 JavaScript 程式碼或回呼函數。
+- `on_click`：設定按鈕的點擊事件，可以傳入 JavaScript 程式碼或回調函數。
+
+##### DCA：
+`Button(text="")`
 
 #### 1.4 `Radio` 類別
 
-單選框元件，允許使用者在多個選項中選擇一個。
+單選框組件，允許用戶在多個選項中選擇一個。
 
-##### 方法
-
+##### 方法:
 - `set_checked(True)`：是否預設選中
+
+##### DCA：
+`Radio(name="", value="")`
 
 #### 1.5 `Toggle` 類別
 
-切換按鈕元件，可以在兩種狀態（如開啟/關閉）之間切換。
+切換按鈕組件，可以在兩種狀態（如開啟/關閉）之間切換。
 
-##### 方法
+##### 方法:
 
 - `set_checked(True)`：是否預設選中
 
-##### 屬性
+##### 屬性:
 
 - `label_on`：開啟時顯示的文字
 - `label_off`：關閉時顯示的文字
 
+##### DCA:
+`Toggle(label_on="", label_off="")`
+
 #### 1.6 `Progress` 類別
 
-進度條元件，用於顯示任務的完成進度。
+進度條組件，用於顯示任務的完成進度。
 
-##### 屬性
-
+##### 屬性：
 - `value`：進度
+
+##### DCA：
+`Progress(value=0)`
 
 #### 1.7 `Image` 類別
 
-圖片元件，用於在介面中嵌入圖片。
+圖片組件，用於在介面中嵌入圖片。
 
-##### 屬性
-
+##### 屬性：
 - `src`：圖片地址
 
-### 2. 佈局元件
+##### DCA：
+`Image(src="")`
 
-佈局元件用來控制多個子元件的排版。你可以使用 `Row` 或 `Column` 類別來組織元件。
+### 2. 佈局組件
+
+佈局組件用來控制多個子組件的排版。你可以使用 `Row` 或 `Column` 類別來組織組件。
 
 #### 2.1 `Row` 類別
 
-行佈局，子元件按水平方向排列。
+行佈局，子組件按水平方向排列。
 
 #### 2.2 `Column` 類別
 
-列佈局，子元件按垂直方向排列。
+列佈局，子組件按垂直方向排列。
 
-### 3. 互動元件
+### 3. 互動組件
 
-互動元件如 `Dialog` 和 `Menu` 可以幫助你建立包含互動式內容的彈窗和導航選單。
+互動組件如 `Dialog` 和 `Menu` 可以幫助你建立包含互動式內容的彈窗和導航選單。
 
 #### 3.1 `Dialog` 類別
 
-對話框元件，用於顯示訊息或內容。
+對話框組件，用於顯示消息或內容。
 
-##### 屬性
-
+##### 屬性：
 - `title`：標題
 - `content`：內容
 
+##### DCA：
+`Dialog(title="", content="")`
+
 #### 3.2 `Menu` 類別
 
-選單元件，用於建立可點擊的列表項。
+選單組件，用於建立可點擊的列表項。
 
-##### 方法
-
-- `add_item`：新增列表項
+##### 方法：
+- `add_item`：添加列表項
 
 ### 4. 高級用法
 
-#### 4.1 條件渲染（全部元件可使用的方法）
+#### 4.1 條件渲染（全部組件可使用的方法）
 
 可以判斷條件並決定是否渲染
 
@@ -324,7 +349,7 @@ Button() {
 
 #### 4.2 頁面調用
 
-可以通過設定元件的屬性來嵌入其他的頁面
+可以通過設定組件的屬性來嵌入其他的頁面
 
 ##### 屬性
 
@@ -337,44 +362,6 @@ Button() {
 iframe = Iframe(src="pay", width="800", height="600")
 iframe.set_style(border="2px solid black")
 html = button.render() + iframe.render() + auto_js_code
-```
-
-#### 4.3 組合複雜佈局
-
-你可以通過將多個佈局元件（如 `Row` 和 `Column`）嵌套在一起，建立複雜的佈局。
-
-##### 示例：
-```OleanderJS
-Row() {
-  "background" : "lightblue",
-  "padding" : "20px",
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "1",
-      data_on_click: "alert('按鈕1被點擊')",
-    }
-  }
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "3",
-      data_on_click: "alert('按鈕3被點擊')",
-    }
-    Button() {
-      data_text : "2-白天才能看見的按鈕",
-      data_on_click: "alert('按鈕2被點擊')",
-      method_condition: "isDaytime"
-    }
-    Button() {
-      data_text : "2-晚上才能看見的按鈕",
-      data_on_click: "alert('按鈕2被點擊')",
-      method_condition: "!isDaytime"
-    }
-  }
-}
 ```
 
 ---
@@ -427,7 +414,7 @@ Row() {
 {
   "Minimum-required-API-version": "0.10.9",// 最低相容的 API 版本，必需
   "Target-API-version": "0.10.9",// 目標的 API 版本，必需
-  "name": "demo",// 專案名及模組 root 包名，必需
+  "name": "demo",// 項目名及模組 root 包名，必需
   "version": "1.0.0",// 模組版本資訊，必需
   "compile-option": {
     "version": true
@@ -448,16 +435,16 @@ Row() {
 "compile-option": {
   "version": true,// 獲取 API 版本，使用 true 或 false 控制
   "skip_env_check": true,// 跳過環境檢查，使用 true 或 false 控制
-  "fapi_version": "ark"// 指定 API 版本，有 object 和 ark 兩個版本可選
+  "fapi_version": "ArkPRO"// 指定 API 版本，有 object 和 ark 兩個版本可選
 }
 
 ```
 
-先 `cd` 至您的專案資料夾
+先 `cd` 至您的項目資料夾
 
 直接執行 main.py
 
 將編譯為 app.html
 
 注意：
-* 本教程適用於 OleanderJS-API V1.10.9 BETA 版
+* 本教程適用於 OleanderJS-API V1.12.5 版

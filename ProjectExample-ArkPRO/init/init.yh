@@ -21,41 +21,31 @@ let i = false;
 # UI_start
 Row() {
   Column() {
-    Button() {}
-    .SA("text","1")
+    Button("1")
     .set_on_click("alert('按钮1被点击')")
-    Button() {}
-    .SA("text","js_i")
+    Button("js_i")
     .set_on_click("i=true;")
-    Text() {}
-    .SA("text","js_i")
-    Text() {}
-    .SA("text","js_times")
+    Text("js_i")
+    Text("js_times")
   }
   .style(margin="20px",padding="10px")
   Column() {
-    Button() {}
-    .SA("text","跳转")
+    Button("跳转")
     .set_on_click("router.pushUrl('JumpTest.html')")
     if("isDaytime") {
-      Button() {}
-      .SA("text","2-白天才能看见的按钮")
+      Button("2-白天才能看见的按钮")
       .set_on_click("alert('按钮2被点击')")
     }
     if("!isDaytime") {
-      Button() {}
-      .SA("text","2-晚上才能看见的按钮")
+      Button("2-晚上才能看见的按钮")
       .set_on_click("alert('按钮2被点击')")
     }
     if("!i") {
-      Text() {}
-      .SA("text","未点击")
+      Text("未点击")
     }
-    Text() {}
-    .SA("text","未跳转")
+    Text("未跳转")
     Column() {
-      Button() {}
-      .SA("text","${item}")
+      Button("${item}")
       .set_on_click("alert(${item})")
       .for_render("[1,2,3]")
     }

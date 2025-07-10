@@ -2,11 +2,18 @@ import sys
 import ArkOfObject as ark
 from ReusableFunctions import  *
 
-def ArkPRO(s:str, m:str):
+def ArkPRO(s:str, m:str, UIComponent_Subclasses:list):
     text_list = replace_outside_quotes(s, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
-    return f'{text_list[0]}\n# UI_start\n{compilation(replace_outside_quotes(text_list[1], [["if", "if_UIComponent"]]), m)}'
-def compilation(input_str:str, m:str="into"):
+    return f'{text_list[0]}\n# UI_start\n{compilation(replace_outside_quotes(text_list[1], [["if", "if_UIComponent"]]), UIComponent_Subclasses, m)}'
+def compilation(input_str:str, UIComponent_Subclasses:list, m:str="into"):
     try:
+        for UIComponent_Subclasse in UIComponent_Subclasses:
+            UIComponent_Subclasse = UIComponent_Subclasse.__name__
+            for UIComponent_Subclasse_quote in find_lines_with_text_outside_quotes(input_str, UIComponent_Subclasse):
+                if not find_lines_with_text_outside_quotes(UIComponent_Subclasse_quote, "{"):
+                    UIComponent_Subclasse_quote_new = replace_outside_quotes(UIComponent_Subclasse_quote, [[")", "§⁋•“௹"]])
+                    input_str = input_str.replace(UIComponent_Subclasse_quote, UIComponent_Subclasse_quote_new)
+        input_str = replace_outside_quotes(input_str, [["§⁋•“௹", ") {}"]])
         def find_UIComponent(text: str) -> str:
             for i in find_lines_with_text_outside_quotes(text, ") {"):
                 if not find_lines_with_text_outside_quotes(i, ","):

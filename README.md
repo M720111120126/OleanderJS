@@ -142,11 +142,20 @@ Oleander UI部分的开启标志
 
 请注意尾随逗号
 
-`{}` 中使用 `.x=y` 更改属性，使用 `.x(y)` 调用方法
+使用 `.SA("x",y)` 更改属性，使用 `.x(y)` 调用方法
 
 ```OleanderJS
-Button() {}
-.text = "1"
+Button()
+.SA("text", "1")
+.set_on_click("alert('按钮1被点击')")
+```
+
+更改属性的特殊方式支持通过 `组件名称(属性)` 的方法更改属性，这种方法叫做 `DCA`
+
+比如上面的例子就可以写成
+
+```OleanderJS
+Button("1")
 .set_on_click("alert('按钮1被点击')")
 ```
 
@@ -214,7 +223,7 @@ Button.on_click = "alert('按钮1被点击')"
 - `render()`：渲染该组件并返回 HTML。
 
 ##### 特性
-- `Text`：可以使用`js_`前缀以使用在JavaScript中定义的变量作为显示的文本
+- `text属性`：可以使用`js_`前缀以使用在JavaScript中定义的变量作为显示的文本
 
 #### 1.2 `Text` 类
 
@@ -222,6 +231,9 @@ Button.on_click = "alert('按钮1被点击')"
 
 ##### 属性：
 - `text`：显示的文本
+
+##### DCA：
+`Text(text="", size=1)`
 
 #### 1.3 `Button` 类
 
@@ -234,42 +246,54 @@ Button.on_click = "alert('按钮1被点击')"
 - `text`：显示的文本
 - `on_click`：设置按钮的点击事件，可以传入 JavaScript 代码或回调函数。
 
+##### DCA：
+`Button(text="")`
+
 #### 1.4 `Radio` 类
 
 单选框组件，允许用户在多个选项中选择一个。
 
-##### 方法
-
+##### 方法:
 - `set_checked(True)`：是否默认选中
+
+##### DCA：
+`Radio(name="", value="")`
 
 #### 1.5 `Toggle` 类
 
 切换按钮组件，可以在两种状态（如开启/关闭）之间切换。
 
-##### 方法
+##### 方法:
 
 - `set_checked(True)`：是否默认选中
 
-##### 属性
+##### 属性:
 
 - `label_on`：开启时显示的文本
 - `label_off`：关闭时显示的文本
+
+##### DCA:
+`Toggle(label_on="", label_off="")`
 
 #### 1.6 `Progress` 类
 
 进度条组件，用于显示任务的完成进度。
 
-##### 属性
-
+##### 属性：
 - `value`：进度
+
+##### DCA：
+`Progress(value=0)`
 
 #### 1.7 `Image` 类
 
 图片组件，用于在界面中嵌入图片。
 
-##### 属性
-
+##### 属性：
 - `src`：图片地址
+
+##### DCA：
+`Image(src="")`
 
 ### 2. 布局组件
 
@@ -291,17 +315,18 @@ Button.on_click = "alert('按钮1被点击')"
 
 对话框组件，用于显示消息或内容。
 
-##### 属性
-
+##### 属性：
 - `title`：标题
 - `content`：内容
+
+##### DCA：
+`Dialog(title="", content="")`
 
 #### 3.2 `Menu` 类
 
 菜单组件，用于创建可点击的列表项。
 
-##### 方法
-
+##### 方法：
 - `add_item`：添加列表项
 
 ### 4. 高级用法
@@ -338,44 +363,6 @@ Button() {
 iframe = Iframe(src="pay", width="800", height="600")
 iframe.set_style(border="2px solid black")
 html = button.render() + iframe.render() + auto_js_code
-```
-
-#### 4.3 组合复杂布局
-
-你可以通过将多个布局组件（如 `Row` 和 `Column`）嵌套在一起，创建复杂的布局。
-
-##### 示例：
-```OleanderJS
-Row() {
-  "background" : "lightblue",
-  "padding" : "20px",
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "1",
-      data_on_click: "alert('按钮1被点击')",
-    }
-  }
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "3",
-      data_on_click: "alert('按钮3被点击')",
-    }
-    Button() {
-      data_text : "2-白天才能看见的按钮",
-      data_on_click: "alert('按钮2被点击')",
-      method_condition: "isDaytime"
-    }
-    Button() {
-      data_text : "2-晚上才能看见的按钮",
-      data_on_click: "alert('按钮2被点击')",
-      method_condition: "!isDaytime"
-    }
-  }
-}
 ```
 
 ---
@@ -449,7 +436,7 @@ Row() {
 "compile-option": {
   "version": true,// 获取 API 版本，使用true或false控制
   "skip_env_check": true,// 跳过环境检查，使用true或false控制
-  "fapi_version": "ark"// 指定 API 版本，有object和ark两个版本可选
+  "fapi_version": "ArkPRO"// 指定 API 版本，有object和ark两个版本可选
 }
 
 ```
@@ -461,4 +448,4 @@ Row() {
 将编译为 app.html
 
 注意：
-* 本教程适用于 OleanderJS-API V1.10.9 BETA 版
+* 本教程适用于 OleanderJS-API V1.12.5 版

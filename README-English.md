@@ -28,9 +28,9 @@ Preprocessing directives start with `#` and are expanded at compile time.
 ```
 Note:
 
-1.  Here, `file` is the relative directory of the page code, such as `./entry/init.yh`. Using `#include preprocess_test.yh` will fill in `./entry/preprocess_test.yh`.
+1.  Here, `file` is the relative directory of the page code, such as `./entry/init.yh`. Using `#include preprocess_test.yh` fills in `./entry/preprocess_test.yh`.
 
-2.  All included items must have their names written in the `dependencies` of the page corresponding to `app.json5`, such as:
+2.  Everything included must have its name written in the `dependencies` of the page corresponding to `app.json5`. For example:
 ```json5
 {
   "page": [// Page table
@@ -38,16 +38,16 @@ Note:
       "name": "init",// Page name
       "srcPath": "./entry",// Page location (relative path)
       "dependencies": [
-        "preprocess_test.yh"// Fill in the name
+        "preprocess_test.yh"// Enter the name
       ]// Dependency library table
     }
   ]
 }
 ```
 
-##### `#include DependencyLibrary`
+##### `#include dependency library`
 
-Available annotation libraries
+Available annotation libraries:
 
 * [data](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/data_English.md)
 * [router](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/router_English.md)
@@ -65,7 +65,7 @@ A replacement
 
 ##### `# UI_start`
 
-The opening flag of the Oleander UI section
+The start flag of the Oleander UI section
 
 ```OleanderJS
 #include ……
@@ -77,7 +77,7 @@ Some JS code
 Oleander UI code should be written here
 ```
 
-#### JS Call
+#### JS Calling
 
 See the example of `# UI_start` above. JS can be executed directly by writing it in the Oleander section.
 
@@ -88,11 +88,11 @@ See the example of `# UI_start` above. JS can be executed directly by writing it
 *   [`com.oleander.file` Get a file space belonging to the app](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/com.oleander.file_English.md)
 *   [`con.oleander.os.file` Get the file space shared by all OleanderAPP](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/com.oleander.os.file_English.md)
 
-Please note: Requesting permissions will not throw an exception. After obtaining permissions, you should check whether the requested permissions are in the `rights_name_json` list.
+Please note: Failure to request permission will not throw an exception. After obtaining permission, you should check whether the requested permission is in the `rights_name_json` list.
 
 ##### Permission Acquisition Method - Static Acquisition
 
-This will request permissions from the user when the app starts.
+This will request permission from the user when the app starts.
 
 Defined in `app.json5`.
 
@@ -110,7 +110,7 @@ Defined in `app.json5`.
 
 ##### Permission Acquisition Method - Dynamic Acquisition
 
-This will request permissions from the user when the app runs to the place where it is imported.
+This will request permission from the user when the app runs to the place where it is imported.
 
 Import using `#include`
 
@@ -120,7 +120,7 @@ Import using `#include`
 
 ### Oleander UI Section
 
-This document introduces how to use the provided UI components to help you quickly create and render interfaces. The document will help you understand how to build interactive and responsive UIs through detailed examples.
+This document describes how to use the provided UI components to help you quickly create and render interfaces. The document will help you understand how to build interactive and responsive UIs through detailed examples.
 
 ### 0. Oleander UI Syntax
 
@@ -139,13 +139,22 @@ LayoutComponentName() {
 
 ##### OleanderUI-ArkPRO Framework (More Recommended)
 
-Please note the trailing comma
+Please note the trailing comma.
 
-Use `.x=y` in `{}` to change attributes, and use `.x(y)` to call methods.
+Use `.SA("x",y)` to change attributes, use `.x(y)` to call methods.
 
 ```OleanderJS
-Button() {}
-.text = "1"
+Button()
+.SA("text", "1")
+.set_on_click("alert('Button 1 was clicked')")
+```
+
+A special way to change attributes supports changing attributes through the `ComponentName(attribute)` method. This method is called `DCA`.
+
+For example, the above example can be written as
+
+```OleanderJS
+Button("1")
 .set_on_click("alert('Button 1 was clicked')")
 ```
 
@@ -172,7 +181,7 @@ See the `/ProjectExample-ark` folder in the project.
 
 Similar to Python objects
 
-Use the `object.attribute=content` prefix to change attributes, and use the `object.method(content)` prefix to call methods.
+Use the `object.attribute=content` prefix to change attributes, use the `object.method(content)` prefix to call methods.
 
 ```OleanderJS
 Button = Button()
@@ -185,7 +194,7 @@ Button.on_click = "alert('Button 1 was clicked')"
 Use the `condition` method
 
 ```OleanderJS
-对象.condition("js returns a bool expression")
+object.condition("js expression that returns bool")
 ```
 
 #### Loop Rendering
@@ -193,7 +202,7 @@ Use the `condition` method
 Use the `for_render` method
 
 ```OleanderJS
-对象.for_render(item1,item2...)
+object.for_render(item1,item2...)
 ```
 This will render three "objects" and display them as 1, 2... `${item}` can be used anywhere that needs to call a list (such as `[1,2...]` here).
 
@@ -211,70 +220,94 @@ All UI components inherit from the `UIComponent` class. This class contains comm
 
 ##### Methods:
 
-*   `set_style(**kwargs)`: Set styles, supporting passing in multiple CSS attributes and values.
-*   `render()`: Render the component and return HTML.
+-   `set_style(**kwargs)`: Set styles, supporting passing in multiple CSS attributes and values.
+-   `render()`: Render the component and return HTML.
 
 ##### Features
 
-*   `Text`: You can use the `js_` prefix to use variables defined in JavaScript as the displayed text.
+-   `text attribute`: You can use the `js_` prefix to use variables defined in JavaScript as the displayed text.
 
 #### 1.2 `Text` Class
 
-Text component, allowing you to create text.
+Text component, allows creating text.
 
 ##### Attributes:
 
-*   `text`: The text to display
+-   `text`: The text to display
+
+##### DCA:
+
+`Text(text="", size=1)`
 
 #### 1.3 `Button` Class
 
-Button component, allowing users to create clickable buttons.
+Button component, allows users to create clickable buttons.
 
 ##### Methods:
 
-*   `set_on_click(callback)`: Set the button's click event, which can pass in JavaScript code or a callback function. (Depends on the on\_click attribute)
+-   `set_on_click(callback)`: Set the button's click event, you can pass in JavaScript code or a callback function. (Depends on the on_click attribute)
 
 ##### Attributes:
 
-*   `text`: The text to display
-*   `on_click`: Set the button's click event, which can pass in JavaScript code or a callback function.
+-   `text`: The text to display
+-   `on_click`: Set the button's click event, you can pass in JavaScript code or a callback function.
+
+##### DCA:
+
+`Button(text="")`
 
 #### 1.4 `Radio` Class
 
-Radio button component, allowing users to select one of multiple options.
+Radio button component, allows users to select one of multiple options.
 
-##### Methods
+##### Methods:
 
-*   `set_checked(True)`: Whether to select by default
+-   `set_checked(True)`: Whether to select by default
+
+##### DCA:
+
+`Radio(name="", value="")`
 
 #### 1.5 `Toggle` Class
 
-Toggle button component, which can switch between two states (such as on/off).
+Toggle button component, can switch between two states (such as on/off).
 
-##### Methods
+##### Methods:
 
-*   `set_checked(True)`: Whether to select by default
+-   `set_checked(True)`: Whether to select by default
 
-##### Attributes
+##### Attributes:
 
-*   `label_on`: The text displayed when turned on
-*   `label_off`: The text displayed when turned off
+-   `label_on`: The text displayed when turned on
+-   `label_off`: The text displayed when turned off
+
+##### DCA:
+
+`Toggle(label_on="", label_off="")`
 
 #### 1.6 `Progress` Class
 
 Progress bar component, used to display the completion progress of a task.
 
-##### Attributes
+##### Attributes:
 
-*   `value`: Progress
+-   `value`: Progress
+
+##### DCA:
+
+`Progress(value=0)`
 
 #### 1.7 `Image` Class
 
 Image component, used to embed images in the interface.
 
-##### Attributes
+##### Attributes:
 
-*   `src`: Image address
+-   `src`: Image address
+
+##### DCA:
+
+`Image(src="")`
 
 ### 2. Layout Components
 
@@ -296,24 +329,28 @@ Interactive components such as `Dialog` and `Menu` can help you create pop-up wi
 
 Dialog box component, used to display messages or content.
 
-##### Attributes
+##### Attributes:
 
-*   `title`: Title
-*   `content`: Content
+-   `title`: Title
+-   `content`: Content
+
+##### DCA:
+
+`Dialog(title="", content="")`
 
 #### 3.2 `Menu` Class
 
 Menu component, used to create clickable list items.
 
-##### Methods
+##### Methods:
 
-*   `add_item`: Add a list item
+-   `add_item`: Add a list item
 
 ### 4. Advanced Usage
 
-#### 4.1 Conditional Rendering (Methods Available for All Components)
+#### 4.1 Conditional Rendering (Method Available for All Components)
 
-You can determine conditions and decide whether to render
+You can determine the condition and decide whether to render
 
 ##### Example
 ```OleanderJS
@@ -324,63 +361,25 @@ Button() {
 }
 ```
 
-Note: The isDaytime function has already been defined using JS in the Oleander section. It returns true during the day and false at night.
+Note: The isDaytime function has already been defined in JS in the Oleander section. It returns true during the day and false at night.
 
 You can see the button during the day, but you can't see it when you open it again at night.
 
-#### 4.2 Page Call
+#### 4.2 Page Calling
 
-You can embed other pages by setting the attributes of the component
+You can embed other pages by setting the attributes of the component.
 
 ##### Attributes
 
-*   `src`: Page name
-*   `width`: Embedded width
-*   `height`: Embedded height
+-   `src`: Page name
+-   `width`: Embedded width
+-   `height`: Embedded height
 
 ##### Example:
 ```OleanderJS
 iframe = Iframe(src="pay", width="800", height="600")
 iframe.set_style(border="2px solid black")
 html = button.render() + iframe.render() + auto_js_code
-```
-
-#### 4.3 Combining Complex Layouts
-
-You can create complex layouts by nesting multiple layout components (such as `Row` and `Column`) together.
-
-##### Example:
-```OleanderJS
-Row() {
-  "background" : "lightblue",
-  "padding" : "20px",
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "1",
-      data_on_click: "alert('Button 1 was clicked')",
-    }
-  }
-  Column() {
-    "margin" : "20px",
-    "padding" : "10px",
-    Button() {
-      data_text : "3",
-      data_on_click: "alert('Button 3 was clicked')",
-    }
-    Button() {
-      data_text : "2-Button that can only be seen during the day",
-      data_on_click: "alert('Button 2 was clicked')",
-      method_condition: "isDaytime"
-    }
-    Button() {
-      data_text : "2-Button that can only be seen at night",
-      data_on_click: "alert('Button 2 was clicked')",
-      method_condition: "!isDaytime"
-    }
-  }
-}
 ```
 
 ---
@@ -417,7 +416,7 @@ Please install the json5 and filetype libraries first.
     }
   ],
   "APP_Scope": {// Software configuration
-    "icon": "$media: app_icon.png",// Icon, located in "APP_Scope/media/app_icon.png" $xx represents the path under "APP_Scope/xx"
+    "icon": "$media: app_icon.png",// Icon, located in "APP_Scope/media/app_icon.png" $xx means under the "APP_Scope/xx" path
     "name": "DEMO",// Name
     "lang":"zh_cn",// Language
     "require":[// Permissions that the APP needs to call
@@ -446,7 +445,7 @@ Please install the json5 and filetype libraries first.
 Additional compilation command options:
 
 ```
-“--fapi-version API版本” or “-fver API版本” Specify the API version
+“--fapi-version API version” or “-fver API version” Specify the API version
 “--version” or “-v” Get the API version
 “--skip-env-check” or “-e” Skip environment check
 
@@ -454,7 +453,7 @@ Can also be specified in build.json5
 "compile-option": {
   "version": true,// Get the API version, use true or false to control
   "skip_env_check": true,// Skip environment check, use true or false to control
-  "fapi_version": "ark"// Specify the API version, there are two versions available: object and ark
+  "fapi_version": "ArkPRO"// Specify the API version, there are two versions available: object and ark
 }
 
 ```
@@ -467,4 +466,4 @@ Will be compiled into app.html
 
 Note:
 
-*   This tutorial is applicable to OleanderJS-API V1.10.9 BETA version
+*   This tutorial is applicable to OleanderJS-API V1.12.5

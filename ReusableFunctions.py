@@ -39,3 +39,9 @@ def find_lines_with_text_outside_quotes(text: str, txt: str) -> list:
         if txt in modified_line:
             result_lines.append(line)
     return result_lines
+def get_all_subclasses(cls):
+    subclasses = []
+    for subclass in cls.__subclasses__():
+        subclasses.append(subclass)
+        subclasses.extend(get_all_subclasses(subclass))
+    return subclasses
