@@ -47,10 +47,11 @@ Oleander 部分只為 OleanderJS 帶來了預處理和 JS 調用特性
 
 ##### `#include 依賴庫`
 
-可用的標註庫
+可用的標準庫
 
 * [data](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/data_TraditionalChinese.md)
 * [router](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/router_TraditionalChinese.md)
+* [std](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/std_TraditionalChinese.md)
 
 ##### `#define value key`
 
@@ -447,4 +448,4 @@ html = button.render() + iframe.render() + auto_js_code
 將編譯為 app.html
 
 注意：
-* 本教程適用於 OleanderJS-API V1.12.5 版
+* 本教程適用於 OleanderJS-API V1.12.5/6 版

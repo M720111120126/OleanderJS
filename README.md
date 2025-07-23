@@ -47,10 +47,11 @@ Oleander部分只为OleanderJS带来了预处理和JS调用特性
 
 ##### `#include 依赖库`
 
-可用的标注库
+可用的标准库
 
 * [data](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/data.md)
 * [router](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/router.md)
+* [std](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/std.md)
 
 ##### `#define value key`
 
@@ -448,4 +449,4 @@ html = button.render() + iframe.render() + auto_js_code
 将编译为 app.html
 
 注意：
-* 本教程适用于 OleanderJS-API V1.12.5 版
+* 本教程适用于 OleanderJS-API V1.12.5/6 版

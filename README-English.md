@@ -47,10 +47,11 @@ Note:
 
 ##### `#include dependency library`
 
-Available annotation libraries:
+Available standard library:
 
 * [data](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/data_English.md)
 * [router](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/router_English.md)
+* [std](https://github.com/M720111120126/OleanderJS/blob/master/library/docs/std_English.md)
 
 ##### `#define value key`
 
@@ -466,4 +467,4 @@ Will be compiled into app.html
 
 Note:
 
-*   This tutorial is applicable to OleanderJS-API V1.12.5
+*   This tutorial is applicable to OleanderJS-API V1.12.5/6

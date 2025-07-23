@@ -14,6 +14,9 @@ if (rights_name_json.includes("jms") || window.confirm("应用想要获取 JZH�
         static state() {
             if (jms_window) {
                 if (jms_window.closed) {
+                    if (localStorage.getItem(cipher) === "NO") {
+                        return -1;
+                    }
                     return 2;
                 } else {
                     return 1;
@@ -25,7 +28,7 @@ if (rights_name_json.includes("jms") || window.confirm("应用想要获取 JZH�
         static get() {
             let user_json = localStorage.getItem(cipher);
             localStorage.removeItem(cipher);
-            return user_json;
+            return JSON.parse(user_json);
         }
     }
 }

@@ -4,6 +4,7 @@ import ArkOfObject as ark
 from PageProDependencyLibrary import PageProCompilation
 from ReusableFunctions import  *
 from RightsManagement import ImportModulesThatRequirePermission
+from VersionManager import VersionManager
 
 # 读取文件
 if os.path.exists("app.json5"):
@@ -36,6 +37,8 @@ parser.add_argument("-fver", "--fapi-version", help="""指定 API 版本
 Specify API version""", type=str, required=False)
 parser.add_argument("-v", "--version", help="""获取 API 版本
 Get the API version""", action="store_true")
+parser.add_argument("-V", "--verbose", help="""打印出工具链依赖的相关信息以及编译过程中执行的命令
+Print out information about toolchain dependencies and commands executed during the compilation process""", action="store_true")
 parser.add_argument("-e", "--skip-env-check", help="""跳过环境检查
 Get the API version""", action="store_true")
 args = vars(parser.parse_args())
@@ -48,6 +51,9 @@ else:
 if args["version"]:
     print(OleanderJS_json5["API-version"])
 if not args["skip_env_check"]:
+    if args["verbose"]:
+        print("The environment is being inspected")
+    OleanderJS_json5 = VersionManager(OleanderJS_json5, OleanderJS_api_path, args)
     if compare_versions(OleanderJS_json5["API-version"], build_json5["Minimum-required-API-version"]) == 2:
         sys.exit("""最低兼容的API版本高于当前API
 The minimum compatible API version is higher than the current API""")
@@ -57,7 +63,6 @@ Warning: The current API is lower than the target API version (may be able to ru
     elif compare_versions(OleanderJS_json5["API-version"], build_json5["Target-API-version"]) == 11:
         print("""警告：当前API高于目标的API版本（可能能够正常运行）
 Warning: The current API is higher than the target API version (may be able to run normally)""")
-
 
 # 依赖函数
 def path(file_path):
@@ -232,6 +237,8 @@ class if_UIComponent(UIComponent):
         return self.children[0].render()
 def loading_page(page_loading, name, mode="init"):
     with open(os.path.join(OleanderJS_project_path, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
+        if args["verbose"]:
+            print(f'Loading page {name}:page_loading="{page_loading}";mode="{mode}"')
         f = f.read()
         include = []
         for i in page_loading["dependencies"]:
@@ -251,6 +258,8 @@ def loading_page(page_loading, name, mode="init"):
 # 编译
 def compilation(text):
     text_list = replace_outside_quotes(text, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
+    if args["verbose"]:
+        print(f'Compiling.object-OleanderUI-yh=```{replace_outside_quotes(text_list[1], [["$", "Oleander_"]])}```')
     exec(replace_outside_quotes(text_list[1], [["$", "Oleander_"]]), globals())
     try:
         icon_path = path(app_json5['APP_Scope']['icon'])
@@ -265,6 +274,8 @@ def compilation(text):
 page_init = ""
 html = ""
 for page in app_json5["page"]:
+    if args["verbose"]:
+        print(f'Reading page:"{page}"')
     if page["name"] == "init":
         if fapi_version == "ArkPRO":
             page_init = compilation(ArkPRO.ArkPRO(loading_page(page, "init.yh"), "ArkPRO", get_all_subclasses(UIComponent)))
@@ -278,6 +289,10 @@ for page in app_json5["page"]:
         PageProCompilation(loading_page, fapi_version, page, compilation, OleanderJS_project_path, UIComponent)
 build_dir = os.path.join(OleanderJS_project_path, "build")
 if not os.path.exists(build_dir):
+    if args["verbose"]:
+        print("Creating compilation output folder")
     os.makedirs(build_dir)
 with open(os.path.join(OleanderJS_project_path, "build", "app.html"), "w", encoding="utf-8") as file:
+    if args["verbose"]:
+        print("Writing build.html file")
     file.write(page_init)

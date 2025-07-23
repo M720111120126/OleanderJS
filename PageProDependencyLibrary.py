@@ -15,5 +15,5 @@ def PageProCompilation(loading_page, fapi_version, page, compilation, OleanderJS
     build_path = os.path.join(OleanderJS_project_path, "build")
     if not os.path.exists(build_path):
         os.makedirs(build_path)
-    with open(os.path.join(OleanderJS_project_path, "build", f"{page["name"]}.html"), "w", encoding="utf-8") as file:
+    with open(os.path.join(OleanderJS_project_path, "build", f"{page['name']}.html"), "w", encoding="utf-8") as file:
         file.write(page_init)
