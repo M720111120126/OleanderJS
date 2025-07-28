@@ -1,23 +1,26 @@
 import urllib.request, json5, os
 from typing import Union
+from OleanderJsInformation import OleanderJS_json5, OleanderJS_api_path, args
 
-def VersionManager(OleanderJS_json5, OleanderJS_api_path, args):
+def VersionManager() -> dict[str, Union[str, int, dict[str, int]]]:
     if args["verbose"]:
         print("VersionManager")
     with urllib.request.urlopen("https://oleanderjs.xn--jzh-k69dm57c4fd.xyz/OleanderJS.json5", timeout=5) as response:
         if args["verbose"]:
             print("urllib.request.urlopen OleanderJS.json5")
         dict_original = json5.loads(response.read().decode('utf-8'))
-        assert type(dict_original) == Union[dict[str, int], dict[str, dict[str, int]]], """标准库更新服务器出现问题，请尝试绕过环境检测
+        content: dict = dict_original if isinstance(dict_original, dict) else {}
+        assert type(content["library"]) == dict, """标准库更新服务器出现问题，请尝试绕过环境检测
 The standard library update server has encountered an issue, please try bypassing the environment check"""
-        content: Union[dict[str, int], dict[str, dict[str, int]]] = dict_original
-        assert type(content["library"]) == dict[str, int], """标准库更新服务器出现问题，请尝试绕过环境检测
-The standard library update server has encountered an issue, please try bypassing the environment check"""
+        assert type(OleanderJS_json5["library"]) == dict, """API版本文件出现问题
+The API version file has encountered an issue"""
         if content["API-version"] == OleanderJS_json5["API-version"]:
             for key in OleanderJS_json5["library"].keys():
                 if content["library"][key] > OleanderJS_json5["library"][key]:
                     if args["verbose"]:
                         print(f"Updata {key}")
+                    print(f"""正在更新标准库 {key}。 请在更新完毕后自行在 oleanderjs.xn--jzh-k69dm57c4fd.xyz 上下载最新文档
+Updating the standard library {key}. Please download the latest documentation from oleanderjs.xn--jzh-k69dm57c4fd.xyz after the update is complete""")
                     with urllib.request.urlopen(f"https://oleanderjs.xn--jzh-k69dm57c4fd.xyz/library/{key}.js", timeout=5) as response_key:
                         js_new_original = json5.loads(response_key.read().decode('utf-8'))
                         js_new = js_new_original if isinstance(js_new_original, str) else {}

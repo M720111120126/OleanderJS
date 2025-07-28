@@ -366,23 +366,6 @@ Note: The isDaytime function has already been defined in JS in the Oleander sect
 
 You can see the button during the day, but you can't see it when you open it again at night.
 
-#### 4.2 Page Calling
-
-You can embed other pages by setting the attributes of the component.
-
-##### Attributes
-
--   `src`: Page name
--   `width`: Embedded width
--   `height`: Embedded height
-
-##### Example:
-```OleanderJS
-iframe = Iframe(src="pay", width="800", height="600")
-iframe.set_style(border="2px solid black")
-html = button.render() + iframe.render() + auto_js_code
-```
-
 ---
 
 ## Compilation

@@ -1,5 +1,6 @@
-import re, base64, filetype
+import re, base64, filetype, os
 from urllib.parse import quote_plus
+from OleanderJsInformation import OleanderJS_project_path
 
 def str_encrypt(text: str) -> str:
     return str(int.from_bytes(text.encode('utf-8'), byteorder='big')).translate(str.maketrans("0123456789", "abcdefghij"))
@@ -39,9 +40,23 @@ def find_lines_with_text_outside_quotes(text: str, txt: str) -> list:
         if txt in modified_line:
             result_lines.append(line)
     return result_lines
-def get_all_subclasses(cls):
+def get_all_subclasses(cls: type) -> list:
     subclasses = []
     for subclass in cls.__subclasses__():
         subclasses.append(subclass)
         subclasses.extend(get_all_subclasses(subclass))
     return subclasses
+def compare_versions(version1, version2):
+    v1_parts = list(map(int, version1.split('.')))
+    v2_parts = list(map(int, version2.split('.')))
+    max_length = max(len(v1_parts), len(v2_parts))
+    v1_parts += [0] * (max_length - len(v1_parts))
+    v2_parts += [0] * (max_length - len(v2_parts))
+    for v1, v2 in zip(v1_parts, v2_parts):
+        if v1 > v2:
+            return 1
+        elif v1 < v2:
+            return 2
+    return 0
+def path(file_path):
+    return os.path.join(OleanderJS_project_path, "APP_Scope", file_path.split(": ")[0].replace("$", ""), file_path.split(": ")[1])

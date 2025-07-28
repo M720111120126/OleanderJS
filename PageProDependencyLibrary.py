@@ -2,8 +2,10 @@ import ArkOfObject as ark
 import ArkOfObjectPro as ArkPRO
 import os
 from ReusableFunctions import  *
+from ObjectArkOfPython import UIComponent, loading_page, compilation
+from OleanderJsInformation import OleanderJS_project_path
 
-def PageProCompilation(loading_page, fapi_version, page, compilation, OleanderJS_project_path, UIComponent):
+def PageProCompilation(fapi_version: str, page) -> None:
     if fapi_version == "ArkPRO":
         page_init = compilation(ArkPRO.ArkPRO(loading_page(page, "init.yh"), "ArkPRO", get_all_subclasses(UIComponent)))
     elif fapi_version == "ark":
