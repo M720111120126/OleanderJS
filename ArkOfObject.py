@@ -48,6 +48,8 @@ def transform(s: str) -> str:
             if re_close.match(line):
                 last_closed = stack.pop()
                 continue
+            if last_closed is None:
+                sys.exit("transform error")
             m = re_style.match(line)
             if m:
                 body = m.group(1)
@@ -127,7 +129,8 @@ def compilation(input_str:str, m:str):
             replace_outside_quotes(i.replace("'", r"\'").replace('"', r'\"'), [[";", '']]), [[" ", ""]]) + '",', 1)
     output_str = replace_outside_quotes(output_str, [["}", "},"]])
     try:
-        output_str = json5.loads("{" + output_str + "}")
+        output_str_original = json5.loads("{" + output_str + "}")
+        output_str = output_str_original if isinstance(output_str_original, dict) else {}
         if len(output_str.keys()) > 1:
             sys.exit("""最外层只能使用一个组件
 The outermost layer can only use one component""")

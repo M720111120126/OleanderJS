@@ -1,4 +1,4 @@
-import os, json5
+import os, json5, toml
 from ReusableFunctions import  *
 
 def ImportModulesThatRequirePermission(str, OleanderJS_project_path, page_loading, name, loading_page):
@@ -9,11 +9,18 @@ def ImportModulesThatRequirePermission(str, OleanderJS_project_path, page_loadin
         with open(os.path.join(ModulesThatRequirePermission_path , i), "r", encoding='utf-8') as f2:
             i2 = i.replace(".js", "")
             include.append([f'#include {i2}', f2.read()])
-    with open(os.path.join(OleanderJS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
-        app_json5 = json5.loads(file.read())
-        for i in page_loading["dependencies"]:
-            if not i == name:
-                include.append([f'#include {i}', loading_page(page_loading, i)])
+    app_json5 = {}
+    if os.path.exists(os.path.join(OleanderJS_project_path, "app.toml")):
+        with open(os.path.join(OleanderJS_project_path, 'app.toml'), 'r', encoding='utf-8') as file:
+            app_json5_original = toml.loads(file.read())
+            app_json5 = app_json5_original if isinstance(app_json5_original, dict) else {}
+    elif os.path.exists(os.path.join(OleanderJS_project_path, "app.json5")):
+        with open(os.path.join(OleanderJS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
+            app_json5_original = json5.loads(file.read())
+            app_json5 = app_json5_original if isinstance(app_json5_original, dict) else {}
+    for i in page_loading["dependencies"]:
+        if not i == name:
+            include.append([f'#include {i}', loading_page(page_loading, i)])
     ModulesThatRequirePermission = ""
     for modules in app_json5["APP_Scope"]["require"]:
         with open(os.path.join(ModulesThatRequirePermission_path, modules)+".js", 'r', encoding='utf-8') as file:

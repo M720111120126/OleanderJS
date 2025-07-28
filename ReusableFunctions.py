@@ -1,7 +1,7 @@
 import re, base64, filetype
 from urllib.parse import quote_plus
 
-def str_encrypt(text):
+def str_encrypt(text: str) -> str:
     return str(int.from_bytes(text.encode('utf-8'), byteorder='big')).translate(str.maketrans("0123456789", "abcdefghij"))
 def str_decrypt(text:str):
     decoded_text = text.translate(str.maketrans("abcdefghij", "0123456789"))

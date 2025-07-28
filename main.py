@@ -13,22 +13,29 @@ if os.path.exists("app.json5") or os.path.exists("app.toml"):
 else:
     OleanderJS_project_path = input("OleanderJS_project_page $ ")
 OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
+build_json5 = {}
+app_json5 = {}
+OleanderJS_json5 = {}
 if os.path.exists(os.path.join(OleanderJS_project_path, "app.toml")):
     with open(os.path.join(OleanderJS_project_path, 'app.toml'), 'r', encoding='utf-8') as file:
-        app_json5 = toml.loads(file.read())
+        app_json5_original = toml.loads(file.read())
+        app_json5 = app_json5_original if isinstance(app_json5_original, dict) else {}
     with open(os.path.join(OleanderJS_project_path, 'build.toml'), 'r', encoding='utf-8') as file:
-        build_json5 = toml.loads(file.read())
+        build_json5_original = toml.loads(file.read())
+        build_json5 = build_json5_original if isinstance(build_json5_original, dict) else {}
 elif os.path.exists(os.path.join(OleanderJS_project_path, "app.json5")):
     with open(os.path.join(OleanderJS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
-        app_json5 = json5.loads(file.read())
+        app_json5_original = json5.loads(file.read())
+        app_json5 = app_json5_original if isinstance(app_json5_original, dict) else {}
     with open(os.path.join(OleanderJS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
-        build_json5 = json5.loads(file.read())
+        build_json5_ = json5.loads(file.read())
 else:
     print("""未找到项目配置文件
 No project configuration file found""")
     sys.exit(1)
 with open(os.path.join(OleanderJS_api_path, 'OleanderJS.json5'), 'r', encoding='utf-8') as file:
-    OleanderJS_json5 = json5.loads(file.read())
+    OleanderJS_json5_original = json5.loads(file.read())
+    OleanderJS_json5 = OleanderJS_json5_original if isinstance(OleanderJS_json5_original, dict) else {}
 
 # 检查环境
 def compare_versions(version1, version2):
@@ -232,19 +239,19 @@ class Iframe(UIComponent):
         self.src = src
         self.width = width
         self.height = height
-        self.style = ""
+        self.style_text = ""
     def render_original(self):
         for Iframe_page in app_json5["page"]:
             if Iframe_page["name"] == self.src:
                 # 返回一个iframe标签，包含src和其他属性
-                return f'<iframe id=\"{self.id}\" width="{self.width}" height="{self.height}" style="{self.style}">{compilation(loading_page(page, "init.yh"))}</iframe>'
+                return f'<iframe id=\"{self.id}\" width="{self.width}" height="{self.height}" style="{self.style_text}">{compilation(loading_page(page, "init.yh"))}</iframe>'
         return None
 class if_UIComponent(UIComponent):
     def __init__(self, condition=""):
         super().__init__()
-        self.condition = condition
+        self.condition_text = condition
     def render_original(self):
-        self.children[0].if_render(self.condition)
+        self.children[0].if_render(self.condition_text)
         return self.children[0].render()
 def loading_page(page_loading, name, mode="init"):
     with open(os.path.join(OleanderJS_project_path, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
