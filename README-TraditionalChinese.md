@@ -348,23 +348,6 @@ Button() {
 
 白天能看見 button，晚上再打開就看不見了
 
-#### 4.2 頁面調用
-
-可以通過設定組件的屬性來嵌入其他的頁面
-
-##### 屬性
-
-- `src`：頁面名稱
-- `width`：嵌入寬度
-- `height`：嵌入高度
-
-##### 示例：
-```OleanderJS
-iframe = Iframe(src="pay", width="800", height="600")
-iframe.set_style(border="2px solid black")
-html = button.render() + iframe.render() + auto_js_code
-```
-
 ---
 
 ## 編譯

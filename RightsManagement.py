@@ -1,7 +1,8 @@
 import os, json5, toml
 from ReusableFunctions import  *
+from OleanderJsInformation import OleanderJS_project_path
 
-def ImportModulesThatRequirePermission(str, OleanderJS_project_path, page_loading, name, loading_page):
+def ImportModulesThatRequirePermission(text:str, page_loading, name:str, loading_page) -> str:
     include = []
     OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
     ModulesThatRequirePermission_path = os.path.join(OleanderJS_api_path, "library\\rights")
@@ -25,4 +26,4 @@ def ImportModulesThatRequirePermission(str, OleanderJS_project_path, page_loadin
     for modules in app_json5["APP_Scope"]["require"]:
         with open(os.path.join(ModulesThatRequirePermission_path, modules)+".js", 'r', encoding='utf-8') as file:
             ModulesThatRequirePermission = ModulesThatRequirePermission + file.read()
-    return ModulesThatRequirePermission + replace_outside_quotes(str, include)
+    return ModulesThatRequirePermission + replace_outside_quotes(text, include)

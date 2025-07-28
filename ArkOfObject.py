@@ -107,10 +107,10 @@ def render(s:dict, condition:str="") -> str:
     for i in content:
         out += "\n" + now["name"].translate(str.maketrans("0123456789", "abcdefghij")) + ".add_child(" + i.translate(str.maketrans("0123456789", "abcdefghij")) + ')'
     return out
-def ark(s:str, m:str):
+def ark(s:str, m:str) -> str:
     text_list = replace_outside_quotes(s, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     return f'{text_list[0]}\n# UI_start\n{compilation(text_list[1], m)}'
-def compilation(input_str:str, m:str):
+def compilation(input_str:str, m:str) -> str:
     for i in find_lines_with_text_outside_quotes(input_str, "if("):
         input_str = replace_outside_quotes(input_str, [[i, str_encrypt(i.replace(") {", ""))+"_if() {"]], count=1)
     output_str = transform(input_str)

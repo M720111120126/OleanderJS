@@ -349,23 +349,6 @@ Button() {
 
 白天能看见button，晚上再打开就看不见了
 
-#### 4.2 页面调用
-
-可以通过设置组件的属性来嵌入其他的页面
-
-##### 属性
-
-- `src`：页面名称
-- `width`：嵌入宽度
-- `height`：嵌入高度
-
-##### 示例：
-```OleanderJS
-iframe = Iframe(src="pay", width="800", height="600")
-iframe.set_style(border="2px solid black")
-html = button.render() + iframe.render() + auto_js_code
-```
-
 ---
 
 ## 编译
