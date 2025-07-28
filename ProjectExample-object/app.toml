@@ -1,0 +1,15 @@
+[[page]] # 页面表 项1
+name = "init" # 页面名称
+srcPath = "./init" # 页面位置（相对路径）
+dependencies = ["dependencies.yh"] # 依赖库表
+
+[[page]] # 页面表 项2
+name = "JumpTest"
+srcPath = "./JumpTest"
+dependencies = []
+
+[APP_Scope]
+icon = "$media: app_icon.png" # 图标，位于 “APP_Scope/media/app_icon.png” $xx 就代表在 “APP_Scope/xx” 路径下
+name = "DEMO" # 名称
+lang = "zh_cn" # 语言
+require = ["com.oleander.file"] # APP需要调用的权限

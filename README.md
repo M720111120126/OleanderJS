@@ -370,20 +370,20 @@ html = button.render() + iframe.render() + auto_js_code
 
 ## 编译
 
-### 注意事项
-
-请先安装 json5 和 filetype 库
+配置文件有 `json5` 和 `toml` 两种格式，可以任选一种使用。推荐使用 `toml`。
 
 ### 文件结构
 
 ```file
 └─ init
 └─── init.yh
-└─ app.json5
-└─ build.json5
+└─ app.json5 \ app.toml
+└─ build.json5 \ build.toml
 ```
 
-### app.json5
+### json5
+
+#### app.json5
 
 ```json5
 {
@@ -410,7 +410,7 @@ html = button.render() + iframe.render() + auto_js_code
 }
 ```
 
-### build.json5
+#### build.json5
 
 ```json5
 {
@@ -424,6 +424,40 @@ html = button.render() + iframe.render() + auto_js_code
 }
 ```
 
+### toml
+
+#### app.toml
+
+```toml
+[[page]] # 页面表 项1
+name = "init" # 页面名称
+srcPath = "./init" # 页面位置（相对路径）
+dependencies = ["dependencies.yh"] # 依赖库表
+
+[[page]] # 页面表 项2
+name = "JumpTest"
+srcPath = "./JumpTest"
+dependencies = []
+
+[APP_Scope]
+icon = "$media: app_icon.png" # 图标，位于 “APP_Scope/media/app_icon.png” $xx 就代表在 “APP_Scope/xx” 路径下
+name = "DEMO" # 名称
+lang = "zh_cn" # 语言
+require = ["com.oleander.file"] # APP需要调用的权限
+```
+
+#### build.toml
+
+```toml
+Minimum-required-API-version = "1.12.5" # 最低兼容的API版本，必需
+Target-API-version = "1.12.6" # 目标的API版本，必需
+name = "demo" # 项目名及模块 root 包名，必需
+version = "1.0.0" # 模块版本信息，必需
+
+[compile-option] # 额外编译命令选项，非必需(可以空着但不能删除)
+version = true
+```
+
 ### 编译方式
 
 额外编译命令选项 :
@@ -433,7 +467,13 @@ html = button.render() + iframe.render() + auto_js_code
 “--version” 或 “-v” 获取 API 版本
 “--skip-env-check” 或 “-e” 跳过环境检查
 
-也可以在 build.json5 中指定
+也可以在 build.json5 或 build.toml 中指定
+
+[compile-option] # 额外编译命令选项，非必需(可以空着但不能删除)
+version = true # 获取 API 版本，使用true或false控制
+skip_env_check = true # 跳过环境检查，使用true或false控制
+fapi_version = "ArkPRO" # 指定 API 版本，有object和ark两个版本可选
+
 "compile-option": {
   "version": true,// 获取 API 版本，使用true或false控制
   "skip_env_check": true,// 跳过环境检查，使用true或false控制
@@ -449,4 +489,4 @@ html = button.render() + iframe.render() + auto_js_code
 将编译为 app.html
 
 注意：
-* 本教程适用于 OleanderJS-API V1.12.5/6 版
+* 本教程适用于 OleanderJS-API V1.12.6 版

@@ -387,20 +387,20 @@ html = button.render() + iframe.render() + auto_js_code
 
 ## Compilation
 
-### Precautions
-
-Please install the json5 and filetype libraries first.
+The configuration files come in two formats: `json5` and `toml`. You can choose either one. `toml` is recommended.
 
 ### File Structure
 
 ```file
 └─ init
 └─── init.yh
-└─ app.json5
-└─ build.json5
+└─ app.json5 \ app.toml
+└─ build.json5 \ build.toml
 ```
 
-### app.json5
+### json5
+
+#### app.json5
 
 ```json5
 {
@@ -427,7 +427,7 @@ Please install the json5 and filetype libraries first.
 }
 ```
 
-### build.json5
+#### build.json5
 
 ```json5
 {
@@ -441,6 +441,40 @@ Please install the json5 and filetype libraries first.
 }
 ```
 
+### toml
+
+#### app.toml
+
+```toml
+[[page]] # Page list Item 1
+name = "init" # Page name
+srcPath = "./init" # Page location (relative path)
+dependencies = ["dependencies.yh"] # Dependency library list
+
+[[page]] # Page list Item 2
+name = "JumpTest"
+srcPath = "./JumpTest"
+dependencies = []
+
+[APP_Scope]
+icon = "$media: app_icon.png" # Icon, located at “APP_Scope/media/app_icon.png” $xx represents the path under “APP_Scope/xx”
+name = "DEMO" # Name
+lang = "zh_cn" # Language
+require = ["com.oleander.file"] # Permissions that the APP needs to call
+```
+
+#### build.toml
+
+```toml
+Minimum-required-API-version = "1.12.5" # Minimum compatible API version, required
+Target-API-version = "1.12.6" # Target API version, required
+name = "demo" # Project name and module root package name, required
+version = "1.0.0" # Module version information, required
+
+[compile-option] # Additional compilation command options, not required (can be empty but cannot be deleted)
+version = true
+```
+
 ### Compilation Method
 
 Additional compilation command options:
@@ -450,7 +484,13 @@ Additional compilation command options:
 “--version” or “-v” Get the API version
 “--skip-env-check” or “-e” Skip environment check
 
-Can also be specified in build.json5
+Can also be specified in build.json5 or build.toml
+
+[compile-option] # Additional compilation command options, not required (can be empty but cannot be deleted)
+version = true # Get the API version, use true or false to control
+skip_env_check = true # Skip environment check, use true or false to control
+fapi_version = "ArkPRO" # Specify the API version, there are two versions available: object and ark
+
 "compile-option": {
   "version": true,// Get the API version, use true or false to control
   "skip_env_check": true,// Skip environment check, use true or false to control
@@ -467,4 +507,4 @@ Will be compiled into app.html
 
 Note:
 
-*   This tutorial is applicable to OleanderJS-API V1.12.5/6
+*   This tutorial is applicable to OleanderJS-API V1.12.6

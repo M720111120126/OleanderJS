@@ -369,7 +369,7 @@ html = button.render() + iframe.render() + auto_js_code
 
 ## 編譯
 
-### 注意事項
+配置文件有 `json5` 和 `toml` 兩種格式，可以任選一種使用。推薦使用 `toml`。
 
 請先安裝 json5 和 filetype 庫
 
@@ -378,11 +378,13 @@ html = button.render() + iframe.render() + auto_js_code
 ```file
 └─ init
 └─── init.yh
-└─ app.json5
-└─ build.json5
+└─ app.json5 \ app.toml
+└─ build.json5 \ build.toml
 ```
 
-### app.json5
+### json5
+
+#### app.json5
 
 ```json5
 {
@@ -409,7 +411,7 @@ html = button.render() + iframe.render() + auto_js_code
 }
 ```
 
-### build.json5
+#### build.json5
 
 ```json5
 {
@@ -423,6 +425,40 @@ html = button.render() + iframe.render() + auto_js_code
 }
 ```
 
+### toml
+
+#### app.toml
+
+```toml
+[[page]] # 頁面表 項1
+name = "init" # 頁面名稱
+srcPath = "./init" # 頁面位置（相對路徑）
+dependencies = ["dependencies.yh"] # 依賴庫表
+
+[[page]] # 頁面表 項2
+name = "JumpTest"
+srcPath = "./JumpTest"
+dependencies = []
+
+[APP_Scope]
+icon = "$media: app_icon.png" # 圖標，位於 “APP_Scope/media/app_icon.png” $xx 就代表在 “APP_Scope/xx” 路徑下
+name = "DEMO" # 名稱
+lang = "zh_cn" # 語言
+require = ["com.oleander.file"] # APP需要調用的權限
+```
+
+#### build.toml
+
+```toml
+Minimum-required-API-version = "1.12.5" # 最低兼容的API版本，必需
+Target-API-version = "1.12.6" # 目標的API版本，必需
+name = "demo" # 項目名及模塊 root 包名，必需
+version = "1.0.0" # 模塊版本信息，必需
+
+[compile-option] # 額外編譯命令選項，非必需(可以空着但不能刪除)
+version = true
+```
+
 ### 編譯方式
 
 額外編譯命令選項 :
@@ -432,7 +468,13 @@ html = button.render() + iframe.render() + auto_js_code
 “--version” 或 “-v” 獲取 API 版本
 “--skip-env-check” 或 “-e” 跳過環境檢查
 
-也可以在 build.json5 中指定
+也可以在 build.json5 或 build.toml 中指定
+
+[compile-option] # 額外編譯命令選項，非必需(可以空着但不能刪除)
+version = true # 獲取 API 版本，使用 true 或 false 控制
+skip_env_check = true # 跳過環境檢查，使用 true 或 false 控制
+fapi_version = "ArkPRO" # 指定 API 版本，有 object 和 ark 兩個版本可選
+
 "compile-option": {
   "version": true,// 獲取 API 版本，使用 true 或 false 控制
   "skip_env_check": true,// 跳過環境檢查，使用 true 或 false 控制
@@ -441,11 +483,11 @@ html = button.render() + iframe.render() + auto_js_code
 
 ```
 
-先 `cd` 至您的項目資料夾
+先 `cd` 至您的項目文件夾
 
 直接執行 main.py
 
 將編譯為 app.html
 
 注意：
-* 本教程適用於 OleanderJS-API V1.12.5/6 版
+* 本教程適用於 OleanderJS-API V1.12.6 版

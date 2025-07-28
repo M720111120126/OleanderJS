@@ -5,17 +5,28 @@ from PageProDependencyLibrary import PageProCompilation
 from ReusableFunctions import  *
 from RightsManagement import ImportModulesThatRequirePermission
 from VersionManager import VersionManager
+import toml
 
 # 读取文件
-if os.path.exists("app.json5"):
+if os.path.exists("app.json5") or os.path.exists("app.toml"):
     OleanderJS_project_path = ""
 else:
     OleanderJS_project_path = input("OleanderJS_project_page $ ")
 OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(OleanderJS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
-    app_json5 = json5.loads(file.read())
-with open(os.path.join(OleanderJS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
-    build_json5 = json5.loads(file.read())
+if os.path.exists(os.path.join(OleanderJS_project_path, "app.toml")):
+    with open(os.path.join(OleanderJS_project_path, 'app.toml'), 'r', encoding='utf-8') as file:
+        app_json5 = toml.loads(file.read())
+    with open(os.path.join(OleanderJS_project_path, 'build.toml'), 'r', encoding='utf-8') as file:
+        build_json5 = toml.loads(file.read())
+elif os.path.exists(os.path.join(OleanderJS_project_path, "app.json5")):
+    with open(os.path.join(OleanderJS_project_path, 'app.json5'), 'r', encoding='utf-8') as file:
+        app_json5 = json5.loads(file.read())
+    with open(os.path.join(OleanderJS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
+        build_json5 = json5.loads(file.read())
+else:
+    print("""未找到项目配置文件
+No project configuration file found""")
+    sys.exit(1)
 with open(os.path.join(OleanderJS_api_path, 'OleanderJS.json5'), 'r', encoding='utf-8') as file:
     OleanderJS_json5 = json5.loads(file.read())
 
