@@ -366,6 +366,16 @@ Note: The isDaytime function has already been defined in JS in the Oleander sect
 
 You can see the button during the day, but you can't see it when you open it again at night.
 
+#### 4.1 Built in Call
+
+Built in calls start with '$'
+
+##### $r
+
+Retrieve files, such as `$r("$media: app_icon.png")` Retrieve `APP_Scope/media/app_icon.png` files
+
+Among them, '$xx' represents in the 'APP_Scope/xx' path
+
 ---
 
 ## Compilation

@@ -348,6 +348,16 @@ Button() {
 
 白天能看見 button，晚上再打開就看不見了
 
+#### 4.1 內置調用
+
+內置調用以 `$` 開頭
+
+##### $r
+
+獲取文件，如 `$r("$media: app_icon.png")` 獲取 `APP_Scope/media/app_icon.png` 文件
+
+其中 `$xx` 就代表在 `APP_Scope/xx` 路徑下
+
 ---
 
 ## 編譯

@@ -183,7 +183,7 @@ def compilation(text: str) -> str:
     if args["verbose"]:
         print(f'Compiling.object-OleanderUI-yh=```{replace_outside_quotes(text_list[1], [["$", "Oleander_"]])}```')
     local_vars = {}
-    exec(replace_outside_quotes(text_list[1], [["$", "Oleander_"]]), globals(), local_vars)
+    exec(replace_outside_quotes(text_list[1], [["$", "Oleander_"], ["eval", "eval_new"]]), globals(), local_vars)
     html = local_vars['html']
     try:
         icon_path = path(app_json5['APP_Scope']['icon'])
@@ -192,6 +192,6 @@ def compilation(text: str) -> str:
             mime_type = "image/png"
         else:
             mime_type = mime_type.mime
-        return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let ProjectName = '{build_json5['name']}';let rights_name_json;"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}"+f"{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>{html}</body></html>"
+        return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let ProjectName = '{build_json5['name']}';let rights_name_json;"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}function eval_new(s) {if (window.confirm('允许执行：'+s+'？')) {try {return eval(s);} catch (e) {console.error('执行失败：', e);}}}"+f"{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>{html}</body></html>"
     except:
-        return f"<!DECTYPE HTML><html><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let ProjectName = '{build_json5['name']}';let rights_name_json;"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}"+f"{text_list[0]}</script><meta charset='utf-8'></head><body>{html}</body></html>"
+        return f"<!DECTYPE HTML><html><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let ProjectName = '{build_json5['name']}';let rights_name_json;"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}function eval_new(s) {if (window.confirm('允许执行：'+s+'？')) {try {return eval(s);} catch (e) {console.error('执行失败：', e);}}}"+f"{text_list[0]}</script><meta charset='utf-8'></head><body>{html}</body></html>"
