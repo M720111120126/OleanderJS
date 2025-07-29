@@ -88,3 +88,83 @@ class BlockCipher {
         return decoder.decode(decrypted);
     }
 }
+
+class RetrieveDeviceInformation {
+    getOS() {
+      const userAgent = navigator.userAgent;
+      if (userAgent.includes("Windows")) {
+        return "Windows";
+      } else if (userAgent.includes("Android")) {
+        return "Android";
+      } else if (
+        userAgent.includes("iPhone") 
+      ) {
+        return "iPhone";
+     } else if (
+        userAgent.includes("iPod")
+     ) {
+        return "iPod";
+     } else if (
+        userAgent.includes("iPad")
+     ) {
+        return "iPad";
+      } else if (userAgent.includes("Linux")) {
+        return "Linux";
+      } else if (userAgent.includes("CrOS")) {
+        return "ChromeOS";
+      } else if (userAgent.includes("Mac OS")) {
+        return "macOS";
+      }
+      return "Other";
+    }
+
+    getBrowser() {
+      const userAgent = navigator.userAgent;
+      if (userAgent.includes("Chrome")) {
+        return "Chrome";
+      } else if (userAgent.includes("Firefox")) {
+        return "Firefox";
+      } else if (userAgent.includes("Safari")) {
+        return "Safari";
+      }
+      return "Other";
+    }
+
+    getMemory() {
+      if (navigator.deviceMemory == undefined) {
+        return "Unsupported";
+      } else {
+        return navigator.deviceMemory;
+      }
+    }
+
+    getPreferredColorScheme(args) {
+      return !!window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+
+    getPreferredReducedMotion() {
+      return !!window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    getPreferredContrast() {
+      return !!window.matchMedia("(prefers-contrast: more)").matches;
+    }
+
+    getUserAgent() {
+      return navigator.userAgent;
+    }
+}
+
+class Clipboard {
+    setClipboard(text) {
+      navigator.clipboard.writeText(text);
+    }
+
+    resetClipboard() {
+      navigator.clipboard.writeText("");
+    }
+
+    getLastPastedText() {
+      return lastPastedText;
+    }
+}

@@ -5,19 +5,29 @@ class KVManager {
         this.KVStorename = "";
     }
 
-    static getKVStore(KVStorename="test") {
+    static getKVStore(KVStorename="test", encrypt=false, key="") {
         this.KVStorename = KVStorename;
+        this.encrypt = encrypt;
+        this.key = key;
     }
 
     static get(key="") {
-        return localStorage.getItem(this.KVStorename + key);
+        if (this.encrypt) {
+            return blockCipher.decryptString(this.key, JSON.parse(localStorage.getItem(this.KVStorename + key)));
+        } else {
+            return localStorage.getItem(this.KVStorename + key);
+        }
     }
 
     static put(key="", value="") {
         let Data_name_json = JSON.parse(localStorage.getItem(this.KVStorename)) || [];
         Data_name_json.push(this.KVStorename + key);
         localStorage.setItem(this.KVStorename, JSON.stringify(Data_name_json));
-        localStorage.setItem(this.KVStorename + key, value);
+        if (this.encrypt) {
+            localStorage.setItem(this.KVStorename + key, JSON.stringify(blockCipher.encryptString(this.key, value)));
+        } else {
+            localStorage.setItem(this.KVStorename + key, value);
+        }
         return value;
     }
 

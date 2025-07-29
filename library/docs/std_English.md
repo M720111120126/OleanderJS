@@ -89,3 +89,76 @@ runExample().catch(console.error);
 #### Precautions
 - The key should be kept secure and not disclosed to unauthorized entities.
 - The initialization vector (`iv`) should be unique for each encryption operation to ensure security. The above implementation automatically generates a random `iv` value using `window.crypto.getRandomValues`.
+
+---
+
+## Device Information Module
+
+### Class RetrieveDeviceInformation
+
+#### Overview
+
+The `RetrieveDeviceInformation` class provides functionality to retrieve device information, including operating system, browser, screen resolution, etc.
+
+#### Methods
+
+1. **getOS**
+   - Description: Gets the operating system information.
+     - Parameters: None.
+   - Returns: The operating system name.
+
+2. **getBrowser**
+   - Description: Gets the browser information.
+     - Parameters: None.
+   - Returns: The browser name.
+
+3. **getMemory**
+   - Description: Gets the approximate memory size (GB).
+     - Parameters: None.
+   - Returns: The approximate memory size (GB, floating-point number).
+
+4. **getPreferredColorScheme**
+   - Description: Gets the dark mode configuration.
+     - Parameters: None.
+   - Returns: A boolean value indicating whether dark mode is enabled.
+
+5. **getPreferredReducedMotion**
+   - Description: Gets the setting for reducing animations.
+     - Parameters: None.
+   - Returns: A boolean value.
+
+6. **getPreferredContrast**
+   - Description: Gets the contrast setting.
+     - Parameters: None.
+   - Returns: A boolean value indicating whether high contrast mode is enabled.
+
+7. **getUserAgent**
+   - Description: Gets the user agent string.
+     - Parameters: None.
+   - Returns: The user agent string.
+
+## Clipboard Module
+
+### Class Clipboard
+
+#### Overview
+
+The `Clipboard` class provides access to the clipboard, including reading and writing text.
+
+### Methods
+
+1. **setClipboard**
+    - Description: Writes text to the clipboard.
+    - Parameters:
+      - `text` (`string`): The text to write to the clipboard.
+    - Returns: None
+
+2. **resetClipboard**
+    - Description: Clears the clipboard content.
+    - Parameters: None.
+    - Returns: None
+
+3. **getLastPastedText**
+    - Description: Gets the most recently pasted text.
+    - Parameters: None.
+    - Returns: `string`, representing the most recently pasted text.

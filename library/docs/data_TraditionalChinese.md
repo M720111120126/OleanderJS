@@ -14,13 +14,15 @@ KVManager.init();
 **作用**: 初始化 `KVManager` 類別，將目前操作的儲存空間名稱清空。
 **參數**: 無
 
-### 2. 取得儲存空間
+### 2. 獲取存儲空間
 ```javascript
-KVManager.getKVStore(KVStorename);
+KVManager.getKVStore(KVStorename, encrypt, key);
 ```
-**作用**: 設定目前操作的儲存空間名稱。
+**作用**: 獲取一個存儲空間
 **參數**:
-- `KVStorename`: 字串類型，指定儲存空間的名稱，預設為 `"test"`。
+- `KVStorename`: 字符串類型，指定存儲空間的名稱，默認爲 `"test"`。
+- `encrypt`: 布爾類型，是否啓用加密，默認爲 `false`。如需使用，請先導入 `std` 庫以提供加密支持。
+- `key`: 字符串類型，加密密鑰，默認爲空字符串。
 
 ### 3. 讀取資料
 ```javascript

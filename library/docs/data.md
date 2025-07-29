@@ -16,11 +16,13 @@ KVManager.init();
 
 ### 2. 获取存储空间
 ```javascript
-KVManager.getKVStore(KVStorename);
+KVManager.getKVStore(KVStorename, encrypt, key);
 ```
-**作用**: 设置当前操作的存储空间名称。
+**作用**: 获取一个存储空间
 **参数**:
 - `KVStorename`: 字符串类型，指定存储空间的名称，默认为 `"test"`。
+- `encrypt`: 布尔类型，是否启用加密，默认为 `false`。如需使用，请先导入 `std` 库以提供加密支持。
+- `key`: 字符串类型，加密密钥，默认为空字符串。
 
 ### 3. 读取数据
 ```javascript
