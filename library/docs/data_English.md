@@ -14,13 +14,15 @@ KVManager.init();
 **Function**: Initializes the `KVManager` class, clearing the name of the currently operated storage space.
 **Parameters**: None
 
-### 2. Get Storage Space
+### 2. Get storage space
 ```javascript
-KVManager.getKVStore(KVStorename);
+KVManager.getKVStore(KVStorename, encrypt, key);
 ```
-**Function**: Sets the name of the currently operated storage space.
-**Parameters**:
-- `KVStorename`: String type, specifies the name of the storage space, defaults to `"test"`.
+**Function**: Get a storage space
+**Parameter**:
+- `KVStorename`: String type, specifying the name of the storage space, default is `"test"`.
+- `encrypt`: Boolean type, whether encryption is enabled, default is `false`. To use, please first import the `std` library to provide encryption support.
+- `key`: String type, encryption key, default to empty string.
 
 ### 3. Read Data
 ```javascript

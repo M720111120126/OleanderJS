@@ -22,8 +22,7 @@ The API version file has encountered an issue"""
                     print(f"""正在更新标准库 {key}。 请在更新完毕后自行在 oleanderjs.xn--jzh-k69dm57c4fd.xyz 上下载最新文档
 Updating the standard library {key}. Please download the latest documentation from oleanderjs.xn--jzh-k69dm57c4fd.xyz after the update is complete""")
                     with urllib.request.urlopen(f"https://oleanderjs.xn--jzh-k69dm57c4fd.xyz/library/{key}.js", timeout=5) as response_key:
-                        js_new_original = json5.loads(response_key.read().decode('utf-8'))
-                        js_new = js_new_original if isinstance(js_new_original, str) else {}
+                        js_new = response_key.read().decode('utf-8')
                         OleanderJS_json5["library"][key] = content["library"][key]
                         js_path = os.path.join(OleanderJS_api_path, "library", "rights" if "com.oleander." in key else "", f"{key}.js")
                         with open(js_path, "w", encoding="utf-8") as file:

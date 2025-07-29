@@ -39,9 +39,6 @@ FileSystem.delete(name);
 以下是一个简单的示例，演示如何使用 `FileSystem` 进行基本的文件操作：
 
 ```javascript
-// 假设 ProjectName 已经定义
-const ProjectName = "myProject";
-
 // 写入文件
 FileSystem.write("example.txt", "Hello, World!");
 console.log(FileSystem.read("example.txt")); // 输出: Hello, World!
