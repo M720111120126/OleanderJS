@@ -468,14 +468,13 @@ version = "1.0.0" # Module version information, required
 version = true
 ```
 
-### Compilation Method
-
-Additional compilation command options:
+### Additional compilation command options
 
 ```
 “--fapi-version API version” or “-fver API version” Specify the API version
 “--version” or “-v” Get the API version
 “--skip-env-check” or “-e” Skip environment check
+“--verbose” or “-V” Print out the related information of the toolchain dependencies and the commands executed during the compilation process
 
 Can also be specified in build.json5 or build.toml
 
@@ -483,21 +482,48 @@ Can also be specified in build.json5 or build.toml
 version = true # Get the API version, use true or false to control
 skip_env_check = true # Skip environment check, use true or false to control
 fapi_version = "ArkPRO" # Specify the API version, there are two versions available: object and ark
+verbose = true # Print out the related information of the toolchain dependencies and the commands executed during the compilation process, use true or false to control
 
 "compile-option": {
   "version": true,// Get the API version, use true or false to control
   "skip_env_check": true,// Skip environment check, use true or false to control
-  "fapi_version": "ArkPRO"// Specify the API version, there are two versions available: object and ark
+  "fapi_version": "ArkPRO",// Specify the API version, there are two versions available: object and ark
+  "verbose": true// Print out the related information of the toolchain dependencies and the commands executed during the compilation process, use true or false to control
 }
 
 ```
 
-First `cd` to your project folder
+## Command-Line Tool Usage Guide
 
-Directly execute main.py
+### OJPM (OleanderJsProjectManager)
 
-Will be compiled into app.html
+#### init
 
-Note:
+Initializes an OleanderJS project
 
-*   This tutorial is applicable to OleanderJS-API V1.12.6
+For example:
+```shell
+OJPM --init
+```
+
+#### build
+
+Compiles OleanderJS to HTML
+
+First `cd` to your project folder, then run `OJPM --build`
+
+Will compile to /build/app.html
+
+### OJC (OleanderJsCompiler)
+
+Compiles OleanderJS to HTML
+
+For example:
+```shell
+OJC init.yh
+```
+
+Will compile to init.html
+
+## Note
+* This tutorial is applicable to OleanderJS-API V1.13.0

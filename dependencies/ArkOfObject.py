@@ -1,6 +1,6 @@
-import json5, sys
-from ReusableFunctions import  *
+from dependencies.ReusableFunctions import  *
 from typing import List, Dict, Any, Optional
+import dependencies.json5, sys
 
 class Node:
     def __init__(self, name: str):
@@ -129,7 +129,7 @@ def compilation(input_str:str, m:str) -> str:
             replace_outside_quotes(i.replace("'", r"\'").replace('"', r'\"'), [[";", '']]), [[" ", ""]]) + '",', 1)
     output_str = replace_outside_quotes(output_str, [["}", "},"]])
     try:
-        output_str_original = json5.loads("{" + output_str + "}")
+        output_str_original = dependencies.json5.loads("{" + output_str + "}")
         output_str = output_str_original if isinstance(output_str_original, dict) else {}
         if len(output_str.keys()) > 1:
             sys.exit("""最外层只能使用一个组件

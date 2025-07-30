@@ -29,11 +29,11 @@ Usage:
 import argparse
 import sys
 
-import json5
-from json5.host import Host
-from json5.version import __version__
+import dependencies.json5
+from dependencies.json5.host import Host
+from dependencies.json5.version import __version__
 
-QUOTE_STYLES = {q.value: q for q in json5.QuoteStyle}
+QUOTE_STYLES = {q.value: q for q in dependencies.json5.QuoteStyle}
 
 
 def main(argv=None, host=None):
@@ -63,10 +63,10 @@ def main(argv=None, host=None):
     if args.as_json:
         args.quote_keys = True
         args.trailing_commas = False
-        args.quote_style = json5.QuoteStyle.ALWAYS_DOUBLE.value
+        args.quote_style = dependencies.json5.QuoteStyle.ALWAYS_DOUBLE.value
 
-    obj = json5.loads(inp, strict=args.strict)
-    s = json5.dumps(
+    obj = dependencies.json5.loads(inp, strict=args.strict)
+    s = dependencies.json5.dumps(
         obj,
         indent=args.indent,
         quote_keys=args.quote_keys,

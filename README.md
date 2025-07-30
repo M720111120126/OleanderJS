@@ -451,14 +451,13 @@ version = "1.0.0" # 模块版本信息，必需
 version = true
 ```
 
-### 编译方式
-
-额外编译命令选项 :
+### 额外编译命令选项
 
 ```
 “--fapi-version API版本” 或 “-fver API版本” 指定 API 版本
 “--version” 或 “-v” 获取 API 版本
 “--skip-env-check” 或 “-e” 跳过环境检查
+“--verbose”或“-V” 打印出工具链依赖的相关信息以及编译过程中执行的命令
 
 也可以在 build.json5 或 build.toml 中指定
 
@@ -466,20 +465,48 @@ version = true
 version = true # 获取 API 版本，使用true或false控制
 skip_env_check = true # 跳过环境检查，使用true或false控制
 fapi_version = "ArkPRO" # 指定 API 版本，有object和ark两个版本可选
+verbose = true # 打印出工具链依赖的相关信息以及编译过程中执行的命令，使用true或false控制
 
 "compile-option": {
   "version": true,// 获取 API 版本，使用true或false控制
   "skip_env_check": true,// 跳过环境检查，使用true或false控制
-  "fapi_version": "ArkPRO"// 指定 API 版本，有object和ark两个版本可选
+  "fapi_version": "ArkPRO",// 指定 API 版本，有object和ark两个版本可选
+  "verbose": true// 打印出工具链依赖的相关信息以及编译过程中执行的命令，使用true或false控制
 }
 
 ```
 
-先 `cd` 至您的项目文件夹
+## 命令行工具使用指南
 
-直接执行 main.py
+### OJPM(OleanderJsProjectManager)
 
-将编译为 app.html
+#### init
 
-注意：
-* 本教程适用于 OleanderJS-API V1.12.6 版
+初始化 OleanderJS 项目
+
+如：
+```shell
+OJPM --init
+```
+
+#### build
+
+编译 OleanderJS 至 HTML
+
+先 `cd` 至您的项目文件夹，然后运行 `OJPM --build`
+
+将编译为 /build/app.html
+
+### OJC(OleanderJsCompiler)
+
+编译 OleanderJS 至 HTML
+
+如：
+```shell
+OJC init.yh
+```
+
+将编译为 init.html
+
+## 注意
+* 本教程适用于 OleanderJS-API V1.13.0 版

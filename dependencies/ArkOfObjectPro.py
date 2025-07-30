@@ -1,6 +1,6 @@
 import sys
-import ArkOfObject as ark
-from ReusableFunctions import  *
+import dependencies.ArkOfObject as ark
+from dependencies.ReusableFunctions import  *
 
 def ArkPRO(s: str, m: str, UIComponent_Subclasses: list) -> str:
     text_list = replace_outside_quotes(s, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")

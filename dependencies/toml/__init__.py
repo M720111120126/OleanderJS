@@ -3,8 +3,8 @@
 Released under the MIT license.
 """
 
-from toml import encoder
-from toml import decoder
+from dependencies.toml import encoder
+from dependencies.toml import decoder
 
 __version__ = "0.10.2"
 _spec_ = "0.5.0"

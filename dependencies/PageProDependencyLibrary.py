@@ -1,9 +1,9 @@
-import ArkOfObject as ark
-import ArkOfObjectPro as ArkPRO
+import dependencies.ArkOfObject as ark
+import dependencies.ArkOfObjectPro as ArkPRO
 import os
-from ReusableFunctions import  *
-from ObjectArkOfPython import UIComponent, loading_page, compilation
-from OleanderJsInformation import OleanderJS_project_path
+from dependencies.ReusableFunctions import  *
+from dependencies.ObjectArkOfPython import UIComponent, loading_page, compilation
+from dependencies.OleanderJsInformation import OleanderJS_project_path
 
 def PageProCompilation(fapi_version: str, page) -> None:
     if fapi_version == "ArkPRO":

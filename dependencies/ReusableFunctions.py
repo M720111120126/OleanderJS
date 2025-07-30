@@ -1,6 +1,6 @@
-import re, base64, filetype, os
+import re, base64, dependencies.filetype, os
 from urllib.parse import quote_plus
-from OleanderJsInformation import OleanderJS_project_path
+from dependencies.OleanderJsInformation import OleanderJS_project_path
 
 def str_encrypt(text: str) -> str:
     return str(int.from_bytes(text.encode('utf-8'), byteorder='big')).translate(str.maketrans("0123456789", "abcdefghij"))
@@ -10,7 +10,7 @@ def str_decrypt(text:str):
     byte_length = (integer_rep.bit_length() + 7) // 8
     return integer_rep.to_bytes(byte_length, byteorder='big').decode('utf-8')
 def file_to_data_url(file_path):
-    mime_type = filetype.guess(file_path)
+    mime_type = dependencies.filetype.guess(file_path)
     if mime_type is None:
         mime_type = "application/octet-stream"
     else:

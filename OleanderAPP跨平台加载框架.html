@@ -67,7 +67,7 @@
                 document.write(localStorage.getItem(appid));
                 document.close();
             } else {
-                populateDropdown()
+                populateDropdown();
             }
         }
     </script>
@@ -116,7 +116,11 @@
                 } catch (error) {
                     OleanderAPP_json_w = [];
                 }
-                OleanderAPP_json_w.push({"appid":appid,"name":extractContent(fileContent, /<title>(.*?)<\/title>/s),"projectName":extractContent(fileContent, /<!-- Project: (.*?) -->/s)});
+                OleanderAPP_json_w.push({
+                    "appid":appid,
+                    "name":extractContent(fileContent, "/<title>(.*?)<\/title>/"),
+                    "projectName":extractContent(fileContent, "/<!-- Project: (.*?) -->/")
+                });
                 localStorage.setItem("OleanderAPP_json", JSON.stringify(OleanderAPP_json_w));
                 window.location.assign(currentUrl);
             };

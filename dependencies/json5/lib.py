@@ -28,7 +28,7 @@ from typing import (
 )
 import unicodedata
 
-from json5.parser import Parser
+from dependencies.json5.parser import Parser
 
 
 # Used when encoding keys, below.
@@ -347,7 +347,7 @@ def dumps(
     ...    def __repr__(self):
     ...        return hex(self)
     ...
-    ... class CustomEncoder(json5.JSON5Encoder):
+    ... class CustomEncoder(dependencies.json5.JSON5Encoder):
     ...    def encode(
     ...        self, obj: Any, seen: Set, level: int, *, as_key: bool
     ...    ) -> str:
@@ -355,7 +355,7 @@ def dumps(
     ...            return repr(obj)
     ...        return super().encode(obj, seen, level, as_key=as_key)
     ...
-    ... print(json5.dumps([20, Hex(20)], cls=CustomEncoder))
+    ... print(dependencies.json5.dumps([20, Hex(20)], cls=CustomEncoder))
     ...
     [20, 0x14]
     >>>

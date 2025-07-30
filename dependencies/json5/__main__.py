@@ -12,19 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""A pure Python implementation of the JSON5 configuration language."""
+# pragma: no cover
 
-from json5.lib import JSON5Encoder, QuoteStyle, load, loads, dump, dumps
-from json5.version import __version__, VERSION
+import sys
+
+from dependencies.json5.tool import main
 
 
-__all__ = [
-    'JSON5Encoder',
-    'QuoteStyle',
-    'VERSION',
-    '__version__',
-    'dump',
-    'dumps',
-    'load',
-    'loads',
-]
+if __name__ == '__main__':
+    sys.exit(main())

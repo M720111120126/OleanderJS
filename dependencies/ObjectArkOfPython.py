@@ -1,7 +1,8 @@
-import os, json
-from ReusableFunctions import  *
-from RightsManagement import ImportModulesThatRequirePermission
-from OleanderJsInformation import OleanderJS_project_path, OleanderJS_api_path, args, app_json5, build_json5
+import os, json, dependencies.filetype
+from dependencies.ReusableFunctions import  *
+from dependencies.RightsManagement import ImportModulesThatRequirePermission
+from dependencies.OleanderJsInformation import OleanderJS_project_path, OleanderJS_api_path, args, app_json5, build_json5
+import dependencies.ArkOfObjectPro as ArkPRO
 
 def Oleander_r(file_path):
     return file_to_data_url(path(file_path))
@@ -187,7 +188,7 @@ def compilation(text: str) -> str:
     html = local_vars['html']
     try:
         icon_path = path(app_json5['APP_Scope']['icon'])
-        mime_type = filetype.guess(icon_path)
+        mime_type = dependencies.filetype.guess(icon_path)
         if mime_type is None:
             mime_type = "image/png"
         else:
@@ -195,3 +196,10 @@ def compilation(text: str) -> str:
         return f"<!DECTYPE HTML><html lang='{app_json5['APP_Scope']['lang']}'><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let ProjectName = '{build_json5['name']}';let rights_name_json;"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}function eval_new(s) {if (window.confirm('允许执行：'+s+'？')) {try {return eval(s);} catch (e) {console.error('执行失败：', e);}}}"+f"{text_list[0]}</script><meta charset='utf-8'><title>{app_json5['APP_Scope']['name']}</title><link rel='icon' type='{mime_type}' href='{file_to_data_url(icon_path)}'></head><body>{html}</body></html>"
     except:
         return f"<!DECTYPE HTML><html><head><!-- Project: {build_json5['name']} --><!-- Version: {build_json5['version']} --><script>let ProjectName = '{build_json5['name']}';let rights_name_json;"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}function eval_new(s) {if (window.confirm('允许执行：'+s+'？')) {try {return eval(s);} catch (e) {console.error('执行失败：', e);}}}"+f"{text_list[0]}</script><meta charset='utf-8'></head><body>{html}</body></html>"
+def CompilationLow(text: str, name:str) -> str:
+    text_list = replace_outside_quotes(ArkPRO.ArkPRO(text, "into", get_all_subclasses(UIComponent)), [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
+    local_vars = {}
+    # print(text_list[1])
+    exec(replace_outside_quotes(text_list[1], [["$", "Oleander_"], ["eval", "eval_new"]]), globals(), local_vars)
+    html = local_vars['html']
+    return f"<!DECTYPE HTML><html><head><script>let ProjectName = '{name}';let rights_name_json;"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}function eval_new(s) {if (window.confirm('允许执行：'+s+'？')) {try {return eval(s);} catch (e) {console.error('执行失败：', e);}}}"+f"{text_list[0]}</script><meta charset='utf-8'></head><body>{html}</body></html>"
