@@ -158,9 +158,9 @@
                 const selectedValue = selectElement.options[selectedIndex].value;
                 selectElement.remove(selectedIndex);
                 for (let i = 0; i < OleanderAPP_json_d.length; i++) {
-                    i = OleanderAPP_json_d[i];
-                    if (i.name === selectedValue) {
-                        localStorage.removeItem(i.appid);
+                    i_c = OleanderAPP_json_d[i];
+                    if (i_c.name === selectedValue) {
+                        localStorage.removeItem(i_c.appid);
                     }
                 }
                 OleanderAPP_json_d = OleanderAPP_json_d.filter(item => item.name !== selectedValue);
@@ -182,9 +182,9 @@
             if (APPselectedIndex !== -1) {
                 const APPselectedValue = APPselectElement.options[APPselectedIndex].value;
                 for (let i = 0; i < OleanderAPP_json_m.length; i++) {
-                    i = OleanderAPP_json_m[i];
-                    if (i.name === APPselectedValue) {
-                        let rights_name_json = JSON.parse(localStorage.getItem(i.projectName+'/rights')) || [];
+                    i_c = OleanderAPP_json_m[i];
+                    if (i_c.name === APPselectedValue) {
+                        let rights_name_json = JSON.parse(localStorage.getItem(i_c.projectName+'/rights')) || [];
                         rights_name_json.forEach(rights_name => {
                             const option = document.createElement('option');
                             option.value = rights_name;
@@ -214,9 +214,9 @@
                 let rights_name_json = []
                 let projectName = ""
                 for (let i = 0; i < OleanderAPP_json_dp.length; i++) {
-                    i = OleanderAPP_json_dp[i];
-                    if (i.name === APPselectedValue) {
-                        projectName = i.projectName
+                    i_c = OleanderAPP_json_dp[i];
+                    if (i_c.name === APPselectedValue) {
+                        projectName = i_c.projectName
                         rights_name_json = JSON.parse(localStorage.getItem(projectName+'/rights')) || [];
                     }
                 }
@@ -244,13 +244,13 @@
                 const selectedValue = selectElement.options[selectedIndex].value;
                 selectElement.remove(selectedIndex);
                 for (let i = 0; i < OleanderAPP_json_o.length; i++) {
-                    i = OleanderAPP_json_o[i];
-                    if (i.name === selectedValue) {
+                    i_c = OleanderAPP_json_o[i];
+                    if (i_c.name === selectedValue) {
                         let currentUrl = window.location.href;
                         if (currentUrl.indexOf('?') === -1) {
-                            currentUrl += `?appid=${i.appid}`;
+                            currentUrl += `?appid=${i_c.appid}`;
                         } else {
-                            currentUrl += `&appid=${i.appid}`;
+                            currentUrl += `&appid=${i_c.appid}`;
                         }
                         window.location.assign(currentUrl);
                     }
