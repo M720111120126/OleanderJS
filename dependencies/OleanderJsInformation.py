@@ -1,27 +1,31 @@
 import os, dependencies.json5, sys, argparse
 import dependencies.toml
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-fver", "--fapi-version", help="""指定 API 版本
+args = {}
+if "OJPM" in sys.argv[0]:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-fver", "--fapi-version", help="""指定 API 版本
 Specify API version""", type=str, required=False)
-parser.add_argument("-v", "--version", help="""获取 API 版本
+    parser.add_argument("-v", "--version", help="""获取 API 版本
 Get the API version""", action="store_true")
-parser.add_argument("-V", "--verbose", help="""打印出工具链依赖的相关信息以及编译过程中执行的命令
+    parser.add_argument("-V", "--verbose", help="""打印出工具链依赖的相关信息以及编译过程中执行的命令
 Print out information about toolchain dependencies and commands executed during the compilation process""", action="store_true")
-parser.add_argument("-e", "--skip-env-check", help="""跳过环境检查
+    parser.add_argument("-e", "--skip-env-check", help="""跳过环境检查
 Get the API version""", action="store_true")
-parser.add_argument("-b", "--build", help="""构建项目
+    parser.add_argument("-b", "--build", help="""构建项目
 Build the project""", action="store_true")
-parser.add_argument("-i", "--init", help="""初始化项目
+    parser.add_argument("-i", "--init", help="""初始化项目
 Initialize the project""", action="store_true")
-try:
     args = vars(parser.parse_args())
-    args["OJC"] = False
-except:
-    args = {"init": False, "OJC": True}
+    args["type"] = "OJPM"
+elif "OJC" in sys.argv[0]:
+    args = {"build": False, "type": "OJC"}
+else:
+    sys.exit("""非法访问，请使用oleanderjs命令行工具
+Illegal access, please use the OleanderJS command line tool""")
 
 # 读取文件
-if os.path.exists("app.json5") or os.path.exists("app.toml") or args["init"] or args["OJC"]:
+if os.path.exists("app.json5") or os.path.exists("app.toml") or (not args["build"]) or args["type"] == "OJC":
     OleanderJS_project_path = ""
 else:
     OleanderJS_project_path = input("OleanderJS_project_page $ ")
@@ -29,7 +33,7 @@ OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
 build_json5 = {"compile-option":{}}
 app_json5 = {}
 OleanderJS_json5 = {}
-if not (args["init"] or args["OJC"]):
+if (not args["type"] == "OJC") and args["build"]:
     if os.path.exists(os.path.join(OleanderJS_project_path, "app.toml")):
         with open(os.path.join(OleanderJS_project_path, 'app.toml'), 'r', encoding='utf-8') as file:
             app_json5_original = dependencies.toml.loads(file.read())
