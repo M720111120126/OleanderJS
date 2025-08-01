@@ -1,11 +1,11 @@
-import os, dependencies.json5, dependencies.toml
 from dependencies.ReusableFunctions import  *
 from dependencies.OleanderJsInformation import OleanderJS_project_path
+import os, dependencies.json5, dependencies.toml
 
 def ImportModulesThatRequirePermission(text:str, page_loading, name:str, loading_page) -> str:
     include = []
     OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
-    ModulesThatRequirePermission_path = os.path.join(OleanderJS_api_path, "library\\rights")
+    ModulesThatRequirePermission_path = os.path.join(OleanderJS_api_path, "library/rights")
     for i in [f for f in os.listdir(ModulesThatRequirePermission_path ) if os.path.isfile(os.path.join(ModulesThatRequirePermission_path , f))]:
         with open(os.path.join(ModulesThatRequirePermission_path , i), "r", encoding='utf-8') as f2:
             i2 = i.replace(".js", "")
