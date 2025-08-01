@@ -35,7 +35,8 @@ The standard library update server has encountered an issue, please try bypassin
             else:
                 print("""当前API版本与更新服务器版本不一致，无法进行自动标准库库升级
 The current API version is inconsistent with the version of the update server, making it impossible to automatically upgrade the standard library""")
-    except:
+    except Exception as e:
+        print(e)
         print("""标准库更新服务器出现问题，检测标准库版本失败
 The standard library update server has encountered an issue, failed to detect the standard library version""")
     return OleanderJS_json5

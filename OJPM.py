@@ -4,11 +4,9 @@ import dependencies.ArkOfObject as ark
 from dependencies.PageProDependencyLibrary import PageProCompilation
 from dependencies.ReusableFunctions import  *
 from dependencies.VersionManager import VersionManager
-from dependencies.OleanderJsInformation import OleanderJS_project_path, app_json5, args, OleanderJS_json5, build_json5
+from dependencies.OleanderJsInformation import OleanderJS_project_path, app_json5, args, OleanderJS_json5, build_json5, OleanderJS_api_path
 from dependencies.ObjectArkOfPython import UIComponent, loading_page, compilation
 from typing import Union
-
-OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
 
 if args["build"]:
     # 检查环境
@@ -38,11 +36,11 @@ Warning: The current API is higher than the target API version (may be able to r
 
     # 编译
     page_init = ""
-    assert type(app_json5["page"]) == list[dict[str, Union[str, list[str]]]], "OleanderJsAPI Error: app_json5[\"page\"] must be a list of dictionaries"
+    assert type(app_json5["page"]) == list, "OleanderJsAPI Error: app_json5[\"page\"] must be a list of dictionaries"
     for page in app_json5["page"]:
         assert type(page["name"]) == str, "OleanderJsAPI Error: app_json5[\"page\"][\"name\"] must be a string"
         assert type(page["srcPath"]) == str, "OleanderJsAPI Error: app_json5[\"page\"][\"srcPath\"] must be a string"
-        assert type(page["dependencies"]) == list[str], "OleanderJsAPI Error: app_json5[\"page\"][\"dependencies\"] must be a list of strings"
+        assert type(page["dependencies"]) == list, "OleanderJsAPI Error: app_json5[\"page\"][\"dependencies\"] must be a list of strings"
         if args["verbose"]:
             print(f'Reading page:"{page}"')
         if page["name"] == "init":

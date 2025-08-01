@@ -163,7 +163,7 @@ class if_UIComponent(UIComponent):
 def loading_page(page_loading: dict[str, str | list[str]], name: str, mode:Literal["init", "self"]="init"):
     assert type(page_loading["name"]) == str, "OleanderJsAPI Error: app_json5[\"page\"][\"name\"] must be a string"
     assert type(page_loading["srcPath"]) == str, "OleanderJsAPI Error: app_json5[\"page\"][\"srcPath\"] must be a string"
-    assert type(page_loading["dependencies"]) == list[str], "OleanderJsAPI Error: app_json5[\"page\"][\"dependencies\"] must be a list of strings"
+    assert type(page_loading["dependencies"]) == list, "OleanderJsAPI Error: app_json5[\"page\"][\"dependencies\"] must be a list of strings"
     with open(os.path.join(OleanderJS_project_path, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
         if args["verbose"]:
             print(f'Loading page {name}:page_loading="{page_loading}";mode="{mode}"')

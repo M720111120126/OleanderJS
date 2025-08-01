@@ -30,7 +30,7 @@ if os.path.exists("app.json5") or os.path.exists("app.toml") or (not args["build
     OleanderJS_project_path = ""
 else:
     OleanderJS_project_path = input("OleanderJS_project_page $ ")
-OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
+OleanderJS_api_path:str = os.path.dirname(os.path.abspath(__file__))
 build_json5 = {"compile-option":{}}
 app_json5 = {}
 OleanderJS_json5 = {}
