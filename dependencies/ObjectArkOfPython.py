@@ -1,10 +1,11 @@
-import os, json, dependencies.filetype
+import os, json
 from dependencies.ReusableFunctions import  *
 from dependencies.RightsManagement import ImportModulesThatRequirePermission
 from dependencies.OleanderJsInformation import OleanderJS_project_path, OleanderJS_api_path, args, app_json5, build_json5
 import dependencies.ArkOfObjectPro as ArkPRO
+from typing import Literal, Union
 
-def Oleander_r(file_path):
+def Oleander_r(file_path: str) -> str:
     return file_to_data_url(path(file_path))
 ids = []
 class UIComponent:
@@ -159,7 +160,10 @@ class if_UIComponent(UIComponent):
     def render_original(self):
         self.children[0].if_render(self.condition_text)
         return self.children[0].render()
-def loading_page(page_loading, name, mode="init"):
+def loading_page(page_loading: dict[str, str | list[str]], name: str, mode:Literal["init", "self"]="init"):
+    assert type(page_loading["name"]) == str, "OleanderJsAPI Error: app_json5[\"page\"][\"name\"] must be a string"
+    assert type(page_loading["srcPath"]) == str, "OleanderJsAPI Error: app_json5[\"page\"][\"srcPath\"] must be a string"
+    assert type(page_loading["dependencies"]) == list[str], "OleanderJsAPI Error: app_json5[\"page\"][\"dependencies\"] must be a list of strings"
     with open(os.path.join(OleanderJS_project_path, page_loading["srcPath"], name), "r", encoding='utf-8') as f:
         if args["verbose"]:
             print(f'Loading page {name}:page_loading="{page_loading}";mode="{mode}"')

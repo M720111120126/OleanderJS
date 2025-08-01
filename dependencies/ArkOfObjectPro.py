@@ -2,10 +2,10 @@ import sys
 import dependencies.ArkOfObject as ark
 from dependencies.ReusableFunctions import  *
 
-def ArkPRO(s: str, m: str, UIComponent_Subclasses: list) -> str:
+def ArkPRO(s: str, m: str, UIComponent_Subclasses: list[type]) -> str:
     text_list = replace_outside_quotes(s, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     return f'{text_list[0]}\n# UI_start\n{compilation(replace_outside_quotes(text_list[1], [["if", "if_UIComponent"]]), UIComponent_Subclasses, m)}'
-def compilation(input_str: str, UIComponent_Subclasses: list, m: str="into") -> str:
+def compilation(input_str: str, UIComponent_Subclasses: list[type], m: str="into") -> str:
     try:
         for UIComponent_Subclasse in UIComponent_Subclasses:
             UIComponent_Subclasse = UIComponent_Subclasse.__name__

@@ -6,21 +6,26 @@ from dependencies.ReusableFunctions import  *
 from dependencies.VersionManager import VersionManager
 from dependencies.OleanderJsInformation import OleanderJS_project_path, app_json5, args, OleanderJS_json5, build_json5
 from dependencies.ObjectArkOfPython import UIComponent, loading_page, compilation
+from typing import Union
 
 OleanderJS_api_path = os.path.dirname(os.path.abspath(__file__))
 
 if args["build"]:
     # 检查环境
     if args["fapi_version"]:
-        fapi_version = args["fapi_version"]
+        assert type(args["fapi_version"]) == str, """OleanderJsAPI Error : args["fapi_version"] 必须是一个 string
+OleanderJsAPI Error: args["fapi_version"] must be a string"""
+        fapi_version: str = args["fapi_version"]
     else:
-        fapi_version = ""
+        fapi_version: str = ""
     if args["version"]:
         print(OleanderJS_json5["API-version"])
     if not args["skip_env_check"]:
         if args["verbose"]:
             print("The environment is being inspected")
         OleanderJS_json5 = VersionManager()
+        assert type(OleanderJS_json5["API-version"]) == str, """OleanderJsAPI Error : OleanderJS_json5["API-version"] 必须是一个 string
+OleanderJsAPI Error: OleanderJS_json5["API-version"] must be a string"""
         if compare_versions(OleanderJS_json5["API-version"], build_json5["Minimum-required-API-version"]) == 2:
             sys.exit("""最低兼容的API版本高于当前API
 The minimum compatible API version is higher than the current API""")
@@ -33,7 +38,11 @@ Warning: The current API is higher than the target API version (may be able to r
 
     # 编译
     page_init = ""
+    assert type(app_json5["page"]) == list[dict[str, Union[str, list[str]]]], "OleanderJsAPI Error: app_json5[\"page\"] must be a list of dictionaries"
     for page in app_json5["page"]:
+        assert type(page["name"]) == str, "OleanderJsAPI Error: app_json5[\"page\"][\"name\"] must be a string"
+        assert type(page["srcPath"]) == str, "OleanderJsAPI Error: app_json5[\"page\"][\"srcPath\"] must be a string"
+        assert type(page["dependencies"]) == list[str], "OleanderJsAPI Error: app_json5[\"page\"][\"dependencies\"] must be a list of strings"
         if args["verbose"]:
             print(f'Reading page:"{page}"')
         if page["name"] == "init":

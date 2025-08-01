@@ -1,5 +1,6 @@
 import os, dependencies.json5, sys, argparse
 import dependencies.toml
+from typing import Union
 
 args = {}
 if "OJPM" in sys.argv[0]:
@@ -19,7 +20,7 @@ Initialize the project""", action="store_true")
     args = vars(parser.parse_args())
     args["type"] = "OJPM"
 elif "OJC" in sys.argv[0]:
-    args = {"build": False, "type": "OJC"}
+    args: dict[str, Union[bool, str]] = {"build": False, "type": "OJC"}
 else:
     sys.exit("""非法访问，请使用oleanderjs命令行工具
 Illegal access, please use the OleanderJS command line tool""")
@@ -47,8 +48,8 @@ if (not args["type"] == "OJC") and args["build"]:
             app_json5_original = dependencies.json5.loads(file.read())
             app_json5 = app_json5_original if isinstance(app_json5_original, dict) else {}
         with open(os.path.join(OleanderJS_project_path, 'build.json5'), 'r', encoding='utf-8') as file:
-            build_json5_ = dependencies.json5.loads(file.read())
-            build_json5 = build_json5_ if isinstance(build_json5_, dict) else {}
+            build_json5_original = dependencies.json5.loads(file.read())
+            build_json5 = build_json5_original if isinstance(build_json5_original, dict) else {}
     else:
         print("""未找到项目配置文件
 No project configuration file found""")
