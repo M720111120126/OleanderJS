@@ -224,9 +224,10 @@ All UI components inherit from the `UIComponent` class. This class contains comm
 -   `set_style(**kwargs)`: Set styles, supporting passing in multiple CSS attributes and values.
 -   `render()`: Render the component and return HTML.
 
-##### Features
+##### Attributes
 
--   `text attribute`: You can use the `js_` prefix to use variables defined in JavaScript as the displayed text.
+-   `text`: You can use the `js_` prefix to use variables defined in JavaScript as the displayed text.
+-   `id`: The id of the component
 
 #### 1.2 `Text` Class
 
@@ -526,4 +527,4 @@ OJC init.yh
 Will compile to init.html
 
 ## Note
-* This tutorial is applicable to OleanderJS-API V1.13.0
+* This tutorial is applicable to OleanderJS-API V1.13.1.1

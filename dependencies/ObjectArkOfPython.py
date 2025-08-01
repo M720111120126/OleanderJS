@@ -3,11 +3,11 @@ from dependencies.ReusableFunctions import  *
 from dependencies.RightsManagement import ImportModulesThatRequirePermission
 from dependencies.OleanderJsInformation import OleanderJS_project_path, OleanderJS_api_path, args, app_json5, build_json5
 import dependencies.ArkOfObjectPro as ArkPRO
-from typing import Literal, Union
+from typing import Literal
 
 def Oleander_r(file_path: str) -> str:
     return file_to_data_url(path(file_path))
-ids = []
+ids: list[str] = []
 class UIComponent:
     def __init__(self):
         self.styles = {}
@@ -48,7 +48,8 @@ class UIComponent:
         raise NotImplementedError("""呈现方法必须由子类实现
 render method must be implemented by subclasses""")
     def render(self):
-        self.id = str(id(self))
+        if self.id == "":
+            self.id = str(id(self))
         ids.append(self.id)
         if "js_" in self.text:
             self.text = "<script>document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";function autoUpdateButton() {document.getElementById('"+self.id+"').innerHTML = "+self.text.replace("js_", "")+";}setInterval(autoUpdateButton, 100);</script>"

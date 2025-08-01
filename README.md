@@ -223,8 +223,9 @@ Button.on_click = "alert('按钮1被点击')"
 - `set_style(**kwargs)`：设置样式，支持传入多个 CSS 属性和值。
 - `render()`：渲染该组件并返回 HTML。
 
-##### 特性
-- `text属性`：可以使用`js_`前缀以使用在JavaScript中定义的变量作为显示的文本
+##### 属性
+- `text`：可以使用`js_`前缀以使用在JavaScript中定义的变量作为显示的文本
+- `id`：组件的id
 
 #### 1.2 `Text` 类
 
@@ -509,4 +510,4 @@ OJC init.yh
 将编译为 init.html
 
 ## 注意
-* 本教程适用于 OleanderJS-API V1.13.0 版
+* 本教程适用于 OleanderJS-API V1.13.1.1 版

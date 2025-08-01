@@ -222,8 +222,9 @@ Button.on_click = "alert('按鈕1被點擊')
 - `set_style(**kwargs)`：設定樣式，支持傳入多個 CSS 屬性和值。
 - `render()`：渲染該組件並返回 HTML。
 
-##### 特性
-- `text屬性`：可以使用`js_`前綴以使用在 JavaScript 中定義的變數作為顯示的文字
+##### 屬性
+- `text`：可以使用`js_`前綴以使用在 JavaScript 中定義的變數作為顯示的文字
+- `id`：組件的 id
 
 #### 1.2 `Text` 類別
 
@@ -510,4 +511,4 @@ OJC init.yh
 將編譯為 init.html
 
 ## 注意
-* 本教程適用於 OleanderJS-API V1.13.0 版
+* 本教程適用於 OleanderJS-API V1.13.1.1 版
