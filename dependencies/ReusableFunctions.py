@@ -1,7 +1,6 @@
 import re, base64, dependencies.filetype, os
 from urllib.parse import quote_plus
 from dependencies.OleanderJsInformation import OleanderJS_project_path
-from typing import Union
 
 def str_encrypt(text: str) -> str:
     return str(int.from_bytes(text.encode('utf-8'), byteorder='big')).translate(str.maketrans("0123456789", "abcdefghij"))

@@ -1,6 +1,8 @@
 from dependencies.ReusableFunctions import  *
 from typing import List, Dict, Any, Optional
 import dependencies.json5, sys
+import warnings
+from dependencies.Error import *
 
 class Node:
     def __init__(self, name: str):
@@ -49,7 +51,8 @@ def transform(s: str) -> str:
                 last_closed = stack.pop()
                 continue
             if last_closed is None:
-                sys.exit("transform error")
+                CompilationError("transform error")
+                sys.exit(1)
             m = re_style.match(line)
             if m:
                 body = m.group(1)
@@ -132,12 +135,15 @@ def compilation(input_str:str, m:str) -> str:
         output_str_original = dependencies.json5.loads("{" + output_str + "}")
         output_str = output_str_original if isinstance(output_str_original, dict) else {}
         if len(output_str.keys()) > 1:
-            sys.exit("""最外层只能使用一个组件
+            CompilationError("""最外层只能使用一个组件
 The outermost layer can only use one component""")
+            sys.exit(1)
+        warnings.warn("ark 版本的 OleanderJsAPI 将会在移除，请尽快升级 ArkPRO 版本")
         return render(output_str) + "\n\nhtml = " + list(output_str.keys())[0].translate(str.maketrans("0123456789", "abcdefghij")) + ".render()"
     except:
         if m == "into":
             return input_str
         else:
-            sys.exit("""ark版OleanderUI渲染出现错误
+            CompilationError("""ark版OleanderUI渲染出现错误
 ark version OleanderUI rendering error""")
+            sys.exit(1)
