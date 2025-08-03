@@ -6,7 +6,6 @@ from dependencies.ReusableFunctions import  *
 from dependencies.VersionManager import VersionManager
 from dependencies.OleanderJsInformation import OleanderJS_project_path, app_json5, args, OleanderJS_json5, build_json5, OleanderJS_api_path
 from dependencies.ObjectArkOfPython import UIComponent, loading_page, compilation
-from typing import Union
 
 if args["build"]:
     # 检查环境
@@ -25,8 +24,9 @@ OleanderJsAPI Error: args["fapi_version"] must be a string"""
         assert type(OleanderJS_json5["API-version"]) == str, """OleanderJsAPI Error : OleanderJS_json5["API-version"] 必须是一个 string
 OleanderJsAPI Error: OleanderJS_json5["API-version"] must be a string"""
         if compare_versions(OleanderJS_json5["API-version"], build_json5["Minimum-required-API-version"]) == 2:
-            sys.exit("""最低兼容的API版本高于当前API
+            EnvironmentError("""最低兼容的API版本高于当前API
 The minimum compatible API version is higher than the current API""")
+            sys.exit(1)
         elif compare_versions(OleanderJS_json5["API-version"], build_json5["Target-API-version"]) == 2:
             print("""警告：当前API低于目标的API版本（可能能够正常运行）
 Warning: The current API is lower than the target API version (may be able to run normally)""")

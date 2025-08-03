@@ -1,6 +1,7 @@
 import os, dependencies.json5, sys, argparse
 import dependencies.toml
 from typing import Union
+from dependencies.Error import *
 
 args = {}
 if "OJPM" in sys.argv[0]:
@@ -22,8 +23,9 @@ Initialize the project""", action="store_true")
 elif "OJC" in sys.argv[0]:
     args: dict[str, Union[bool, str]] = {"build": False, "type": "OJC"}
 else:
-    sys.exit("""非法访问，请使用oleanderjs命令行工具
+    IllegalAccessError("""非法访问，请使用oleanderjs命令行工具
 Illegal access, please use the OleanderJS command line tool""")
+    sys.exit(1)
 
 # 读取文件
 if os.path.exists("app.json5") or os.path.exists("app.toml") or (not args["build"]) or args["type"] == "OJC":
@@ -33,7 +35,7 @@ else:
 OleanderJS_api_path:str = os.path.dirname(os.path.abspath(__file__))
 build_json5 = {"compile-option":{}}
 app_json5 = {}
-OleanderJS_json5 = {}
+OleanderJS_json5: dict[str, str | int | dict[str, int]] = {}
 if (not args["type"] == "OJC") and args["build"]:
     if os.path.exists(os.path.join(OleanderJS_project_path, "app.toml")):
         with open(os.path.join(OleanderJS_project_path, 'app.toml'), 'r', encoding='utf-8') as file:

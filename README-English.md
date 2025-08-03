@@ -527,4 +527,4 @@ OJC init.yh
 Will compile to init.html
 
 ## Note
-* This tutorial is applicable to OleanderJS-API V1.13.1.1
+* This tutorial is applicable to OleanderJS-API V1.13.1.1 ~ V1.13.5

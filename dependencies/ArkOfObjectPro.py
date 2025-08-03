@@ -1,6 +1,7 @@
 import sys
 import dependencies.ArkOfObject as ark
-from dependencies.ReusableFunctions import  *
+from dependencies.ReusableFunctions import *
+from dependencies.Error import *
 
 def ArkPRO(s: str, m: str, UIComponent_Subclasses: list[type]) -> str:
     text_list = replace_outside_quotes(s, [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
@@ -28,5 +29,6 @@ def compilation(input_str: str, UIComponent_Subclasses: list[type], m: str="into
         if m == "into":
             return ark.ark(input_str, "into")
         else:
-            sys.exit("""ArkPRO版OleanderUI渲染出现错误
+            CompilationError("""ArkPRO版OleanderUI渲染出现错误
     ark version OleanderUI rendering error""")
+            sys.exit(1)

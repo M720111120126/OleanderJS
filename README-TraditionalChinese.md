@@ -511,4 +511,4 @@ OJC init.yh
 將編譯為 init.html
 
 ## 注意
-* 本教程適用於 OleanderJS-API V1.13.1.1 版
+* 本教程適用於 OleanderJS-API V1.13.1.1 ~ V1.13.5 版

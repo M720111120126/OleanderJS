@@ -510,4 +510,4 @@ OJC init.yh
 将编译为 init.html
 
 ## 注意
-* 本教程适用于 OleanderJS-API V1.13.1.1 版
+* 本教程适用于 OleanderJS-API V1.13.1.1 ~ V1.13.5 版

@@ -204,7 +204,6 @@ def compilation(text: str) -> str:
 def CompilationLow(text: str, name:str) -> str:
     text_list = replace_outside_quotes(ArkPRO.ArkPRO(text, "into", get_all_subclasses(UIComponent)), [["# UI_start", "§⁋•“௹"]]).split("§⁋•“௹")
     local_vars = {}
-    # print(text_list[1])
     exec(replace_outside_quotes(text_list[1], [["$", "Oleander_"], ["eval", "eval_new"]]), globals(), local_vars)
     html = local_vars['html']
     return f"<!DECTYPE HTML><html><head><script>let ProjectName = '{name}';let rights_name_json;"+"try {rights_name_json = JSON.parse(localStorage.getItem(ProjectName + '/rights')) || [];} catch (error) {rights_name_json = [];}function eval_new(s) {if (window.confirm('允许执行：'+s+'？')) {try {return eval(s);} catch (e) {console.error('执行失败：', e);}}}"+f"{text_list[0]}</script><meta charset='utf-8'></head><body>{html}</body></html>"
