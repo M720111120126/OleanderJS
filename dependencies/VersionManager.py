@@ -41,7 +41,7 @@ The standard library update server has encountered an issue, please try bypassin
         return -1, {"error":str(e)}
 
 def VersionManager() -> dict[str, Union[str, int, dict[str, int]]]:
-    code, OleanderJS_json5 = VersionManager_web("https://oleanderjs.xn--jzh-k69dm57c4fd.xyz/")
+    code, OleanderJS_json5 = VersionManager_web("https://xn--jzh-k69dm57c4fd.xyz/OleanderJS/")
     if code == 1:
         print("""当前API版本与更新服务器版本不一致，无法进行自动标准库库升级
 The current API version is inconsistent with the version of the update server, making it impossible to automatically upgrade the standard library""")
